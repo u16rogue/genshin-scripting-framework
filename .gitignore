@@ -1,0 +1,10 @@
+.vs/
+build/
+bin/
+obj/
+*.exe
+*.dll
+*.obj
+*.ilk
+*.idb
+*.pdb

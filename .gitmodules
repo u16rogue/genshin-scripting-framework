@@ -1,0 +1,3 @@
+[submodule "gsf-bypass"]
+	path = gsf-bypass
+	url = git@github.com:rogueeeee/gsf-bypass.git
