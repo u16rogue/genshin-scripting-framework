@@ -16,14 +16,13 @@ std::uint8_t *utils::aob_scan(void *start, std::size_t size, const char *signatu
 		{
 			if (mask[i] == '?')
 				continue;
-
-			if (mask[i] != 'x' || current_address[i] != reinterpret_cast<const unsigned char *>(signature)[i])
+			else if (mask[i] != 'x' || current_address[i] != reinterpret_cast<const unsigned char *>(signature)[i])
 				break;
-
-			if (mask[i + 1] == '\0')
+			else if (mask[i + 1] == '\0')
 				return current_address;
 		}
-	} while (++current_address + byte_count <= end);
+	}
+	while (++current_address + byte_count <= end);
 
 	return nullptr;
 }
