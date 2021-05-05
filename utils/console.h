@@ -64,8 +64,8 @@ namespace con
 	template <typename ...targs>
 	void print( con::color val, targs... arg )
 	{
-		con::print(val);
-		con::print(arg...);
+		con::print( val );
+		con::print( arg... );
 	}
 
 	template <typename ...targs>
