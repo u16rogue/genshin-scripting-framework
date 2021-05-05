@@ -15,10 +15,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)aob_scan.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)hook\hook_nearcall64.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)console.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)aob_scan.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)hook\hook_nearcall64.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)console.h" />
   </ItemGroup>
 </Project>
