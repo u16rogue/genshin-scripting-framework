@@ -46,5 +46,47 @@ void con::print( con::color val )
 
 void con::print( con::colors val )
 {
-	con::print( con::color(val) );
+	con::print( con::color( val ) );
+}
+
+con::log::log(std::wstring_view text, bool newline, const wchar_t def_status[10])
+{
+	if (newline)
+		std::cout << '\n';
+
+	CONSOLE_SCREEN_BUFFER_INFO csbi{};
+	GetConsoleScreenBufferInfo(stdout_handle, &csbi);
+	this->status_point.x = csbi.dwCursorPosition.X + 1;
+	this->status_point.y = csbi.dwCursorPosition.Y;
+
+	con::print(con::colors::BWHITE, "[", con::colors::GRAY, def_status, con::colors::BWHITE, "] ", text);
+}
+
+void con::log::status(const wchar_t text[10], con::colors txtcol)
+{
+	CONSOLE_SCREEN_BUFFER_INFO csbi{};
+	GetConsoleScreenBufferInfo(stdout_handle, &csbi);
+	SetConsoleCursorPosition(stdout_handle, { this->status_point.x, this->status_point.y });
+	con::print(txtcol, text);
+	SetConsoleCursorPosition(stdout_handle, csbi.dwCursorPosition);
+}
+
+void con::log::success()
+{
+	this->status(L" SUCCESS ", con::colors::LGREEN);
+}
+
+void con::log::error()
+{
+	this->status(L"  ERROR  ", con::colors::LRED);
+}
+
+bool con::log::check(bool result)
+{
+	if (result)
+		this->success();
+	else
+		this->error();
+
+	return result;
 }

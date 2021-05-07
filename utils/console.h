@@ -27,7 +27,7 @@ namespace con
 
 	struct color
 	{
-		con::color(con::colors foreground = con::colors::BWHITE, con::colors background = con::colors::BLACK);
+		color(con::colors foreground = con::colors::BWHITE, con::colors background = con::colors::BLACK);
 
 		union
 		{
@@ -74,4 +74,43 @@ namespace con
 		con::print( val );
 		con::print( arg... );
 	}
+
+	class log
+	{
+		struct con_point_t
+		{
+			short x, y;
+		};
+
+	public:
+
+		log(std::wstring_view text, bool newline = true, const wchar_t def_status[10] = L" WAIT... ");
+
+		void status(const wchar_t text[10], con::colors txtcol = con::colors::WHITE);
+		void success();
+		void error();
+
+		bool check(bool result);
+
+		template <typename T>
+		static void out( T text )
+		{
+			con::print(con::colors::BWHITE, "\n[   LOG   ] ", text);
+		}
+
+		template <typename T>
+		static void warn( T text )
+		{
+			con::print( con::colors::BWHITE, "\n[", con::colors::LYELLOW, " WARNING ", con::colors::BWHITE, "] ", text );
+		}
+
+		template <typename T>
+		static void critical( T text )
+		{
+			con::print( con::colors::BWHITE, "\n[", con::colors::LRED, " CRITERR ", con::colors::BWHITE, "] ", text );
+		}
+
+	private:
+		con_point_t status_point = {};
+	};
 }
