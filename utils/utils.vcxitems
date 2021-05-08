@@ -16,9 +16,11 @@
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)aob_scan.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)console.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)enumerate.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)aob_scan.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)console.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)enumerate.h" />
   </ItemGroup>
 </Project>
