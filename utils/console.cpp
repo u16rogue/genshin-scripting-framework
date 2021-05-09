@@ -27,7 +27,7 @@ bool con::init()
 		con::print();
 		return true;
 	}
-
+	
 	#if _DEBUG
 	DebugBreak();
 	#endif
