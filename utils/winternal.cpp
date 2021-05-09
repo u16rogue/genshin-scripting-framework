@@ -1,5 +1,4 @@
 #include "winternal.h"
-
 #include <intrin.h>
 
 struct peb_ldr_data
@@ -8,7 +7,7 @@ private:
     std::uint32_t  pad0[2];
     std::uintptr_t pad1;
 public:
-    ldr_data_table_entry *entry;
+    utils::ldr_data_table_entry *entry;
 };
 
 struct peb
@@ -20,9 +19,9 @@ public:
     peb_ldr_data *ldr;
 };
 
-bool ldr_data_table_entry_next(ldr_data_table_entry *&dest)
+bool utils::ldr_data_table_entry_next(utils::ldr_data_table_entry *&dest)
 {
-    static ldr_data_table_entry *first_entry = [] () -> auto
+    static utils::ldr_data_table_entry *first_entry = [] () -> auto
     {
         #ifdef _M_IX86
             return reinterpret_cast<peb *>(__readfsdword(0x30))->ldr->entry;
@@ -47,42 +46,17 @@ bool ldr_data_table_entry_next(ldr_data_table_entry *&dest)
     return true;
 }
 
-ldr_data_table_entry *ldr_data_table_entry_find(const wchar_t *name)
-{
-    ldr_data_table_entry *entry = nullptr;
-    while (ldr_data_table_entry_next(entry))
-    {
-        if (!entry->dll_base)
-            continue;
-
-        if (wcscmp(entry->base_dll_name, name) == 0)
-            return entry;
-    }
-
-    return nullptr;
-}
-
-bool ldr_data_table_entry_find(const wchar_t *name, ldr_data_table_entry *&dest)
-{
-    dest = ldr_data_table_entry_find(name);
-
-    if (!dest)
-        return false;
-
-    return true;
-}
-
-bool pe_validate_dosheader(void *base)
+bool utils::pe_validate_dosheader(void *base)
 {
     return reinterpret_cast<PIMAGE_DOS_HEADER>(base)->e_magic == IMAGE_DOS_SIGNATURE;
 }
 
-PIMAGE_DOS_HEADER pe_get_dosheaderptr(void *base)
+PIMAGE_DOS_HEADER utils::pe_get_dosheaderptr(void *base)
 {
     return reinterpret_cast<PIMAGE_DOS_HEADER>(base);
 }
 
-PIMAGE_NT_HEADERS pe_get_ntheaderptr(void *base)
+PIMAGE_NT_HEADERS utils::pe_get_ntheaderptr(void *base)
 {
-    return reinterpret_cast<PIMAGE_NT_HEADERS>(reinterpret_cast<std::uintptr_t>(base) + pe_get_dosheaderptr(base)->e_lfanew);
+    return reinterpret_cast<PIMAGE_NT_HEADERS>(reinterpret_cast<std::uintptr_t>(base) + utils::pe_get_dosheaderptr(base)->e_lfanew);
 }

@@ -19,6 +19,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)enumerate.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)misc_utils.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)winapi_helper.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)winternal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)aob_scan.h" />
@@ -26,5 +27,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)enumerate.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)misc_utils.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)winapi_helper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)winternal.h" />
   </ItemGroup>
 </Project>

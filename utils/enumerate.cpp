@@ -23,3 +23,28 @@ bool utils::enumerate_modules(void *proc_handle, enumerate_modules_callback_t ca
 
 	return true;
 }
+
+utils::ldr_data_table_entry *utils::ldr_data_table_entry_find(const wchar_t *name)
+{
+	utils::ldr_data_table_entry *entry = nullptr;
+	while (utils::ldr_data_table_entry_next(entry))
+	{
+		if (!entry->dll_base)
+			continue;
+
+		if (wcscmp(entry->base_dll_name, name) == 0)
+			return entry;
+	}
+
+	return nullptr;
+}
+
+bool utils::ldr_data_table_entry_find(const wchar_t *name, utils::ldr_data_table_entry *&dest)
+{
+	dest = utils::ldr_data_table_entry_find(name);
+
+	if (!dest)
+		return false;
+
+	return true;
+}
