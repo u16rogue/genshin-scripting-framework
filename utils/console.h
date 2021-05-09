@@ -43,6 +43,8 @@ namespace con
 
 	bool init();
 
+	bool is_focused();
+
 	void print( void );
 	void print( con::color val );
 	void print( con::colors val );

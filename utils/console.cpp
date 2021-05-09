@@ -34,6 +34,11 @@ bool con::init()
 	return false;
 }
 
+bool con::is_focused()
+{
+	return window_handle == GetForegroundWindow();
+}
+
 void con::print( void )
 {
 	con::print( con::color() );
