@@ -10,7 +10,7 @@ namespace utils
 	class open_winthread
 	{
 	public:
-		open_winthread(int thread_id);
+		open_winthread(DWORD thread_id);
 		~open_winthread();
 
 		operator bool() const
@@ -20,6 +20,8 @@ namespace utils
 
 		bool suspend();
 		bool resume();
+
+		const DWORD id = 0;
 
 	private:
 		HANDLE thread_handle = nullptr;

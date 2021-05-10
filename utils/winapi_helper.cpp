@@ -1,6 +1,7 @@
 #include "winapi_helper.h"
 
-utils::open_winthread::open_winthread(int thread_id)
+utils::open_winthread::open_winthread(DWORD thread_id)
+	: id(thread_id)
 {
 	this->thread_handle = OpenThread(THREAD_ALL_ACCESS, false, thread_id);
 }
