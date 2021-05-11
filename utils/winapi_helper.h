@@ -41,6 +41,7 @@ namespace utils
 
 		bool alloc(HANDLE proc_handle_ = nullptr, std::size_t alloc_size_ = 0, DWORD page_prot_ = NULL);
 		bool free();
+		void leak();
 
 		LPVOID ptr = nullptr;
 

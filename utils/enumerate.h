@@ -9,4 +9,6 @@ namespace utils
 
 	ldr_data_table_entry *ldr_data_table_entry_find(const wchar_t *name);
 	bool ldr_data_table_entry_find(const wchar_t *name, ldr_data_table_entry *&dest);
+
+	void *export_dir_find(void *mod_base, const char *name);
 }

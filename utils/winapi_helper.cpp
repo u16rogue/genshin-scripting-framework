@@ -51,13 +51,18 @@ bool utils::remote_allocate::alloc(HANDLE proc_handle_, std::size_t alloc_size_,
 
 bool utils::remote_allocate::free()
 {
-	if (VirtualFreeEx(proc_handle, this->ptr, NULL, MEM_RELEASE))
+	if (this->proc_handle && this->ptr && VirtualFreeEx(proc_handle, this->ptr, NULL, MEM_RELEASE))
 	{
 		this->ptr = nullptr;
 		return true;
 	}
 	
 	return false;
+}
+
+void utils::remote_allocate::leak()
+{
+	this->proc_handle = nullptr;
 }
 
 std::wstring utils::get_full_path(std::wstring_view initial_path)
