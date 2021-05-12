@@ -3,10 +3,10 @@
 #include <cstdint>
 #include <Windows.h>
 #include <winternl.h>
+#include <cstddef>
 
 namespace utils
 {
-
 	struct ldr_data_table_entry
 	{
 	public:
@@ -30,6 +30,14 @@ namespace utils
 	};
 
 	bool ldr_data_table_entry_next(ldr_data_table_entry *&dest);
+
+	ldr_data_table_entry *ldr_data_table_entry_find(const wchar_t *name);
+	bool ldr_data_table_entry_find(const wchar_t *name, ldr_data_table_entry *&dest);
+
+	void *export_fn_get(void *mod_base, const char *name);
+	void *export_fn_find(const char *name);
+
+	PIMAGE_BASE_RELOCATION base_relocation_block_forward(PIMAGE_BASE_RELOCATION current_block);
 
 	bool pe_validate_dosheader(void *base);
 	PIMAGE_DOS_HEADER pe_get_dosheaderptr(void *base);
