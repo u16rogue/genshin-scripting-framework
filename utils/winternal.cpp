@@ -21,15 +21,8 @@ public:
 
 bool utils::ldr_data_table_entry_next(utils::ldr_data_table_entry *&dest)
 {
-    static utils::ldr_data_table_entry *first_entry = [] () -> auto
-    {
-        #ifdef _M_IX86
-            return reinterpret_cast<peb *>(__readfsdword(0x30))->ldr->entry;
-        #elif _M_X64
-            return reinterpret_cast<peb *>(__readgsqword(0x60))->ldr->entry;
-        #endif
-    }();
-
+    utils::ldr_data_table_entry *first_entry = reinterpret_cast<peb *>(__readgsqword(0x60))->ldr->entry;
+    
     if (!dest)
     {
         if (!first_entry)

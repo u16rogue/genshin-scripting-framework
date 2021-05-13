@@ -1,5 +1,7 @@
 #include "aob_scan.h"
 #include <string>
+#include <memory>
+#include <Windows.h>
 
 std::uint8_t *utils::aob_scan(void *start, std::size_t size, const char *signature, const char *mask)
 {
@@ -25,4 +27,17 @@ std::uint8_t *utils::aob_scan(void *start, std::size_t size, const char *signatu
 	while (++current_address + byte_count <= end);
 
 	return nullptr;
+}
+
+std::uint8_t *utils::aob_scan(void *proc_handle, void *start, std::size_t size, const char *signature, const char *mask)
+{
+	std::unique_ptr<std::uint8_t[]> buffer = std::make_unique<std::uint8_t[]>(size);
+	if (!ReadProcessMemory(proc_handle, start, buffer.get(), size, nullptr))
+		return nullptr;
+
+	std::uint8_t *result = utils::aob_scan(buffer.get(), size, signature, mask);
+	if (!result)
+		return nullptr;
+
+	return reinterpret_cast<std::uint8_t*>(start) + (reinterpret_cast<std::uintptr_t>(result) - reinterpret_cast<std::uintptr_t>(buffer.get()));
 }
