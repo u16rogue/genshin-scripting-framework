@@ -1,7 +1,6 @@
 #include "loadlib.h"
 #include <Windows.h>
 #include "misc_utils.h"
-#include <iostream>
 #include "winapi_helper.h"
 #include "winternal.h"
 
@@ -80,11 +79,7 @@ bool utils::map_module(void *proc_handle, void *thread_handle, void *module_bin,
     utils::remote_allocate sh_alloc(proc_handle, shellcode_size + sizeof(map_module_info_t), PAGE_EXECUTE_READWRITE);
     if (!sh_alloc)
         return false;
-
-    std::cout << "\n\n\ncool: 0x" << sh_alloc.ptr << " - 0x" << shellcode_map_module << "\n\n\n";
-
     
-
     std::uint8_t *sh_local = reinterpret_cast<std::uint8_t*>(shellcode_map_module);
     // check if the compiler placed it in a jump table
     if (sh_local[0] == 0xE9)
