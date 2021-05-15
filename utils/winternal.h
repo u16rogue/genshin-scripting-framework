@@ -127,9 +127,11 @@ namespace utils
         std::uint16_t *ordinals = reinterpret_cast<std::uint16_t *>(base + image_export->AddressOfNameOrdinals);
 
         for (std::size_t i = 0; i < image_export->NumberOfFunctions; i++)
-            if (strcmp(reinterpret_cast<const char *>(base + names[i]), name) == 0)
+        {
+            auto ename = reinterpret_cast<const char *>(base + names[i]);
+            if (strcmp(ename, name) == 0)
                 return base + (address[ordinals[i]]);
-
+        }
         return nullptr;
     }
 
@@ -220,4 +222,6 @@ namespace utils
 
         return subroutine_size - 1;
     }
+
+    std::unique_ptr<std::uint8_t[]> load_raw_pe_sections_to_local_memory(void *pe_bin);
 }
