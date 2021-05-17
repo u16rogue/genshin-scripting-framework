@@ -14,9 +14,9 @@ bool con::init()
 	if ( AllocConsole() )
 	{
 		FILE *file_ptr;
-		freopen_s( &file_ptr, "CONOUT$", "w", stdout );
-		freopen_s( &file_ptr, "CONOUT$", "w", stderr );
-		freopen_s( &file_ptr, "CONIN$", "r", stdin );
+		_wfreopen_s( &file_ptr, L"CONOUT$", L"w", stdout );
+		_wfreopen_s( &file_ptr, L"CONOUT$", L"w", stderr );
+		_wfreopen_s( &file_ptr, L"CONIN$",  L"r", stdin  );
 	}
 
 	window_handle = GetConsoleWindow();
@@ -28,9 +28,6 @@ bool con::init()
 		return true;
 	}
 	
-	#if _DEBUG
-	DebugBreak();
-	#endif
 	return false;
 }
 
