@@ -45,10 +45,17 @@ namespace utils
     struct peb
     {
     private:
-        std::uint8_t   pad0[4];
-        std::uintptr_t pad1[2];
+        std::uint8_t   pad0[2];
+    public:
+        bool           being_debugged;
+    private:
+        std::uint8_t   pad1[16];
     public:
         peb_ldr_data *ldr;
+    private:
+        std::uint8_t   pad2[156];
+    public:
+        std::uint32_t  nt_global_flag;
     };
 
     _WINTERNAL_INLINE bool ldr_data_table_entry_next(utils::ldr_data_table_entry *&dest)
@@ -63,7 +70,7 @@ namespace utils
             dest = first_entry;
             return true;
         }
-
+        constexpr int v = offsetof(peb, nt_global_flag);
         if (dest->next == nullptr || dest->next == first_entry)
             return false;
 
