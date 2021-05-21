@@ -70,7 +70,7 @@ namespace utils
             dest = first_entry;
             return true;
         }
-        constexpr int v = offsetof(peb, nt_global_flag);
+        
         if (dest->next == nullptr || dest->next == first_entry)
             return false;
 
