@@ -10,7 +10,7 @@ void utils::spinlock_key(int key, unsigned int sleepms)
 
 std::wstring utils::random_str(int length, std::wstring_view char_set)
 {
-	std::srand(std::time(nullptr));
+	std::srand(static_cast<unsigned int>(std::time(nullptr)));
 	const std::size_t set_max_idx = char_set.length();
 	std::wstring result;
 	result.reserve(length + 1);
