@@ -5,9 +5,38 @@ VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "utils", "utils\utils.vcxitems", "{A2D09AC9-23C1-4B03-AF08-2EF6798147E3}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gsf-client", "gsf-client\gsf-client.vcxproj", "{36330540-2FDF-46AC-ACCA-68FBED6692AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "thirdparty", "thirdparty", "{924EAB71-3262-4B0E-97B2-0B475EB682D6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgui", "thirdparty\imgui\imgui.vcxitems", "{69063E09-D8A8-4FA9-A306-69F5F615DB38}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "minhook", "thirdparty\minhook\minhook.vcxitems", "{2956636E-C74F-4083-9493-873DA4E44CBF}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		thirdparty\minhook\minhook.vcxitems*{2956636e-c74f-4083-9493-873da4e44cbf}*SharedItemsImports = 9
+		thirdparty\imgui\imgui.vcxitems*{36330540-2fdf-46ac-acca-68fbed6692ac}*SharedItemsImports = 4
+		utils\utils.vcxitems*{36330540-2fdf-46ac-acca-68fbed6692ac}*SharedItemsImports = 4
+		thirdparty\imgui\imgui.vcxitems*{69063e09-d8a8-4fa9-a306-69f5f615db38}*SharedItemsImports = 9
+		utils\utils.vcxitems*{a2d09ac9-23c1-4b03-af08-2ef6798147e3}*SharedItemsImports = 9
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{36330540-2FDF-46AC-ACCA-68FBED6692AC}.Debug|x64.ActiveCfg = Debug|x64
+		{36330540-2FDF-46AC-ACCA-68FBED6692AC}.Debug|x64.Build.0 = Debug|x64
+		{36330540-2FDF-46AC-ACCA-68FBED6692AC}.Release|x64.ActiveCfg = Release|x64
+		{36330540-2FDF-46AC-ACCA-68FBED6692AC}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{69063E09-D8A8-4FA9-A306-69F5F615DB38} = {924EAB71-3262-4B0E-97B2-0B475EB682D6}
+		{2956636E-C74F-4083-9493-873DA4E44CBF} = {924EAB71-3262-4B0E-97B2-0B475EB682D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C27A1E17-7571-4265-B2E6-DCE1A9DAC05D}
