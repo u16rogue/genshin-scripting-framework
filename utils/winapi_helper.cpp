@@ -140,3 +140,13 @@ bool utils::remote_execute::execute_wait(DWORD timeout, HANDLE proc_handle_, LPV
 
 	return this->crt_handle != nullptr;
 }
+
+utils::change_page_protection::change_page_protection(void *address_, std::size_t size_, DWORD new_page_protection)
+{
+	this->is_success = VirtualProtect(address_, size_, new_page_protection, &this->old_prot);
+}
+
+utils::change_page_protection::~change_page_protection()
+{
+	VirtualProtect(this->address, this->size, this->old_prot, &this->old_prot);
+}

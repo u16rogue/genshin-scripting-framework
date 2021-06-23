@@ -72,5 +72,23 @@ namespace utils
 		HANDLE  crt_handle  = nullptr;
 	};
 
+	class change_page_protection
+	{
+	public:
+		change_page_protection(void *address_, std::size_t size_, DWORD new_page_protection);
+		~change_page_protection();
+
+		operator bool() const
+		{
+			return this->is_success;
+		}
+
+	private:
+		void *address    = nullptr;
+		std::size_t size = 0;
+		DWORD old_prot   = 0;
+		bool is_success  = false;
+	};
+
 	std::wstring get_full_path(std::wstring_view initial_path);
 }

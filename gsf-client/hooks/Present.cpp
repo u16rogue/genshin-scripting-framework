@@ -5,7 +5,7 @@
 ID3D11DeviceContext    *dx_context            = nullptr;
 ID3D11RenderTargetView *dx_render_target_view = nullptr;
 
-HRESULT __stdcall hooks::hk_Present(IDXGISwapChain *thisptr, UINT SyncInterval, UINT Flags)
+HRESULT __stdcall hk_Present(IDXGISwapChain *thisptr, UINT SyncInterval, UINT Flags)
 {
     static bool init_success = [&, thisptr]() -> bool
     {
@@ -44,7 +44,7 @@ HRESULT __stdcall hooks::hk_Present(IDXGISwapChain *thisptr, UINT SyncInterval, 
     }();
 
     if (!init_success)
-        return hooks::o_Present(thisptr, SyncInterval, Flags);
+        return hooks::ch_present->get_original<decltype(hk_Present)>()(thisptr, SyncInterval, Flags);
 
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
@@ -61,5 +61,7 @@ HRESULT __stdcall hooks::hk_Present(IDXGISwapChain *thisptr, UINT SyncInterval, 
     dx_context->OMSetRenderTargets(1, &dx_render_target_view, nullptr);
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
-    return hooks::o_Present(thisptr, SyncInterval, Flags);
+    return hooks::ch_present->get_original<decltype(hk_Present)>()(thisptr, SyncInterval, Flags);
 }
+
+std::unique_ptr<utils::hook_vmt> hooks::ch_present = std::make_unique<utils::hook_vmt>(8, hk_Present);

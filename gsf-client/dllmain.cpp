@@ -44,8 +44,8 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
             "\ndummy_swapchain_ptr: 0x" << dummy_swapchain_ptr
         );
         
-        if (!utils::hook_vmt_swap(*reinterpret_cast<void ***>(dummy_swapchain_ptr), 8, hooks::hk_Present, reinterpret_cast<void **>(&hooks::o_Present)))
-            return 0;
+        hooks::ch_present->init(*reinterpret_cast<void ***>(dummy_swapchain_ptr));
+        hooks::ch_present->hook();
 
         dummy_swapchain_ptr->Release();
         dummy_device_ptr->Release();
