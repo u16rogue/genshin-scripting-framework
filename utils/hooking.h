@@ -24,13 +24,28 @@ namespace utils
 			return reinterpret_cast<T *>(this->originalfn);
 		}
 
-	public:
+	private:
 		void *target     = nullptr;
 		void *originalfn = nullptr;
 		void *hookfn     = nullptr;
 
+		friend class hook_vmt;
+		friend class hook_wndproc;
+		friend class hook_detour;
+
 	public:
 		inline static std::list<utils::hook_base *> instances;
+	};
+
+	class hook_detour : public hook_base
+	{
+	public:
+		hook_detour(void *hookfn_);
+
+		bool init(void *target_);
+
+		bool hook() override;
+		bool unhook() override;
 	};
 
 	class hook_vmt : public hook_base
@@ -51,7 +66,15 @@ namespace utils
 	class hook_wndproc : public hook_base
 	{
 	public:
+		hook_wndproc(void *hookfn_);
 
+		bool init(void *window_handle_);
+
+		bool hook() override;
+		bool unhook() override;
+
+	private:
+		void *window_handle = nullptr;
 	};
 
 }

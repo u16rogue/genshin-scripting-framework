@@ -17,6 +17,7 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		thirdparty\minhook\minhook.vcxitems*{2956636e-c74f-4083-9493-873da4e44cbf}*SharedItemsImports = 9
 		thirdparty\imgui\imgui.vcxitems*{36330540-2fdf-46ac-acca-68fbed6692ac}*SharedItemsImports = 4
+		thirdparty\minhook\minhook.vcxitems*{36330540-2fdf-46ac-acca-68fbed6692ac}*SharedItemsImports = 4
 		utils\utils.vcxitems*{36330540-2fdf-46ac-acca-68fbed6692ac}*SharedItemsImports = 4
 		thirdparty\imgui\imgui.vcxitems*{69063e09-d8a8-4fa9-a306-69f5f615db38}*SharedItemsImports = 9
 		utils\utils.vcxitems*{a2d09ac9-23c1-4b03-af08-2ef6798147e3}*SharedItemsImports = 9

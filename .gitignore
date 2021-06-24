@@ -8,3 +8,4 @@ obj/
 *.ilk
 *.idb
 *.pdb
+gsf-client/git_hash.h
