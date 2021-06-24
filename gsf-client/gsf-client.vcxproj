@@ -127,6 +127,7 @@ echo #endif &gt;&gt; git_hash.h</Command>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="helpers\dx11_dummy.cpp" />
+    <ClCompile Include="hooks\hooks.cpp" />
     <ClCompile Include="hooks\Present.cpp" />
     <ClCompile Include="hooks\WindowProc.cpp" />
   </ItemGroup>

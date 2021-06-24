@@ -25,6 +25,9 @@ namespace utils
 		}
 
 	private:
+		
+		void internal_on_unhook();
+		
 		void *target     = nullptr;
 		void *originalfn = nullptr;
 		void *hookfn     = nullptr;

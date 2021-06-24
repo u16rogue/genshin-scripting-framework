@@ -38,6 +38,10 @@ utils::hook_base::hook_base(void *target_, void *hookfn_)
 utils::hook_base::~hook_base()
 {
 	this->unhook();
+}
+
+void utils::hook_base::internal_on_unhook()
+{
 	utils::hook_base::instances.remove(this);
 }
 
@@ -72,6 +76,8 @@ bool utils::hook_vmt::unhook()
 
 	*this->vfunc_entry = this->originalfn;
 
+	this->internal_on_unhook();
+
 	return true;
 }
 
@@ -94,6 +100,7 @@ bool utils::hook_wndproc::hook()
 
 bool utils::hook_wndproc::unhook()
 {
+	this->internal_on_unhook();
 	return SetWindowLongPtrW(reinterpret_cast<HWND>(this->window_handle), GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(this->originalfn)) != NULL;
 }
 
@@ -115,5 +122,6 @@ bool utils::hook_detour::hook()
 
 bool utils::hook_detour::unhook()
 {
+	this->internal_on_unhook();
 	return MH_DisableHook(this->target) == MH_OK;
 }
