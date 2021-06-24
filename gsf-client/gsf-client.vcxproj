@@ -126,6 +126,7 @@ echo #endif &gt;&gt; git_hash.h</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="gsf_client.cpp" />
     <ClCompile Include="helpers\dx11_dummy.cpp" />
     <ClCompile Include="hooks\hooks.cpp" />
     <ClCompile Include="hooks\Present.cpp" />
@@ -133,6 +134,7 @@ echo #endif &gt;&gt; git_hash.h</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h" />
+    <ClInclude Include="gsf_client.h" />
     <ClInclude Include="helpers\dx11_dummy.h" />
     <ClInclude Include="hooks\hooks.h" />
   </ItemGroup>

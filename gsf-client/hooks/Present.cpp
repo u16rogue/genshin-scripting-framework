@@ -7,6 +7,7 @@
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
 #include <imgui_internal.h>
+#include "../gsf_client.h"
 
 ID3D11DeviceContext    *dx_context            = nullptr;
 ID3D11RenderTargetView *dx_render_target_view = nullptr;
@@ -58,11 +59,7 @@ HRESULT __stdcall hk_Present(IDXGISwapChain *thisptr, UINT SyncInterval, UINT Fl
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 
-    if (ImGui::BeginMainMenuBar())
-    {
-        ImGui::Text("Genshin Scripting Framework");
-    }
-    ImGui::EndMainMenuBar();
+    gsf::render_imgui();
 
     ImGui::Render();
 
