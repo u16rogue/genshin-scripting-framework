@@ -2,6 +2,7 @@
 #include "global.h"
 #include "gsf_client.h"
 #include "hooks/hooks.h"
+#include <chaiscript.hpp>
 
 // TODO: add hooking helpers, clean up dllmain and separate everything neatly
 
