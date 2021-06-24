@@ -7,7 +7,7 @@
 
 [About](#About) • [Features](#Features) • [Scripting API Documentation](script_api.md) • [Change Logs](change_logs.md) • [Libraries](#Libraries) • [License](#License)
 
-![](client_ss.png)
+![](client_ss.jpg)
 
 ## Repository
 | Branch                                                                              | Status                                                                                                                                                                                                                                                                                 | Commit Count                                                                                                                  | Last Commit                                                                                           
