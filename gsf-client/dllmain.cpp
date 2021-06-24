@@ -15,9 +15,11 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 
         DisableThreadLibraryCalls(hmod);
         
-        if (!con::init()
+        if ((global::game_window = FindWindowW(L"UnityWndClass", L"Genshin Impact")) == nullptr
+        #ifdef _DEBUG
+        || !con::init()
         || !SetConsoleTitleW(utils::random_str().c_str())
-        || (global::game_window = FindWindowW(L"UnityWndClass", L"Genshin Impact")) == nullptr
+        #endif
         || !hooks::install()
         ) {
             FreeLibraryAndExitThread(hmod, 0);
