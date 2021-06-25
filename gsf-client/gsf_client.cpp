@@ -8,7 +8,7 @@
 #include <misc_utils.h>
 #include <console.h>
 
-bool gsf::load()
+bool gsf::init()
 {
     if ((global::game_window = FindWindowW(L"UnityWndClass", L"Genshin Impact")) == nullptr
     #ifdef _DEBUG
@@ -23,7 +23,7 @@ bool gsf::load()
 	return true;
 }
 
-bool gsf::unload()
+bool gsf::shutdown()
 {
     hooks::uninstall();
 
@@ -43,7 +43,7 @@ void gsf::render_imgui()
         if (ImGui::BeginMenu("Genshin Scripting Framework"))
         {
             if (ImGui::MenuItem("Unload"))
-                gsf::unload();
+                gsf::shutdown();
 
             ImGui::EndMenu();
         }

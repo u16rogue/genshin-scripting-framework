@@ -2,8 +2,8 @@
 
 namespace gsf
 {
-	bool load();
-	bool unload();
+	bool init();
+	bool shutdown();
 
 	void render_imgui();
 }

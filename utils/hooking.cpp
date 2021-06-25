@@ -37,7 +37,7 @@ utils::hook_base::hook_base(void *target_, void *hookfn_)
 
 utils::hook_base::~hook_base()
 {
-	this->unhook();
+	// this->unhook();
 }
 
 void utils::hook_base::internal_on_unhook()
