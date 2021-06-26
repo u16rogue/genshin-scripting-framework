@@ -24,9 +24,6 @@
     <ClCompile Include="hooks\Present.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="helpers\dx11_dummy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="hooks\hooks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -34,6 +31,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cs_script.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="features\fps_counter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,13 +44,13 @@
     <ClInclude Include="hooks\hooks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="helpers\dx11_dummy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="gsf_client.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cs_script.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="features\fps_counter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

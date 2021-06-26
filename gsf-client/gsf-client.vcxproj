@@ -129,17 +129,17 @@ echo #endif &gt;&gt; git_hash.h</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="features\fps_counter.cpp" />
     <ClCompile Include="gsf_client.cpp" />
-    <ClCompile Include="helpers\dx11_dummy.cpp" />
     <ClCompile Include="hooks\hooks.cpp" />
     <ClCompile Include="hooks\Present.cpp" />
     <ClCompile Include="hooks\WindowProc.cpp" />
     <ClCompile Include="cs_script.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="features\fps_counter.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="gsf_client.h" />
-    <ClInclude Include="helpers\dx11_dummy.h" />
     <ClInclude Include="hooks\hooks.h" />
     <ClInclude Include="cs_script.h" />
   </ItemGroup>

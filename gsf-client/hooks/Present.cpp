@@ -8,6 +8,7 @@
 #include <imgui_impl_win32.h>
 #include <imgui_internal.h>
 #include "../gsf_client.h"
+#include "../features/fps_counter.h"
 
 ID3D11DeviceContext    *dx_context            = nullptr;
 ID3D11RenderTargetView *dx_render_target_view = nullptr;
@@ -61,7 +62,11 @@ HRESULT __stdcall hk_Present(IDXGISwapChain *thisptr, UINT SyncInterval, UINT Fl
     dx_context->OMSetRenderTargets(1, &dx_render_target_view, nullptr);
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
-    return o_Present(thisptr, SyncInterval, Flags);
+    auto result = o_Present(thisptr, SyncInterval, Flags);
+
+    gsf::features::fps_counter::si_get().on_present();
+
+    return result;
 }
 
 std::unique_ptr<utils::hook_detour> hooks::ch_present = std::make_unique<utils::hook_detour>(hk_Present);

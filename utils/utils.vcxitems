@@ -29,6 +29,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)loadlib.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)macro.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)misc_utils.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)singleton.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)winapi_helper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)winternal.h" />
   </ItemGroup>

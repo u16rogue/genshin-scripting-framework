@@ -7,6 +7,7 @@
 #include "global.h"
 #include <misc_utils.h>
 #include <console.h>
+#include "features/fps_counter.h"
 
 bool gsf::init()
 {
@@ -39,7 +40,7 @@ bool gsf::shutdown()
 	return true;
 }
 
-char script_directory_buffer[MAX_PATH] = { '\0' };
+static char script_directory_buffer[MAX_PATH] = { '\0' };
 static bool gsf_script_manager_menu_visible = false;
 void gsf_script_manager_menu_render()
 {
@@ -50,7 +51,40 @@ void gsf_script_manager_menu_render()
         ImGui::SameLine();
         ImGui::InputText("##script_directory_buffer", script_directory_buffer, sizeof(script_directory_buffer));
         ImGui::SameLine();
-        ImGui::Button("Search");
+        if (ImGui::Button("Import"))
+        {
+
+        }
+    }
+    ImGui::End();
+}
+
+static bool gsf_about_menu_visible = true;
+void gsf_about_menu_render()
+{
+    if (ImGui::Begin("About", &gsf_about_menu_visible, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse))
+    {
+        ImGui::Text(
+            "Scripting API and Framework for Genshin Impact\n"
+            "\n"
+
+            "Build type: "
+            #if defined(_DEBUG) && !defined(NDEBUG)
+            "Debug"
+            #elif defined(NDEBUG) && !defined(_DEBUG)
+            "Release"
+            #else
+            "Unknown"
+            #endif
+            "\n"
+
+            "Build Date: " __DATE__ " " __TIME__ "\n"
+            "Git hash built @ " GSF_CLIENT_GIT_HASH "\n"
+            "\n"
+            "https://github.com/rogueeeee/genshin-scripting-framework\n"
+            "\n"
+            "This software is licensed under the GNU General Public License 3.0\n"
+        );
     }
     ImGui::End();
 }
@@ -59,8 +93,18 @@ void gsf::render_imgui()
 {
     if (ImGui::BeginMainMenuBar())
     {
-        if (ImGui::BeginMenu("Genshin Scripting Framework"))
+        if (ImGui::BeginMenu(
+            "Genshin Scripting Framework"
+            #if defined(_DEBUG) && !defined(_NDEBUG)
+            " [DEBUG]"
+            #endif
+        ))
         {
+
+            if (ImGui::MenuItem("Script Manager"))
+                gsf_script_manager_menu_visible = !gsf_script_manager_menu_visible;
+
+            ImGui::Checkbox("FPS Counter", &gsf::features::fps_counter::si_get().active);
 
             if (ImGui::BeginMenu("Theme"))
             {
@@ -76,44 +120,26 @@ void gsf::render_imgui()
                 ImGui::EndMenu();
             }
 
+            if (ImGui::MenuItem("About"))
+                gsf_about_menu_visible = !gsf_about_menu_visible;
+
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Shutdown (Delete)"))
+            if (ImGui::MenuItem("Shutdown (Delete key)"))
                 gsf::shutdown();
 
             ImGui::EndMenu();
         }
-        else if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip(
-                "Scripting API and Framework for Genshin Impact\n"
-                "\n"
 
-                "Build type: "
-                #if defined(_DEBUG) && !defined(NDEBUG)
-                "Debug"
-                #elif defined(NDEBUG) && !defined(_DEBUG)
-                "Release"
-                #else
-                "Unknown"
-                #endif
-                "\n"
-
-                "Build Date: " __DATE__ " " __TIME__ "\n"
-                "Git hash built @ " GSF_CLIENT_GIT_HASH "\n"
-                "\n"
-                "https://github.com/rogueeeee/genshin-scripting-framework\n"
-                "\n"
-                "This software is licensed under the GNU General Public License 3.0\n"
-            );
-        }
         ImGui::Separator();
 
-        if (ImGui::MenuItem("Script Manager"))
-            gsf_script_manager_menu_visible = !gsf_script_manager_menu_visible;
+        gsf::features::fps_counter::si_get().on_imgui_draw();
     }
     ImGui::EndMainMenuBar();
 
     if (gsf_script_manager_menu_visible)
         gsf_script_manager_menu_render();
+
+    if (gsf_about_menu_visible)
+        gsf_about_menu_render();
 }
