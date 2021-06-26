@@ -19,8 +19,12 @@ LRESULT CALLBACK hk_WindowProc(_In_ HWND hwnd, _In_ UINT uMsg, _In_ WPARAM wPara
     if (ImGui_ImplWin32_WndProcHandler(hwnd, uMsg, wParam, lParam))
         return TRUE;
     
+    static auto &imgui_io = ImGui::GetIO();
+    if (imgui_io.WantCaptureKeyboard || imgui_io.WantCaptureMouse)
+        return TRUE;
+
     if (uMsg == WM_KEYDOWN && wParam == VK_DELETE)
-        gsf::unload();
+        gsf::shutdown();
     
     static auto o_WindowProc = hooks::ch_wndproc->get_original<decltype(hk_WindowProc)>();
     return o_WindowProc(hwnd, uMsg, wParam, lParam);
