@@ -62,7 +62,7 @@ void gsf_script_manager_menu_render()
 static bool gsf_about_menu_visible = true;
 void gsf_about_menu_render()
 {
-    if (ImGui::Begin("About", &gsf_about_menu_visible, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse))
+    if (ImGui::Begin("About", &gsf_about_menu_visible, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_NoResize))
     {
         ImGui::Text(
             "Scripting API and Framework for Genshin Impact\n"
