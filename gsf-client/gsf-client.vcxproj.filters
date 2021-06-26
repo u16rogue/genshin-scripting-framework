@@ -33,6 +33,9 @@
     <ClCompile Include="gsf_client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cs_script.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gsf_client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cs_script.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

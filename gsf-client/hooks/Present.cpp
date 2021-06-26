@@ -33,11 +33,6 @@ HRESULT __stdcall hk_Present(IDXGISwapChain *thisptr, UINT SyncInterval, UINT Fl
         dx_device->CreateRenderTargetView(dx_backbuffer, nullptr, &dx_render_target_view);
         dx_backbuffer->Release();
 
-        DEBUG_WCOUT("\nhooks::hk_Present # initialization # Create ImGui context");
-        ImGui::CreateContext();
-        ImGuiIO &io = ImGui::GetIO();
-        ImGui::StyleColorsDark();
-
         DEBUG_WCOUT("\nhooks::hk_Present # initialization # Get swap chain description");
         DXGI_SWAP_CHAIN_DESC scd;
         thisptr->GetDesc(&scd);

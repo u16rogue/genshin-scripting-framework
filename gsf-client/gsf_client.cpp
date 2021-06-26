@@ -20,6 +20,9 @@ bool gsf::init()
         return false;
     }
 
+    ImGui::CreateContext();
+    ImGui::GetIO().IniFilename = nullptr;
+
 	return true;
 }
 
@@ -36,13 +39,46 @@ bool gsf::shutdown()
 	return true;
 }
 
+char script_directory_buffer[MAX_PATH] = { '\0' };
+static bool gsf_script_manager_menu_visible = false;
+void gsf_script_manager_menu_render()
+{
+    static bool __setwindowsizeonce = []() -> bool { ImGui::SetNextWindowSize({ 595, 426 }); return true; } (); // uhhh
+    if (ImGui::Begin("Script Manager", &gsf_script_manager_menu_visible, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse))
+    {
+        ImGui::Text("Script Directory:");
+        ImGui::SameLine();
+        ImGui::InputText("##script_directory_buffer", script_directory_buffer, sizeof(script_directory_buffer));
+        ImGui::SameLine();
+        ImGui::Button("Search");
+    }
+    ImGui::End();
+}
+
 void gsf::render_imgui()
 {
     if (ImGui::BeginMainMenuBar())
     {
         if (ImGui::BeginMenu("Genshin Scripting Framework"))
         {
-            if (ImGui::MenuItem("Unload"))
+
+            if (ImGui::BeginMenu("Theme"))
+            {
+                if (ImGui::MenuItem("Default"))
+                    ImGui::StyleColorsClassic();
+
+                if (ImGui::MenuItem("Light"))
+                    ImGui::StyleColorsLight();
+
+                if (ImGui::MenuItem("Dark"))
+                    ImGui::StyleColorsDark();
+
+                ImGui::EndMenu();
+            }
+
+            ImGui::Separator();
+
+            if (ImGui::MenuItem("Shutdown (Delete)"))
                 gsf::shutdown();
 
             ImGui::EndMenu();
@@ -71,6 +107,13 @@ void gsf::render_imgui()
                 "This software is licensed under the GNU General Public License 3.0\n"
             );
         }
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Script Manager"))
+            gsf_script_manager_menu_visible = !gsf_script_manager_menu_visible;
     }
     ImGui::EndMainMenuBar();
+
+    if (gsf_script_manager_menu_visible)
+        gsf_script_manager_menu_render();
 }

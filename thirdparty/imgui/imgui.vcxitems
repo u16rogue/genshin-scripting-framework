@@ -25,7 +25,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)imgui.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)imgui_demo.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)imgui_draw.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)imgui_impl_dx11.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)imgui_impl_win32.cpp" />

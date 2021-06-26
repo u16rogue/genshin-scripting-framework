@@ -2,9 +2,6 @@
 #include "global.h"
 #include "gsf_client.h"
 #include "hooks/hooks.h"
-#include <chaiscript.hpp>
-
-// TODO: add hooking helpers, clean up dllmain and separate everything neatly
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {

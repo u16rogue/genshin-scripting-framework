@@ -25,6 +25,8 @@ For more information regarding the chaiscript scripting language itself, a full 
 
 If you are looking for the Scripting API provided by GSF, checkout the [Scripting API Documentation](script_api.md).
 
+If you are using [Visual Studio Code](https://code.visualstudio.com/) a syntax highlighter for ChaiScript is available [here](https://marketplace.visualstudio.com/items?itemName=codehz.chaiscript-syntax).
+
 ## Getting Started
 
 ### Prerequisite

@@ -134,12 +134,14 @@ echo #endif &gt;&gt; git_hash.h</Command>
     <ClCompile Include="hooks\hooks.cpp" />
     <ClCompile Include="hooks\Present.cpp" />
     <ClCompile Include="hooks\WindowProc.cpp" />
+    <ClCompile Include="cs_script.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h" />
     <ClInclude Include="gsf_client.h" />
     <ClInclude Include="helpers\dx11_dummy.h" />
     <ClInclude Include="hooks\hooks.h" />
+    <ClInclude Include="cs_script.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
