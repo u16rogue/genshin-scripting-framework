@@ -137,6 +137,7 @@ echo #endif &gt;&gt; git_hash.h</Command>
     <ClCompile Include="hooks\WindowProc.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="definitions.h" />
     <ClInclude Include="features\fps_counter.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="gsf_client.h" />

@@ -1,18 +1,22 @@
 #include "gsf_client.h"
+#include "global.h"
 
 #include <Windows.h>
 #include <imgui.h>
-#include "git_hash.h"
-#include "hooks/hooks.h"
-#include "global.h"
+
 #include <misc_utils.h>
 #include <console.h>
+#include <macro.h>
+
+#include "git_hash.h"
+#include "definitions.h"
+
+#include "hooks/hooks.h"
 #include "features/fps_counter.h"
-#include <sol.hpp>
 
 bool gsf::init()
 {
-    if ((global::game_window = FindWindowW(L"UnityWndClass", L"Genshin Impact")) == nullptr
+    if ((global::game_window = FindWindowW(UTILS_A2W_MDEF(GSF_DEF_GAME_WND_CLASS), UTILS_A2W_MDEF(GSF_DEF_GAME_WND_TITLE))) == nullptr
     #ifdef _DEBUG
     || !con::init()
     || !SetConsoleTitleW(utils::random_str().c_str())

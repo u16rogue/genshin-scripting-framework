@@ -6,3 +6,6 @@
 #elif defined(NDEBUG) && !defined(_DEBUG)
 	#define DEBUG_WCOUT(x)
 #endif
+
+// Used for converting ascii constant strings defined as macros to unicode by appending an L (simple turns "hello" to L"hello" but works for macros too)
+#define UTILS_A2W_MDEF(m) L"" ## m
