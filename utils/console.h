@@ -44,6 +44,7 @@ namespace con
 	bool init();
 
 	bool is_focused();
+	bool is_allocated();
 
 	void print( void );
 	void print( con::color val );

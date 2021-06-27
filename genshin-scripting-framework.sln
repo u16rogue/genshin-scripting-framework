@@ -13,17 +13,21 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgui", "thirdparty\imgui\i
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "minhook", "thirdparty\minhook\minhook.vcxitems", "{2956636E-C74F-4083-9493-873DA4E44CBF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "chaiscript", "thirdparty\chaiscript\chaiscript.vcxitems", "{7F99B2F7-AA9F-4A4C-9572-A16D75148B99}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua", "thirdparty\lua\lua.vcxitems", "{8754E545-8E7D-4A4C-88D5-F5CC94A1BA04}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sol", "thirdparty\sol\sol.vcxitems", "{4C58FEAD-6F55-48E8-8B76-63337A70C361}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		thirdparty\minhook\minhook.vcxitems*{2956636e-c74f-4083-9493-873da4e44cbf}*SharedItemsImports = 9
-		thirdparty\chaiscript\chaiscript.vcxitems*{36330540-2fdf-46ac-acca-68fbed6692ac}*SharedItemsImports = 4
 		thirdparty\imgui\imgui.vcxitems*{36330540-2fdf-46ac-acca-68fbed6692ac}*SharedItemsImports = 4
+		thirdparty\lua\lua.vcxitems*{36330540-2fdf-46ac-acca-68fbed6692ac}*SharedItemsImports = 4
 		thirdparty\minhook\minhook.vcxitems*{36330540-2fdf-46ac-acca-68fbed6692ac}*SharedItemsImports = 4
+		thirdparty\sol\sol.vcxitems*{36330540-2fdf-46ac-acca-68fbed6692ac}*SharedItemsImports = 4
 		utils\utils.vcxitems*{36330540-2fdf-46ac-acca-68fbed6692ac}*SharedItemsImports = 4
+		thirdparty\sol\sol.vcxitems*{4c58fead-6f55-48e8-8b76-63337a70c361}*SharedItemsImports = 9
 		thirdparty\imgui\imgui.vcxitems*{69063e09-d8a8-4fa9-a306-69f5f615db38}*SharedItemsImports = 9
-		thirdparty\chaiscript\chaiscript.vcxitems*{7f99b2f7-aa9f-4a4c-9572-a16d75148b99}*SharedItemsImports = 9
+		thirdparty\lua\lua.vcxitems*{8754e545-8e7d-4a4c-88d5-f5cc94a1ba04}*SharedItemsImports = 9
 		utils\utils.vcxitems*{a2d09ac9-23c1-4b03-af08-2ef6798147e3}*SharedItemsImports = 9
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,7 +46,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{69063E09-D8A8-4FA9-A306-69F5F615DB38} = {924EAB71-3262-4B0E-97B2-0B475EB682D6}
 		{2956636E-C74F-4083-9493-873DA4E44CBF} = {924EAB71-3262-4B0E-97B2-0B475EB682D6}
-		{7F99B2F7-AA9F-4A4C-9572-A16D75148B99} = {924EAB71-3262-4B0E-97B2-0B475EB682D6}
+		{8754E545-8E7D-4A4C-88D5-F5CC94A1BA04} = {924EAB71-3262-4B0E-97B2-0B475EB682D6}
+		{4C58FEAD-6F55-48E8-8B76-63337A70C361} = {924EAB71-3262-4B0E-97B2-0B475EB682D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C27A1E17-7571-4265-B2E6-DCE1A9DAC05D}

@@ -39,7 +39,8 @@
     <Import Project="..\thirdparty\imgui\imgui.vcxitems" Label="Shared" />
     <Import Project="..\thirdparty\minhook\minhook.vcxitems" Label="Shared" />
     <Import Project="..\utils\utils.vcxitems" Label="Shared" />
-    <Import Project="..\thirdparty\chaiscript\chaiscript.vcxitems" Label="Shared" />
+    <Import Project="..\thirdparty\lua\lua.vcxitems" Label="Shared" />
+    <Import Project="..\thirdparty\sol\sol.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -134,14 +135,12 @@ echo #endif &gt;&gt; git_hash.h</Command>
     <ClCompile Include="hooks\hooks.cpp" />
     <ClCompile Include="hooks\Present.cpp" />
     <ClCompile Include="hooks\WindowProc.cpp" />
-    <ClCompile Include="cs_script.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="features\fps_counter.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="gsf_client.h" />
     <ClInclude Include="hooks\hooks.h" />
-    <ClInclude Include="cs_script.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

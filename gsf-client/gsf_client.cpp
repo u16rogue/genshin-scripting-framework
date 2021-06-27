@@ -8,6 +8,7 @@
 #include <misc_utils.h>
 #include <console.h>
 #include "features/fps_counter.h"
+#include <sol.hpp>
 
 bool gsf::init()
 {
@@ -30,6 +31,9 @@ bool gsf::init()
 bool gsf::shutdown()
 {
     hooks::uninstall();
+
+    if (con::is_allocated())
+        FreeConsole();
 
     if (HANDLE exit_thread = nullptr; exit_thread = CreateThread(nullptr, NULL, [](LPVOID arg0) -> DWORD
     {

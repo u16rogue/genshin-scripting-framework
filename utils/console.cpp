@@ -1,8 +1,9 @@
 #include <console.h>
 #include <Windows.h>
 
-static HANDLE stdout_handle = nullptr;
-static HWND   window_handle = nullptr;
+static HANDLE stdout_handle  = nullptr;
+static HWND   window_handle  = nullptr;
+static bool   flag_allocated = false;
 
 con::color::color( con::colors foreground, con::colors background )
 	: fg_color(static_cast<std::uint8_t>(foreground)), bg_color(static_cast<std::uint8_t>(background))
@@ -17,6 +18,12 @@ bool con::init()
 		_wfreopen_s( &file_ptr, L"CONOUT$", L"w", stdout );
 		_wfreopen_s( &file_ptr, L"CONOUT$", L"w", stderr );
 		_wfreopen_s( &file_ptr, L"CONIN$",  L"r", stdin  );
+
+		flag_allocated = true;
+	}
+	else
+	{
+		flag_allocated = false;
 	}
 
 	window_handle = GetConsoleWindow();
@@ -34,6 +41,11 @@ bool con::init()
 bool con::is_focused()
 {
 	return window_handle == GetForegroundWindow();
+}
+
+bool con::is_allocated()
+{
+	return flag_allocated;
 }
 
 void con::print( void )
