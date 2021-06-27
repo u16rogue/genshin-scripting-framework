@@ -47,5 +47,8 @@
     <ClInclude Include="features\fps_counter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="script.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
