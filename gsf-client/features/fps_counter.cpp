@@ -4,31 +4,48 @@
 #include <imgui.h>
 #include <string>
 
+static constexpr int total_delta = 1000; // 1000ms = 1s
+
+bool active = true;
+
+std::size_t current_accumilation = 0;
+std::size_t total_accumilation = 0;
+std::size_t last_accumilation = 0;
+std::size_t next_tick_accumilate = 0;
+
+std::string fps_str;
+
+// there's really no point of doing this abstraction, yet again i dw use extern or the new fancy inline on the header.
+bool &gsf::features::fps_counter::toggle()
+{
+	return active;
+}
+
 void gsf::features::fps_counter::on_present()
 {
-	if (!this->active)
+	if (!active)
 		return;
 
 	auto current_tick = GetTickCount64();
 
-	if (current_tick > this->next_tick_accumilate)
+	if (current_tick > next_tick_accumilate)
 	{
-		this->next_tick_accumilate = current_tick + fps_counter::total_delta;
-		this->last_accumilation = this->total_accumilation;
-		this->total_accumilation = this->current_accumilation;
-		this->current_accumilation = 0;
+		next_tick_accumilate = current_tick + total_delta;
+		last_accumilation = total_accumilation;
+		total_accumilation = current_accumilation;
+		current_accumilation = 0;
 	}
 
-	++this->current_accumilation;
+	++current_accumilation;
 }
 
 void gsf::features::fps_counter::on_imgui_draw()
 {
-	if (!this->active)
+	if (!active)
 		return;
 
-	if (this->total_accumilation != this->last_accumilation)
-		this->fps_str = "FPS: " + std::to_string(this->total_accumilation);
+	if (total_accumilation != last_accumilation)
+		fps_str = "FPS: " + std::to_string(total_accumilation);
 
-	ImGui::Text(this->fps_str.c_str());
+	ImGui::Text(fps_str.c_str());
 }

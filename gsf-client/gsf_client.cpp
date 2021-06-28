@@ -17,10 +17,8 @@
 bool gsf::init()
 {
     if ((global::game_window = FindWindowW(UTILS_A2W_MDEF(GSF_DEF_GAME_WND_CLASS), UTILS_A2W_MDEF(GSF_DEF_GAME_WND_TITLE))) == nullptr
-    #ifdef _DEBUG
     || !con::init()
     || !SetConsoleTitleW(utils::random_str().c_str())
-    #endif
     || !hooks::install()
     ) {
         return false;
@@ -112,7 +110,7 @@ void gsf::render_imgui()
             if (ImGui::MenuItem("Script Manager"))
                 gsf_script_manager_menu_visible = !gsf_script_manager_menu_visible;
 
-            ImGui::Checkbox("FPS Counter", &gsf::features::fps_counter::si_get().active);
+            ImGui::Checkbox("FPS Counter", &gsf::features::fps_counter::toggle());
 
             if (ImGui::BeginMenu("Theme"))
             {
@@ -141,7 +139,7 @@ void gsf::render_imgui()
 
         ImGui::Separator();
 
-        gsf::features::fps_counter::si_get().on_imgui_draw();
+        gsf::features::fps_counter::on_imgui_draw();
     }
     ImGui::EndMainMenuBar();
 

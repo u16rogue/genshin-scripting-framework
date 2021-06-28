@@ -64,7 +64,7 @@ HRESULT __stdcall hk_Present(IDXGISwapChain *thisptr, UINT SyncInterval, UINT Fl
 
     auto result = o_Present(thisptr, SyncInterval, Flags);
 
-    gsf::features::fps_counter::si_get().on_present();
+    gsf::features::fps_counter::on_present();
 
     return result;
 }
