@@ -39,7 +39,7 @@ void gsf::features::fps_counter::on_present()
 	++current_accumilation;
 }
 
-void gsf::features::fps_counter::on_imgui_draw()
+void gsf::features::fps_counter::on_gsf_draw_menubaritems()
 {
 	if (!active)
 		return;

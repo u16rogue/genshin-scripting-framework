@@ -11,14 +11,17 @@
 #include "git_hash.h"
 #include "definitions.h"
 
+#include "script_manager.h"
 #include "hooks/hooks.h"
 #include "features/fps_counter.h"
 
 bool gsf::init()
 {
     if ((global::game_window = FindWindowW(UTILS_A2W_MDEF(GSF_DEF_GAME_WND_CLASS), UTILS_A2W_MDEF(GSF_DEF_GAME_WND_TITLE))) == nullptr
+    #ifdef _DEBUG 
     || !con::init()
     || !SetConsoleTitleW(utils::random_str().c_str())
+    #endif
     || !hooks::install()
     ) {
         return false;
@@ -46,27 +49,8 @@ bool gsf::shutdown()
 	return true;
 }
 
-static char script_directory_buffer[MAX_PATH] = { '\0' };
-static bool gsf_script_manager_menu_visible = false;
-void gsf_script_manager_menu_render()
-{
-    static bool __setwindowsizeonce = []() -> bool { ImGui::SetNextWindowSize({ 595, 426 }); return true; } (); // uhhh
-    if (ImGui::Begin("Script Manager", &gsf_script_manager_menu_visible, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse))
-    {
-        ImGui::Text("Script Directory:");
-        ImGui::SameLine();
-        ImGui::InputText("##script_directory_buffer", script_directory_buffer, sizeof(script_directory_buffer));
-        ImGui::SameLine();
-        if (ImGui::Button("Import"))
-        {
-
-        }
-    }
-    ImGui::End();
-}
-
 static bool gsf_about_menu_visible = true;
-void gsf_about_menu_render()
+inline void gsf_about_on_imgui_draw()
 {
     if (ImGui::Begin("About", &gsf_about_menu_visible, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_NoResize))
     {
@@ -95,6 +79,44 @@ void gsf_about_menu_render()
     ImGui::End();
 }
 
+inline void gsf_draw_dropmenu()
+{
+    if (ImGui::MenuItem("Script Manager"))
+    {
+        bool &toggle = gsf::script_manager::toggle();
+        toggle = !toggle;
+    }
+
+    ImGui::Checkbox("FPS Counter", &gsf::features::fps_counter::toggle());
+
+    if (ImGui::BeginMenu("Theme"))
+    {
+        if (ImGui::MenuItem("Default"))
+            ImGui::StyleColorsClassic();
+
+        if (ImGui::MenuItem("Light"))
+            ImGui::StyleColorsLight();
+
+        if (ImGui::MenuItem("Dark"))
+            ImGui::StyleColorsDark();
+
+        ImGui::EndMenu();
+    }
+
+    if (ImGui::MenuItem("About"))
+        gsf_about_menu_visible = !gsf_about_menu_visible;
+
+    ImGui::Separator();
+
+    if (ImGui::MenuItem("Shutdown (Delete key)"))
+        gsf::shutdown();
+}
+
+inline void gsf_draw_menubaritems()
+{
+    gsf::features::fps_counter::on_gsf_draw_menubaritems();
+}
+
 void gsf::render_imgui()
 {
     if (ImGui::BeginMainMenuBar())
@@ -106,46 +128,17 @@ void gsf::render_imgui()
             #endif
         ))
         {
-
-            if (ImGui::MenuItem("Script Manager"))
-                gsf_script_manager_menu_visible = !gsf_script_manager_menu_visible;
-
-            ImGui::Checkbox("FPS Counter", &gsf::features::fps_counter::toggle());
-
-            if (ImGui::BeginMenu("Theme"))
-            {
-                if (ImGui::MenuItem("Default"))
-                    ImGui::StyleColorsClassic();
-
-                if (ImGui::MenuItem("Light"))
-                    ImGui::StyleColorsLight();
-
-                if (ImGui::MenuItem("Dark"))
-                    ImGui::StyleColorsDark();
-
-                ImGui::EndMenu();
-            }
-
-            if (ImGui::MenuItem("About"))
-                gsf_about_menu_visible = !gsf_about_menu_visible;
-
-            ImGui::Separator();
-
-            if (ImGui::MenuItem("Shutdown (Delete key)"))
-                gsf::shutdown();
-
+            gsf_draw_dropmenu();
             ImGui::EndMenu();
         }
 
         ImGui::Separator();
-
-        gsf::features::fps_counter::on_imgui_draw();
+        gsf_draw_menubaritems();
     }
     ImGui::EndMainMenuBar();
 
-    if (gsf_script_manager_menu_visible)
-        gsf_script_manager_menu_render();
+    gsf::script_manager::on_imgui_draw();
 
     if (gsf_about_menu_visible)
-        gsf_about_menu_render();
+        gsf_about_on_imgui_draw();
 }

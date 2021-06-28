@@ -9,5 +9,5 @@ namespace gsf::features::fps_counter
 	bool &toggle();
 
 	void on_present();
-	void on_imgui_draw();
+	void on_gsf_draw_menubaritems();
 }

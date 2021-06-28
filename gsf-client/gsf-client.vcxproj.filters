@@ -33,6 +33,12 @@
     <ClCompile Include="features\fps_counter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="script.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="script_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
@@ -51,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="definitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="script_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
