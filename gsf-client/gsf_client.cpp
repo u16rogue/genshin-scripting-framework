@@ -35,13 +35,13 @@ bool gsf::init()
 
 bool gsf::shutdown()
 {
-    hooks::uninstall();
-
-    if (con::is_allocated())
-        FreeConsole();
-
     if (HANDLE exit_thread = nullptr; exit_thread = CreateThread(nullptr, NULL, [](LPVOID arg0) -> DWORD
     {
+        hooks::uninstall();
+
+        if (con::is_allocated())
+            FreeConsole();
+
         FreeLibraryAndExitThread(reinterpret_cast<HMODULE>(global::dll_handle), 0);
         return 0;
     }, nullptr, NULL, nullptr)) { CloseHandle(exit_thread); }
@@ -83,11 +83,11 @@ inline void gsf_draw_dropmenu()
 {
     if (ImGui::MenuItem("Script Manager"))
     {
-        bool &toggle = gsf::script_manager::toggle();
+        bool &toggle = gsf::script_manager::get_visible_flag();
         toggle = !toggle;
     }
 
-    ImGui::Checkbox("FPS Counter", &gsf::features::fps_counter::toggle());
+    ImGui::Checkbox("FPS Counter", &gsf::features::fps_counter::get_active_flag());
 
     if (ImGui::BeginMenu("Theme"))
     {

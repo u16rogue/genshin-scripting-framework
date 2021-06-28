@@ -16,7 +16,7 @@ std::size_t next_tick_accumilate = 0;
 std::string fps_str;
 
 // there's really no point of doing this abstraction, yet again i dw use extern or the new fancy inline on the header.
-bool &gsf::features::fps_counter::toggle()
+bool &gsf::features::fps_counter::get_active_flag()
 {
 	return active;
 }

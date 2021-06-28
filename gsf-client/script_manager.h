@@ -2,6 +2,6 @@
 
 namespace gsf::script_manager
 {
-	bool &toggle();
+	bool &get_visible_flag();
 	void on_imgui_draw();
 }

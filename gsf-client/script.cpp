@@ -12,14 +12,14 @@ bool gsf::script::load()
 {
 	if (!this->script_file_exists())
 	{
-		std::cout << "\nFile " << this->filepath << " does not exist";
+		// std::cout << "\nFile " << this->filepath << " does not exist";
 		return false;
 	}
 
 	this->lua_state = std::make_unique<sol::state>();
 	if (!this->lua_state)
 	{
-		std::cout << "\nFailed to create lua state for script: " << this->filepath;
+		// std::cout << "\nFailed to create lua state for script: " << this->filepath;
 		return false;
 	}
 
@@ -27,8 +27,7 @@ bool gsf::script::load()
 
 	if (!load_res.valid())
 	{
-		sol::error load_err = load_res;
-		std::cout << "\nFailed to load lua script from: " << this->filepath << "\n\nReason: " << load_err.what();
+		// sol::error load_err = load_res;
 		this->lua_state.reset();
 		return false;
 	}
@@ -47,7 +46,7 @@ bool gsf::script::script_file_exists()
 	return std::filesystem::exists(this->filepath);
 }
 
-std::string_view gsf::script::get_filepath()
+const std::string_view gsf::script::get_filepath()
 {
 	return this->filepath;
 }

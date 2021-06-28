@@ -19,12 +19,12 @@ namespace gsf
 
 		bool script_file_exists();
 
-		std::string_view get_filepath();
+		const std::string_view get_filepath();
 
 		operator bool() const;
 
 	private:
-		std::string filepath;
+		const std::string filepath;
 		std::unique_ptr<sol::state> lua_state;
 	};
 }
