@@ -18,10 +18,9 @@ namespace utils
 		float get();
 
 	private:
-		float fadeout_duration = 0.f;
-		float duration         = 0.f;
-		
-		std::uint64_t duration_absolute = 0;
+		float fadeout_duration  = 0.f;
+		float duration          = 0.f;
+		float duration_absolute = 0;
 	};
 
 }

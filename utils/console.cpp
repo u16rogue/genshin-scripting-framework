@@ -48,6 +48,11 @@ bool con::is_allocated()
 	return flag_allocated;
 }
 
+void *con::get_window()
+{
+	return window_handle;
+}
+
 void con::print( void )
 {
 	con::print( con::color() );

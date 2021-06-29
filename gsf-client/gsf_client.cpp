@@ -42,6 +42,10 @@ bool gsf::shutdown()
         if (con::is_allocated())
             FreeConsole();
 
+        HWND con_wnd = reinterpret_cast<HWND>(con::get_window());
+        if (con_wnd)
+            DestroyWindow(con_wnd); // TODO: use post message
+
         FreeLibraryAndExitThread(reinterpret_cast<HMODULE>(global::dll_handle), 0);
         return 0;
     }, nullptr, NULL, nullptr)) { CloseHandle(exit_thread); }
@@ -49,7 +53,7 @@ bool gsf::shutdown()
 	return true;
 }
 
-static bool gsf_about_menu_visible = true;
+static bool gsf_about_menu_visible = false;
 inline void gsf_about_on_imgui_draw()
 {
     if (ImGui::Begin("About", &gsf_about_menu_visible, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_NoResize))

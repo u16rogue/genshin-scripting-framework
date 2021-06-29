@@ -21,6 +21,8 @@ std::wstring utils::random_str(int length, std::wstring_view char_set)
 	return result;
 }
 
+#pragma warning (disable: 28159)
+
 utils::fader_float::fader_float(float fadeout_duration_, float duration_)
 	: fadeout_duration(fadeout_duration_), duration(duration_)
 {
@@ -31,10 +33,12 @@ void utils::fader_float::mark(float duration_)
 	if (duration_)
 		this->duration = duration_;
 
-	this->duration_absolute = GetTickCount64() + this->duration + this->fadeout_duration;
+	this->duration_absolute = static_cast<float>(GetTickCount()) + this->duration + this->fadeout_duration;
 }
 
 float utils::fader_float::get()
 {
-	return static_cast<float>(this->duration_absolute - GetTickCount64()) / this->fadeout_duration;
+	return static_cast<float>(this->duration_absolute - GetTickCount()) / this->fadeout_duration;
 }
+
+#pragma warning (default: 28159)

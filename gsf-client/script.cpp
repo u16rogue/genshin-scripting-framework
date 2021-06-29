@@ -3,9 +3,12 @@
 #include <Windows.h>
 #include <filesystem>
 
+#include <macro.h>
+
 gsf::script::script(std::string_view filepath_)
 	: filepath(filepath_)
 {
+	DEBUG_COUT("\nConstructed gsf::script object # " << this->filepath << " # " << filepath_);
 }
 
 bool gsf::script::load()
