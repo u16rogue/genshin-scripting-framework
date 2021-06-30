@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <misc_utils.h>
 #include <macro.h>
+#include "helpers/imgui_prompts.h"
 
 std::vector<gsf::script> script_instances;
 bool                     visible          = false;
@@ -35,77 +36,50 @@ void show_error(const char *msg)
     error_message_visible = true;
 }
 
-enum class import_mode_e
-{
-    UNKNOWN,
-    FILE,
-    FOLDER,
-    LINK
-};
-
-bool import_prompt_req_open = false;
-import_mode_e import_mode = import_mode_e::UNKNOWN;
-
-void import_script_prompt(import_mode_e mode_ = import_mode_e::UNKNOWN)
-{
-    if (mode_ == import_mode_e::UNKNOWN)
-        return;
-    
-    import_mode = mode_;
-    import_prompt_req_open = true;
-}
-
 void import_script_draw()
 {
-    if (import_prompt_req_open)
+    static char buffer_import[MAX_PATH] = { '\0' };
+    
+    ImGui::Text("Script Path:");
+    ImGui::SameLine();
+    ImGui::InputText("##script_import_buffer", buffer_import, sizeof(buffer_import));
+    ImGui::SameLine();
+    if (ImGui::Button("Import"))
     {
-        ImGui::OpenPopup(__IMPORT_SCRIPT_NAME);
-        import_prompt_req_open = false;
+        if (std::filesystem::exists(buffer_import))
+        {
+            script_instances.emplace_back(buffer_import);
+            std::memset(buffer_import, '\0', sizeof(buffer_import));
+            ImGui::CloseCurrentPopup();
+        }
+        else
+        {
+            show_error("File not found!");
+        }
     }
     
-    if (ImGui::BeginPopupModal(__IMPORT_SCRIPT_NAME, nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_AlwaysAutoResize))
+    ImGui::SameLine();
+    
+    if (ImGui::Button("Cancel"))
+        ImGui::CloseCurrentPopup();
+    
+    if (error_message_visible)
     {
-        static char buffer_import[MAX_PATH] = { '\0' };
-
-        ImGui::Text("Script Path:");
-        ImGui::SameLine();
-        ImGui::InputText("##script_import_buffer", buffer_import, sizeof(buffer_import));
-        ImGui::SameLine();
-        if (ImGui::Button("Import"))
+        float errmsg_alpha_scale = error_message_fader.get();
+        if (errmsg_alpha_scale > 0.f)
         {
-            if (std::filesystem::exists(buffer_import))
-            {
-                script_instances.emplace_back(buffer_import);
-            }
-            else
-            {
-                show_error("File not found!");
-            }
+            ImGui::PushStyleColor(ImGuiCol_::ImGuiCol_Text, ImVec4{ 1.f, 0.f, 0.f, errmsg_alpha_scale });
+            ImGui::TextWrapped(error_message);
+            ImGui::PopStyleColor();
         }
-        
-        ImGui::SameLine();
-
-        if (ImGui::Button("Cancel"))
-            ImGui::CloseCurrentPopup();
-
-        if (error_message_visible)
+        else
         {
-            float errmsg_alpha_scale = error_message_fader.get();
-            if (errmsg_alpha_scale > 0.f)
-            {
-                ImGui::PushStyleColor(ImGuiCol_::ImGuiCol_Text, ImVec4{ 1.f, 0.f, 0.f, errmsg_alpha_scale });
-                ImGui::TextWrapped(error_message);
-                ImGui::PopStyleColor();
-            }
-            else
-            {
-                error_message_visible = false;
-            }
+            error_message_visible = false;
         }
-
-        ImGui::EndPopup();
     }
 }
+
+helpers::imgui_popup_modal import_prompt = helpers::imgui_popup_modal(__IMPORT_SCRIPT_NAME, &import_script_draw);
 
 #pragma endregion
 
@@ -122,14 +96,12 @@ void gsf::script_manager::on_imgui_draw()
             if (ImGui::BeginMenu("Import"))
             {
                 if (ImGui::MenuItem("Add File"))
-                    import_script_prompt(import_mode_e::FILE);
+                    import_prompt.show();
 
                 #ifdef _DEBUG
-                if (ImGui::MenuItem("Add Folder"))
-                    import_script_prompt(import_mode_e::FOLDER);
+                if (ImGui::MenuItem("Add Folder")) {}
 
-                if (ImGui::MenuItem("Link"))
-                    import_script_prompt(import_mode_e::LINK);
+                if (ImGui::MenuItem("Link")) {}
                 #endif
 
                 ImGui::EndMenu();
@@ -148,8 +120,6 @@ void gsf::script_manager::on_imgui_draw()
 
         for (gsf::script &inst : script_instances)
             ImGui::Text(inst.get_filepath().data());
-
-        import_script_draw();
     }
     ImGui::End();
 }

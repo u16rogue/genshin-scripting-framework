@@ -132,6 +132,7 @@ echo #endif &gt;&gt; git_hash.h</Command>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="features\fps_counter.cpp" />
     <ClCompile Include="gsf_client.cpp" />
+    <ClCompile Include="helpers\imgui_prompts.cpp" />
     <ClCompile Include="hooks\hooks.cpp" />
     <ClCompile Include="hooks\Present.cpp" />
     <ClCompile Include="hooks\WindowProc.cpp" />
@@ -143,6 +144,7 @@ echo #endif &gt;&gt; git_hash.h</Command>
     <ClInclude Include="features\fps_counter.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="gsf_client.h" />
+    <ClInclude Include="helpers\imgui_prompts.h" />
     <ClInclude Include="hooks\hooks.h" />
     <ClInclude Include="script.h" />
     <ClInclude Include="script_manager.h" />

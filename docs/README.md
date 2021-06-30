@@ -44,9 +44,12 @@ This requires [Git](https://git-scm.com/). If you don't have Git yet you can [do
     ```
 
 ### Compiling
-The project is ready to compile immediately, you can proceed by opening the solution file, setting up the configuration, and start building.
+The project is ready to compile immediately, you can proceed by opening the solution file, set up the configuration (Release x64), and start building.
 
 *If you get an error regarding a missing macro (**GSF_CLIENT_GIT_HASH**) and a header file (**git_hash.h**), simply build the project once and it should fix the problem. The macro and header file is automatically generated pre-build.*
+
+### Output
+The built binaries are located at `build\Release_x64` for release builds and `build\Debug_x64` debug builds.
 
 ## Libraries
 * [MinHook](https://github.com/TsudaKageyu/minhook) 1.3.3 - TsudaKageyu

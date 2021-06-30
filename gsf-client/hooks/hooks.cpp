@@ -3,6 +3,8 @@
 #include <d3d11.h>
 #include <MinHook.h>
 #include <vector>
+#include <macro.h>
+#include "../definitions.h"
 
 bool hooks::install()
 {
@@ -11,8 +13,7 @@ bool hooks::install()
 
 	// WindowProc
 	hooks::ch_wndproc->init(global::game_window);
-
-	// IDXGISwapChain::Present
+    
 	ID3D11Device   *dummy_device_ptr;
 	IDXGISwapChain *dummy_swapchain_ptr;
 
@@ -47,10 +48,13 @@ bool hooks::install()
         return false;
     }
     
-	hooks::ch_present->init(reinterpret_cast<void ***>(dummy_swapchain_ptr)[0][8]);
+    void **swapchain_vtable = *reinterpret_cast<void ***>(dummy_swapchain_ptr);
+
+    // IDXGISwapChain::Present
+	hooks::ch_present->init(GET_VFUNC_FROM_VTABLE_BY_IDX(swapchain_vtable, gsf::def::vtidx::IDXGISwapChain::Present));
+
 	dummy_swapchain_ptr->Release();
 	dummy_device_ptr->Release();
-
 
 	// Hook all initialized hook instances
 	for (auto &hook_instance : utils::hook_base::instances)

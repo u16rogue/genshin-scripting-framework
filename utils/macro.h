@@ -11,3 +11,5 @@
 
 // Used for converting ascii constant strings defined as macros to unicode by appending an L (simple turns "hello" to L"hello" but works for macros too)
 #define UTILS_A2W_MDEF(m) L"" ## m
+
+#define GET_VFUNC_FROM_VTABLE_BY_IDX(table, index) reinterpret_cast<void**>(table)[static_cast<int>(index)]

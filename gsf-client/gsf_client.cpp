@@ -12,6 +12,7 @@
 #include "definitions.h"
 
 #include "script_manager.h"
+#include "helpers/imgui_prompts.h"
 #include "hooks/hooks.h"
 #include "features/fps_counter.h"
 
@@ -145,4 +146,7 @@ void gsf::render_imgui()
 
     if (gsf_about_menu_visible)
         gsf_about_on_imgui_draw();
+    
+    for (helpers::imgui_popup_modal *&popup_instance : helpers::imgui_popup_modal::instances)
+        popup_instance->__on_imgui_draw();
 }
