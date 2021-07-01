@@ -14,14 +14,17 @@ namespace helpers
 
 		void show();
 		
-		void __on_imgui_draw(); // FOR IMPLEMENTATION USE ONLY
-
 	private:
 		bool prompt_requested = false;
 		std::string str;
 		callback_t callback;
 
-	public:
+	private:
 		inline static std::vector<helpers::imgui_popup_modal *> instances;
+
+	public:
+		// Used to draw the popup modal instances, call on imgui draw
+		// This is static and must be called as is, this implements all the registered instances of a popup modal
+		static void on_imgui_draw();
 	};
 }

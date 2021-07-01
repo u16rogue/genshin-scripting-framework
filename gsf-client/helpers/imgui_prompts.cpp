@@ -11,17 +11,20 @@ void helpers::imgui_popup_modal::show()
 	this->prompt_requested = true;
 }
 
-void helpers::imgui_popup_modal::__on_imgui_draw()
+void helpers::imgui_popup_modal::on_imgui_draw()
 {
-	if (this->prompt_requested)
+	for (helpers::imgui_popup_modal *&instance : helpers::imgui_popup_modal::instances)
 	{
-		ImGui::OpenPopup(this->str.c_str());
-		this->prompt_requested = false;
-	}
+		if (instance->prompt_requested)
+		{
+			ImGui::OpenPopup(instance->str.c_str());
+			instance->prompt_requested = false;
+		}
 
-	if (ImGui::BeginPopupModal(this->str.c_str(), nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove))
-	{
-		this->callback();
-		ImGui::EndPopup();
+		if (ImGui::BeginPopupModal(instance->str.c_str(), nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove))
+		{
+			instance->callback();
+			ImGui::EndPopup();
+		}
 	}
 }

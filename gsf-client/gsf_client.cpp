@@ -147,6 +147,5 @@ void gsf::render_imgui()
     if (gsf_about_menu_visible)
         gsf_about_on_imgui_draw();
     
-    for (helpers::imgui_popup_modal *&popup_instance : helpers::imgui_popup_modal::instances)
-        popup_instance->__on_imgui_draw();
+    helpers::imgui_popup_modal::on_imgui_draw();
 }
