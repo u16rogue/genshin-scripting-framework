@@ -27,6 +27,7 @@ Provides a scripting framework and API for the game [Genshin Impact](https://gen
 * Windows
 * [DirectX SDK](https://www.microsoft.com/en-au/download/details.aspx?id=6812)
 * [Visual Studio 2019](https://visualstudio.microsoft.com/)
+* [Git](https://git-scm.com/downloads)
 
 ### Cloning
 This requires [Git](https://git-scm.com/). If you don't have Git yet you can [download it here](https://git-scm.com/downloads).
@@ -37,7 +38,7 @@ This requires [Git](https://git-scm.com/). If you don't have Git yet you can [do
     git clone https://github.com/rogueeeee/genshin-scripting-framework.git
     ```
 
-* If you only want to compile and use GSF you can download the repository as a [zip](https://github.com/rogueeeee/genshin-scripting-framework/archive/refs/heads/master.zip) directly or still use git by:
+* If you only want to compile and use GSF:
 
     ```sh
     git clone --depth 1 https://github.com/rogueeeee/genshin-scripting-framework.git
