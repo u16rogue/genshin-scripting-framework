@@ -25,6 +25,6 @@ namespace gsf
 
 	private:
 		const std::string filepath;
-		std::unique_ptr<sol::state> lua_state;
+		std::unique_ptr<sol::state> lua_state = nullptr;
 	};
 }

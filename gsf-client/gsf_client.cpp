@@ -8,7 +8,7 @@
 #include <console.h>
 #include <macro.h>
 
-#include "git_hash.h"
+#include "git_info.h"
 #include "definitions.h"
 
 #include "script_manager.h"
@@ -74,7 +74,7 @@ inline void gsf_about_on_imgui_draw()
             "\n"
 
             "Build Date: " __DATE__ " " __TIME__ "\n"
-            "Git hash built @ " GSF_CLIENT_GIT_HASH "\n"
+            "Git info: " GIT_HASH " @ " GIT_BRANCH "\n"
             "\n"
             "https://github.com/rogueeeee/genshin-scripting-framework\n"
             "\n"

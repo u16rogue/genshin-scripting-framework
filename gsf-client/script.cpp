@@ -14,32 +14,30 @@ gsf::script::script(std::string_view filepath_)
 bool gsf::script::load()
 {
 	if (!this->script_file_exists())
-	{
-		// std::cout << "\nFile " << this->filepath << " does not exist";
 		return false;
-	}
 
-	this->lua_state = std::make_unique<sol::state>();
-	if (!this->lua_state)
-	{
-		// std::cout << "\nFailed to create lua state for script: " << this->filepath;
+	// We use a std::unique_ptr in the stack so incase of failure we can just immediately return and automatically destroy the lua state
+	// and this->lua_state will remain invalid (we use the bool operator to validate a script instance which internally just checks if a lua state exists)
+	std::unique_ptr<sol::state> temp_lua_state = std::make_unique<sol::state>();
+	if (!temp_lua_state)
 		return false;
-	}
 
-	auto load_res = this->lua_state->script_file(this->filepath);
+	auto load_res = temp_lua_state->script_file(this->filepath);
 
 	if (!load_res.valid())
 	{
-		// sol::error load_err = load_res;
-		this->lua_state.reset();
+		sol::error err = load_res;
+		DEBUG_COUT("\nLua load failure from: " << this->filepath << "\nReason: " << err.what());
 		return false;
 	}
 
+	this->lua_state = std::move(temp_lua_state); // upon success we can move the unique_ptr from the stack to the class
 	return true;
 }
 
 bool gsf::script::unload()
 {
+	DEBUG_COUT("\nUnloaded script: " << this->filepath);
 	this->lua_state.reset();
 	return true;
 }

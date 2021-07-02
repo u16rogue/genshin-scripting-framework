@@ -42,9 +42,9 @@ void import_script_draw()
     
     ImGui::Text("Script Path:");
     ImGui::SameLine();
-    ImGui::InputText("##script_import_buffer", buffer_import, sizeof(buffer_import));
+    bool input_enter_keyed = ImGui::InputText("##script_import_buffer", buffer_import, sizeof(buffer_import), ImGuiInputTextFlags_::ImGuiInputTextFlags_EnterReturnsTrue);
     ImGui::SameLine();
-    if (ImGui::Button("Import"))
+    if (ImGui::Button("Import") || input_enter_keyed)
     {
         if (std::filesystem::exists(buffer_import))
         {
@@ -83,6 +83,37 @@ helpers::imgui_popup_modal import_prompt = helpers::imgui_popup_modal(__IMPORT_S
 
 #pragma endregion
 
+void imported_script_list_draw()
+{
+    for (gsf::script &inst : script_instances)
+    {
+        ImGui::Text("File:");
+        ImGui::SameLine();
+
+        static ImVec4 file_color_loaded   { 0.f, 1.f, 0.f, 1.f };
+        static ImVec4 file_color_unloaded { 1.f, 0.f, 0.f, 1.f };
+
+        ImGui::TextColored(inst ? file_color_loaded : file_color_unloaded, inst.get_filepath().data()); // TODO: change color based of status
+        
+        if (ImGui::Button(inst ? "Unload" : "Load"))
+        {
+            if (!inst)
+                inst.load();
+            else
+                inst.unload();
+        }
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("Remove"))
+        {
+
+        }
+
+        ImGui::Separator();
+    }
+}
+
 void gsf::script_manager::on_imgui_draw()
 {
     if (!visible)
@@ -117,9 +148,8 @@ void gsf::script_manager::on_imgui_draw()
 
             ImGui::EndMenuBar();
         }
-
-        for (gsf::script &inst : script_instances)
-            ImGui::Text(inst.get_filepath().data());
+    
+        imported_script_list_draw();
     }
     ImGui::End();
 }

@@ -10,3 +10,4 @@ obj/
 *.pdb
 gsf-client/git_hash.h
 cool.txt
+gsf-client/git_info.h
