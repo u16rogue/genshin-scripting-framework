@@ -13,6 +13,8 @@ gsf::script::script(std::string_view filepath_)
 
 bool gsf::script::load()
 {
+	this->logs.clear();
+
 	if (!this->script_file_exists())
 		return false;
 
@@ -28,15 +30,23 @@ bool gsf::script::load()
 	{
 		sol::error err = load_res;
 		DEBUG_COUT("\nLua load failure from: " << this->filepath << "\nReason: " << err.what());
+		this->logs.push_back(err.what());
 		return false;
 	}
 
 	this->lua_state = std::move(temp_lua_state); // upon success we can move the unique_ptr from the stack to the class
+	DEBUG_COUT("\nLoaded lua: " << this->filepath);
+	this->logs.push_back("Successfuly loaded.");
 	return true;
 }
 
 bool gsf::script::unload()
 {
+	if (!this->lua_state.operator bool())
+		return false;
+
+	this->logs.clear();
+
 	DEBUG_COUT("\nUnloaded script: " << this->filepath);
 	this->lua_state.reset();
 	return true;
@@ -50,6 +60,11 @@ bool gsf::script::script_file_exists()
 const std::string_view gsf::script::get_filepath()
 {
 	return this->filepath;
+}
+
+const std::vector<std::string> &gsf::script::get_logs()
+{
+	return this->logs;
 }
 
 gsf::script::operator bool() const

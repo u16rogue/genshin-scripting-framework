@@ -1,6 +1,6 @@
 #pragma once 
 #ifndef GIT_HASH 
-#define GIT_HASH "7256e61325db590e0d67d0203e43f4178d2aec5d" 
+#define GIT_HASH "e143baf218b7059421336e1019b7856d448e54d9" 
 #endif 
 #ifndef GIT_BRANCH 
 #define GIT_BRANCH "master" 

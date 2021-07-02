@@ -85,6 +85,8 @@ helpers::imgui_popup_modal import_prompt = helpers::imgui_popup_modal(__IMPORT_S
 
 void imported_script_list_draw()
 {
+    gsf::script *queued_for_removal = nullptr; // TODO: temp only. implement as mutex in the future
+
     for (gsf::script &inst : script_instances)
     {
         ImGui::Text("File:");
@@ -93,21 +95,35 @@ void imported_script_list_draw()
         static ImVec4 file_color_loaded   { 0.f, 1.f, 0.f, 1.f };
         static ImVec4 file_color_unloaded { 1.f, 0.f, 0.f, 1.f };
 
-        ImGui::TextColored(inst ? file_color_loaded : file_color_unloaded, inst.get_filepath().data()); // TODO: change color based of status
+        ImGui::TextColored(inst ? file_color_loaded : file_color_unloaded, inst.get_filepath().data());
         
+        #ifdef _DEBUG
+        if (ImGui::Button("Remove"))
+        {
+            if (inst.unload())
+                queued_for_removal = &inst;
+        }
+        #endif
+
+        // show recent (and all) logs
+        ImGui::SameLine();
+        if (ImGui::Button("Show Logs"))
+        {
+            // TODO: pop up modal to show all logs
+        }
+        else if (ImGui::IsItemHovered())
+        {
+            auto &logs = inst.get_logs();
+            ImGui::SetTooltip(logs.empty() ? "No recent logs" : logs.back().c_str());
+        }
+
+        ImGui::SameLine();
         if (ImGui::Button(inst ? "Unload" : "Load"))
         {
             if (!inst)
                 inst.load();
             else
                 inst.unload();
-        }
-
-        ImGui::SameLine();
-
-        if (ImGui::Button("Remove"))
-        {
-
         }
 
         ImGui::Separator();

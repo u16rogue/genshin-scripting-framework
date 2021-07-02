@@ -21,10 +21,13 @@ namespace gsf
 
 		const std::string_view get_filepath();
 
+		const std::vector<std::string> &get_logs();
+
 		operator bool() const;
 
 	private:
 		const std::string filepath;
+		std::vector<std::string> logs;
 		std::unique_ptr<sol::state> lua_state = nullptr;
 	};
 }
