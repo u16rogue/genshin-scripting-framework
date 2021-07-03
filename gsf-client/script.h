@@ -18,16 +18,19 @@ namespace gsf
 		bool unload();
 
 		bool script_file_exists();
-
-		const std::string_view get_filepath();
+		operator bool() const;
 
 		const std::vector<std::string> &get_logs();
-
-		operator bool() const;
+		const std::string_view get_filepath();
 
 	private:
 		const std::string filepath;
 		std::vector<std::string> logs;
 		std::unique_ptr<sol::state> lua_state = nullptr;
+
+
+	private: // API IMPLEMENTATION
+		void __internal_lua_api_gsf_log(std::string txt);
+
 	};
 }

@@ -11,6 +11,7 @@ gsf::script::script(std::string_view filepath_)
 	DEBUG_COUT("\nConstructed gsf::script object # " << this->filepath << " # " << filepath_);
 }
 
+// TODO: use a "on_load" callback in the script instead of letting the script execute
 bool gsf::script::load()
 {
 	this->logs.clear();
@@ -24,7 +25,7 @@ bool gsf::script::load()
 	if (!temp_lua_state)
 		return false;
 
-	auto load_res = temp_lua_state->script_file(this->filepath);
+	auto load_res = temp_lua_state->load_file(this->filepath);
 
 	if (!load_res.valid())
 	{
@@ -34,9 +35,18 @@ bool gsf::script::load()
 		return false;
 	}
 
-	this->lua_state = std::move(temp_lua_state); // upon success we can move the unique_ptr from the stack to the class
+	// upon success we can move the unique_ptr from the stack to the class
+	this->lua_state = std::move(temp_lua_state);
+
+	// Start loading the API
+	this->lua_state->set_function("gsf_log", &gsf::script::__internal_lua_api_gsf_log, this);
+
 	DEBUG_COUT("\nLoaded lua: " << this->filepath);
 	this->logs.push_back("Successfuly loaded.");
+
+	// Run the script
+	load_res();
+
 	return true;
 }
 
@@ -57,14 +67,19 @@ bool gsf::script::script_file_exists()
 	return std::filesystem::exists(this->filepath);
 }
 
+const std::vector<std::string> &gsf::script::get_logs()
+{
+	return this->logs;
+}
+
 const std::string_view gsf::script::get_filepath()
 {
 	return this->filepath;
 }
 
-const std::vector<std::string> &gsf::script::get_logs()
+void gsf::script::__internal_lua_api_gsf_log(std::string txt)
 {
-	return this->logs;
+	this->logs.push_back(txt);
 }
 
 gsf::script::operator bool() const

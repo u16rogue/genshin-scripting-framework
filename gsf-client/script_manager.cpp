@@ -39,7 +39,7 @@ void show_error(const char *msg)
 void import_script_draw()
 {
     static char buffer_import[MAX_PATH] = { '\0' };
-    
+
     ImGui::Text("Script Path:");
     ImGui::SameLine();
     bool input_enter_keyed = ImGui::InputText("##script_import_buffer", buffer_import, sizeof(buffer_import), ImGuiInputTextFlags_::ImGuiInputTextFlags_EnterReturnsTrue);
@@ -57,12 +57,12 @@ void import_script_draw()
             show_error("File not found!");
         }
     }
-    
+
     ImGui::SameLine();
-    
+
     if (ImGui::Button("Cancel"))
         ImGui::CloseCurrentPopup();
-    
+
     if (error_message_visible)
     {
         float errmsg_alpha_scale = error_message_fader.get();
@@ -96,7 +96,7 @@ void imported_script_list_draw()
         static ImVec4 file_color_unloaded { 1.f, 0.f, 0.f, 1.f };
 
         ImGui::TextColored(inst ? file_color_loaded : file_color_unloaded, inst.get_filepath().data());
-        
+
         #ifdef _DEBUG
         if (ImGui::Button("Remove"))
         {
@@ -118,6 +118,12 @@ void imported_script_list_draw()
         }
 
         ImGui::SameLine();
+        if (ImGui::Button("Options"))
+        {
+
+        }
+
+        ImGui::SameLine();
         if (ImGui::Button(inst ? "Unload" : "Load"))
         {
             if (!inst)
@@ -134,7 +140,7 @@ void gsf::script_manager::on_imgui_draw()
 {
     if (!visible)
         return;
-    
+
     ImGui::SetNextWindowSize({ 595, 426 }, ImGuiCond_::ImGuiCond_FirstUseEver);
     if (ImGui::Begin("Script Manager", &visible, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar))
     {
@@ -164,7 +170,7 @@ void gsf::script_manager::on_imgui_draw()
 
             ImGui::EndMenuBar();
         }
-    
+
         imported_script_list_draw();
     }
     ImGui::End();
