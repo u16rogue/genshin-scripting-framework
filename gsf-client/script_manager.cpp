@@ -1,7 +1,5 @@
 #include "script_manager.h"
 
-#define __IMPORT_SCRIPT_NAME "Import Script"
-
 #include <Windows.h>
 #include <imgui.h>
 #include <filesystem>
@@ -9,10 +7,26 @@
 #include <cstdint>
 #include <misc_utils.h>
 #include <macro.h>
+#include <thread>
+#include <deque>
 #include "helpers/imgui_prompts.h"
+
+// TODO: load and unload scripts in a separate thread
+#if 0
+std::thread script_action_queue;
+std::deque<gsf::script *> script_queued_load;
+std::deque<gsf::script *> script_queued_unload;
+#endif
 
 std::vector<gsf::script> script_instances;
 bool                     visible          = false;
+
+bool         script_log_window_visible = false;
+gsf::script *script_log_window_sel     = nullptr; // Points to the script instance to read the log from for the log window
+
+const char         *error_message         = "No error message provided.";
+bool                error_message_visible = false;
+utils::fader_float  error_message_fader   = utils::fader_float(1000, 3000);
 
 bool &gsf::script_manager::get_visible_flag()
 {
@@ -24,11 +38,6 @@ const std::vector<gsf::script> &gsf::script_manager::get_scripts()
     return script_instances;
 }
 
-#pragma region Script Import
-
-const char         *error_message         = "No error message provided.";
-bool                error_message_visible = false;
-utils::fader_float  error_message_fader   = utils::fader_float(1000, 3000);
 void show_error(const char *msg)
 {
     error_message = msg;
@@ -36,7 +45,7 @@ void show_error(const char *msg)
     error_message_visible = true;
 }
 
-void import_script_draw()
+void import_prompt_callback()
 {
     static char buffer_import[MAX_PATH] = { '\0' };
 
@@ -48,9 +57,26 @@ void import_script_draw()
     {
         if (std::filesystem::exists(buffer_import))
         {
-            script_instances.emplace_back(buffer_import);
-            std::memset(buffer_import, '\0', sizeof(buffer_import));
-            ImGui::CloseCurrentPopup();
+            bool already_exists = false;
+            for (auto &inst : script_instances)
+            {
+                if (inst.get_filepath() == buffer_import)
+                {
+                    already_exists = true;
+                    break;
+                }
+            }
+
+            if (already_exists)
+            {
+                show_error("Script already imported!");
+            }
+            else
+            {
+                script_instances.emplace_back(buffer_import);
+                std::memset(buffer_import, '\0', sizeof(buffer_import));
+                ImGui::CloseCurrentPopup();
+            }
         }
         else
         {
@@ -79,16 +105,14 @@ void import_script_draw()
     }
 }
 
-helpers::imgui_popup_modal import_prompt = helpers::imgui_popup_modal(__IMPORT_SCRIPT_NAME, &import_script_draw);
+helpers::imgui_popup_modal import_prompt = helpers::imgui_popup_modal("Import Script", &import_prompt_callback);
 
-#pragma endregion
-
-void imported_script_list_draw()
+void imported_scripts_list_draw()
 {
-    gsf::script *queued_for_removal = nullptr; // TODO: temp only. implement as mutex in the future
-
     for (gsf::script &inst : script_instances)
     {
+        ImGui::PushID(&inst);
+
         ImGui::Text("File:");
         ImGui::SameLine();
 
@@ -101,15 +125,19 @@ void imported_script_list_draw()
         if (ImGui::Button("Remove"))
         {
             if (inst.unload())
-                queued_for_removal = &inst;
+            {
+                // queued_for_removal = &inst;
+            }
         }
         #endif
 
-        // show recent (and all) logs
         ImGui::SameLine();
         if (ImGui::Button("Show Logs"))
         {
-            // TODO: pop up modal to show all logs
+            if (script_log_window_sel == &inst || !script_log_window_sel)
+                script_log_window_visible = !script_log_window_visible;
+
+            script_log_window_sel = &inst;
         }
         else if (ImGui::IsItemHovered())
         {
@@ -126,6 +154,8 @@ void imported_script_list_draw()
         ImGui::SameLine();
         if (ImGui::Button(inst ? "Unload" : "Load"))
         {
+            DEBUG_COUT("\ntest 1 from " << inst.get_filepath());
+
             if (!inst)
                 inst.load();
             else
@@ -133,7 +163,38 @@ void imported_script_list_draw()
         }
 
         ImGui::Separator();
+        ImGui::PopID();
     }
+}
+
+void script_log_window_draw()
+{
+    if (!script_log_window_visible)
+        return;
+
+    ImGui::SetNextWindowSize({ 446, 336 }, ImGuiCond_::ImGuiCond_FirstUseEver);
+    if (ImGui::Begin("Script Logs", &script_log_window_visible, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse))
+    {
+        const char *header_text = "No script selected.";
+        if (script_log_window_sel)
+            header_text = script_log_window_sel->get_filepath().data();
+
+        ImGui::Text("Logs of script file: %s", header_text);
+
+        ImGui::BeginChild("Script Logs List", ImVec2(0, 0), true);
+
+        const auto &curr_logs = script_log_window_sel->get_logs();
+        for (long long i = curr_logs.size() - 1; i >= 0; --i)
+        {
+            ImGui::TextWrapped("[%d] %s", i, curr_logs[i].c_str());
+            // ImGui::Separator();
+        }
+
+        //for (auto log_entry = curr_logs.rbegin(); log_entry != curr_logs.rend(); ++log_entry)
+        ImGui::EndChild();
+
+    }
+    ImGui::End();
 }
 
 void gsf::script_manager::on_imgui_draw()
@@ -171,7 +232,9 @@ void gsf::script_manager::on_imgui_draw()
             ImGui::EndMenuBar();
         }
 
-        imported_script_list_draw();
+        imported_scripts_list_draw();
     }
     ImGui::End();
+
+    script_log_window_draw();
 }
