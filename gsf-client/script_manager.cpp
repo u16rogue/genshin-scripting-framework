@@ -154,8 +154,6 @@ void imported_scripts_list_draw()
         ImGui::SameLine();
         if (ImGui::Button(inst ? "Unload" : "Load"))
         {
-            DEBUG_COUT("\ntest 1 from " << inst.get_filepath());
-
             if (!inst)
                 inst.load();
             else
