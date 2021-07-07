@@ -19,7 +19,7 @@
 bool gsf::init()
 {
     if ((global::game_window = FindWindowW(UTILS_A2W_MDEF(GSF_DEF_GAME_WND_CLASS), UTILS_A2W_MDEF(GSF_DEF_GAME_WND_TITLE))) == nullptr
-    #ifdef _DEBUG 
+    #ifdef _DEBUG
     || !con::init()
     || !SetConsoleTitleW(utils::random_str().c_str())
     #endif
@@ -45,7 +45,7 @@ bool gsf::shutdown()
 
         HWND con_wnd = reinterpret_cast<HWND>(con::get_window());
         if (con_wnd)
-            DestroyWindow(con_wnd); // TODO: use post message
+            PostMessageW(con_wnd, WM_CLOSE, NULL, NULL);
 
         FreeLibraryAndExitThread(reinterpret_cast<HMODULE>(global::dll_handle), 0);
         return 0;
@@ -146,6 +146,6 @@ void gsf::render_imgui()
 
     if (gsf_about_menu_visible)
         gsf_about_on_imgui_draw();
-    
+
     helpers::imgui_popup_modal::on_imgui_draw();
 }

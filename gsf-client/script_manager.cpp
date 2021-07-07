@@ -11,6 +11,8 @@
 #include <deque>
 #include "helpers/imgui_prompts.h"
 
+// TODO: optional header to load autoexec lua thing
+
 // TODO: load and unload scripts in a separate thread
 #if 0
 std::thread script_action_queue;
@@ -21,8 +23,8 @@ std::deque<gsf::script *> script_queued_unload;
 std::vector<gsf::script> script_instances;
 bool                     visible          = false;
 
-bool         script_log_window_visible = false;
-gsf::script *script_log_window_sel     = nullptr; // Points to the script instance to read the log from for the log window
+bool         script_log_window_visible  = false;
+gsf::script *script_log_window_selected = nullptr; // Points to the script instance to read the log from for the log window
 
 const char         *error_message         = "No error message provided.";
 bool                error_message_visible = false;
@@ -134,10 +136,10 @@ void imported_scripts_list_draw()
         ImGui::SameLine();
         if (ImGui::Button("Show Logs"))
         {
-            if (script_log_window_sel == &inst || !script_log_window_sel)
+            if (script_log_window_selected == &inst || !script_log_window_selected)
                 script_log_window_visible = !script_log_window_visible;
 
-            script_log_window_sel = &inst;
+            script_log_window_selected = &inst;
         }
         else if (ImGui::IsItemHovered())
         {
@@ -174,14 +176,14 @@ void script_log_window_draw()
     if (ImGui::Begin("Script Logs", &script_log_window_visible, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse))
     {
         const char *header_text = "No script selected.";
-        if (script_log_window_sel)
-            header_text = script_log_window_sel->get_filepath().data();
+        if (script_log_window_selected)
+            header_text = script_log_window_selected->get_filepath().data();
 
         ImGui::Text("Logs of script file: %s", header_text);
 
         ImGui::BeginChild("Script Logs List", ImVec2(0, 0), true);
 
-        const auto &curr_logs = script_log_window_sel->get_logs();
+        const auto &curr_logs = script_log_window_selected->get_logs();
         for (long long i = curr_logs.size() - 1; i >= 0; --i)
         {
             ImGui::TextWrapped("[%d] %s", i, curr_logs[i].c_str());

@@ -11,7 +11,6 @@ gsf::script::script(std::string_view filepath_)
 	DEBUG_COUT("\nConstructed gsf::script object # " << this->filepath << " # " << filepath_);
 }
 
-// TODO: use a "on_load" callback in the script instead of letting the script execute
 bool gsf::script::load()
 {
 	this->logs.clear();
@@ -25,27 +24,43 @@ bool gsf::script::load()
 	if (!temp_lua_state)
 		return false;
 
-	auto load_res = temp_lua_state->load_file(this->filepath);
+	auto load_res = temp_lua_state->script_file(this->filepath);
 
 	if (!load_res.valid())
 	{
-		sol::error err = load_res;
-		DEBUG_COUT("\nLua load failure from: " << this->filepath << "\nReason: " << err.what());
-		this->logs.push_back(err.what());
+		sol::error err_load_res = load_res;
+		this->internal_log_error(err_load_res.what());
+		return false;
+	}
+
+	sol::function callback_onload;
+	{
+		auto get_onload_res = temp_lua_state->operator[]("on_load");
+		if (get_onload_res.valid())
+		{
+			callback_onload = get_onload_res;
+		}
+		else
+		{
+			this->internal_log_error("Callback \"on_load\" not found.");
+			return false;
+		}
+	}
+
+	if (!this->setup_script_api(temp_lua_state))
+	{
+		this->internal_log_error("Failed to load API in lua state");
 		return false;
 	}
 
 	// upon success we can move the unique_ptr from the stack to the class
 	this->lua_state = std::move(temp_lua_state);
 
-	// Start loading the API
-	this->lua_state->set_function("gsf_log", &gsf::script::__internal_lua_api_gsf_log, this);
-
 	DEBUG_COUT("\nLoaded lua: " << this->filepath);
 	this->logs.push_back("Successfuly loaded.");
 
 	// Run the script
-	load_res();
+	callback_onload();
 
 	return true;
 }
@@ -67,6 +82,11 @@ bool gsf::script::script_file_exists()
 	return std::filesystem::exists(this->filepath);
 }
 
+gsf::script::operator bool() const
+{
+	return this->lua_state.operator bool();
+}
+
 const std::vector<std::string> &gsf::script::get_logs()
 {
 	return this->logs;
@@ -77,12 +97,21 @@ const std::string_view gsf::script::get_filepath()
 	return this->filepath;
 }
 
-void gsf::script::__internal_lua_api_gsf_log(std::string txt)
+void gsf::script::internal_log_error(std::string_view msg)
 {
-	this->logs.push_back(txt);
+	DEBUG_COUT("\nLua failure from: " << this->filepath << "\nReason: " << msg);
+	this->logs.emplace_back(msg.data());
 }
 
-gsf::script::operator bool() const
+bool gsf::script::setup_script_api(std::unique_ptr<sol::state> &state)
 {
-	return this->lua_state.operator bool();
+	state->set_function("gsf_log", &gsf::script::__internal_lua_api_gsf_log, this);
+
+	return true;
+}
+
+void gsf::script::__internal_lua_api_gsf_log(std::string txt)
+{
+	DEBUG_COUT("\n[SCRIPT] " << txt);
+	this->logs.push_back(txt);
 }

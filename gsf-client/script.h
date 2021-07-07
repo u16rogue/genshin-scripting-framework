@@ -28,6 +28,9 @@ namespace gsf
 		std::vector<std::string> logs;
 		std::unique_ptr<sol::state> lua_state = nullptr;
 
+	private:
+		void internal_log_error(std::string_view msg);
+		bool setup_script_api(std::unique_ptr<sol::state> &state);
 
 	private: // API IMPLEMENTATION
 		void __internal_lua_api_gsf_log(std::string txt);
