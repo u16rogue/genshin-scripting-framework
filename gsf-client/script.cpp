@@ -105,7 +105,8 @@ void gsf::script::internal_log_error(std::string_view msg)
 
 bool gsf::script::setup_script_api(std::unique_ptr<sol::state> &state)
 {
-	state->set_function("gsf_log", &gsf::script::__internal_lua_api_gsf_log, this);
+	auto namespace_gsf = state->operator[]("gsf").get_or_create<sol::table>();
+	namespace_gsf.set_function("log", &gsf::script::__internal_lua_api_gsf_log, this);
 
 	return true;
 }
