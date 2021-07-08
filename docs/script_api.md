@@ -1,6 +1,6 @@
 # Genshin Impact Scripting Framework API
 
-[Information](#Information) • [Namespaces](#Namespaces)
+[Information](#Information) • [Namespaces](#Namespaces) • [Callbacks](#Callbacks)
 
 ## Information
 * You need to add a function named `on_load` on your script. This function gets called after the script is successfuly loaded into GSF
@@ -39,9 +39,9 @@ end
 
 | Name    | Purpose                                        |
 |:-------:|:----------------------------------------------:|
-| [gsf](#Namespace:_GSF) | Provides internal script related API's for GSF |
+| [gsf](#gsf-Namespace) | Provides internal script related API's for GSF |
 
-### Namespace: GSF
+### gsf Namespace
 
 | API     | Description                                                                                                        | Args      | Return | Permission |
 |:-------:|:------------------------------------------------------------------------------------------------------------------:|:---------:|:------:|:----------:|

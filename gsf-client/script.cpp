@@ -53,7 +53,7 @@ bool gsf::script::load()
 		return false;
 	}
 
-	// upon success we can move the unique_ptr from the stack to the class
+	// upon success we can move the unique_ptr from this scope to the class
 	this->lua_state = std::move(temp_lua_state);
 
 	DEBUG_COUT("\nLoaded lua: " << this->filepath);
