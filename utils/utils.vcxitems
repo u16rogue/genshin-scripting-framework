@@ -14,7 +14,7 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)aob_scan.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)pattern_scan.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)console.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)hooking.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)loadlibrary.cpp" />
@@ -23,7 +23,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)winternal.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)aob_scan.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)pattern_scan.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)console.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)hooking.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)loadlibrary.h" />

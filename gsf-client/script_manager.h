@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <utility>
 #include "script.h"
 
 namespace gsf::script_manager

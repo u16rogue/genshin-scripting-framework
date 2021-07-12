@@ -62,6 +62,7 @@ bool gsf::script::load()
 	// Run the script
 	callback_onload();
 
+	++gsf::script::count_loaded_scripts;
 	return true;
 }
 
@@ -74,6 +75,7 @@ bool gsf::script::unload()
 
 	DEBUG_COUT("\nUnloaded script: " << this->filepath);
 	this->lua_state.reset();
+	--gsf::script::count_loaded_scripts;
 	return true;
 }
 

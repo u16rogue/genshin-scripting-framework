@@ -137,6 +137,8 @@ void gsf::render_imgui()
             ImGui::EndMenu();
         }
 
+        ImGui::Text("(%d/%d)", gsf::script::count_loaded_scripts, gsf::script_manager::get_scripts().size());
+
         ImGui::Separator();
         gsf_draw_menubaritems();
     }

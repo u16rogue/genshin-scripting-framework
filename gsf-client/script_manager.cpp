@@ -21,7 +21,7 @@ std::deque<gsf::script *> script_queued_unload;
 #endif
 
 std::vector<gsf::script> script_instances;
-bool                     visible          = false;
+bool                     visible = false;
 
 bool         script_log_window_visible  = false;
 gsf::script *script_log_window_selected = nullptr; // Points to the script instance to read the log from for the log window

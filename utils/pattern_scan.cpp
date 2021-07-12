@@ -1,4 +1,4 @@
-#include "aob_scan.h"
+#include "pattern_scan.h"
 #include <string>
 #include <memory>
 #include <Windows.h>
@@ -40,4 +40,9 @@ std::uint8_t *utils::aob_scan(void *proc_handle, void *start, std::size_t size, 
 		return nullptr;
 
 	return reinterpret_cast<std::uint8_t*>(start) + (reinterpret_cast<std::uintptr_t>(result) - reinterpret_cast<std::uintptr_t>(buffer.get()));
+}
+
+std::uint8_t *utils::ida_scan(void *start, std::size_t size, const char *signature)
+{
+	return nullptr;
 }

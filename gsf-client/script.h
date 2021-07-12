@@ -23,6 +23,9 @@ namespace gsf
 		const std::vector<std::string> &get_logs();
 		const std::string_view get_filepath();
 
+	public:
+		inline static std::size_t count_loaded_scripts = 0;
+
 	private:
 		const std::string filepath;
 		std::vector<std::string> logs;
