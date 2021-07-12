@@ -24,6 +24,8 @@ bool gsf::script::load()
 	if (!temp_lua_state)
 		return false;
 
+	temp_lua_state->open_libraries(sol::lib::string, sol::lib::math);
+
 	auto load_res = temp_lua_state->script_file(this->filepath);
 
 	if (!load_res.valid())
