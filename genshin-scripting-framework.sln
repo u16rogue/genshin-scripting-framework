@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua", "thirdparty\lua\lua.v
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sol", "thirdparty\sol\sol.vcxitems", "{4C58FEAD-6F55-48E8-8B76-63337A70C361}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gsf-launcher", "gsf-launcher\gsf-launcher.vcxproj", "{A3415378-0073-4E01-982E-A7B99C249819}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		thirdparty\minhook\minhook.vcxitems*{2956636e-c74f-4083-9493-873da4e44cbf}*SharedItemsImports = 9
@@ -39,6 +41,10 @@ Global
 		{36330540-2FDF-46AC-ACCA-68FBED6692AC}.Debug|x64.Build.0 = Debug|x64
 		{36330540-2FDF-46AC-ACCA-68FBED6692AC}.Release|x64.ActiveCfg = Release|x64
 		{36330540-2FDF-46AC-ACCA-68FBED6692AC}.Release|x64.Build.0 = Release|x64
+		{A3415378-0073-4E01-982E-A7B99C249819}.Debug|x64.ActiveCfg = Debug|x64
+		{A3415378-0073-4E01-982E-A7B99C249819}.Debug|x64.Build.0 = Debug|x64
+		{A3415378-0073-4E01-982E-A7B99C249819}.Release|x64.ActiveCfg = Release|x64
+		{A3415378-0073-4E01-982E-A7B99C249819}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
