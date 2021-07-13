@@ -2,6 +2,7 @@
 #include <string>
 #include <memory>
 #include <Windows.h>
+#include <vector>
 
 std::uint8_t *utils::aob_scan(void *start, std::size_t size, const char *signature, const char *mask)
 {
@@ -42,7 +43,65 @@ std::uint8_t *utils::aob_scan(void *proc_handle, void *start, std::size_t size, 
 	return reinterpret_cast<std::uint8_t*>(start) + (reinterpret_cast<std::uintptr_t>(result) - reinterpret_cast<std::uintptr_t>(buffer.get()));
 }
 
+constexpr std::uint8_t INVALID_NIBBLE = 0xF0;
+std::uint8_t hex_char_to_nibble(const char cnibble)
+{
+	if (cnibble >= '0' && cnibble <= '9')
+		return static_cast<std::uint8_t>(cnibble - '0');
+	else if (cnibble >= 'A' && cnibble <= 'F')
+		return static_cast<std::uint8_t>((cnibble - 'A') + 0xA);
+	else if (cnibble >= 'a' && cnibble <= 'f')
+		return static_cast<std::uint8_t>((cnibble - 'a') + 0xa);
+
+	return INVALID_NIBBLE;
+}
+
+bool hex_str_to_byte(std::uint8_t &byte_out, const char strhex[2])
+{
+	auto upper_nibble = hex_char_to_nibble(strhex[0]);
+	auto lower_nibble = hex_char_to_nibble(strhex[1]);
+
+	if (upper_nibble == INVALID_NIBBLE || lower_nibble == INVALID_NIBBLE)
+		return false;
+
+	byte_out = (upper_nibble << 4) | lower_nibble;
+	return true;
+}
+
 std::uint8_t *utils::ida_scan(void *start, std::size_t size, const char *signature)
 {
-	return nullptr;
+	// is this lazy? just creating data from an ida pattern for the aob scanner.
+	// perhaps i could argue that atleast you only have to parse the ida pattern once instead of doing it everytime you check for sigs.
+
+	std::vector<std::uint8_t> aob;
+	std::string mask;
+
+	do
+	{
+		if (*signature == ' ')
+			continue;
+
+		if (*signature == '?')
+		{
+			aob.push_back(0);
+			mask.append("?");
+			continue;
+		}
+
+		std::uint8_t byte_result = 0;
+
+		if (!hex_str_to_byte(byte_result, signature))
+			return nullptr;
+
+		aob.push_back(byte_result);
+		mask.append("x");
+		if (*++signature) // skip the second nibble, if statement is for ensuring that we dont go oob incase of a bad signature (all sig should be a pair, this will be caught by hex_str_to_byte anyway but just incase, you'll never know.)
+			return nullptr;
+
+	} while (*++signature != '\0');
+
+	if (aob.size() != mask.length())
+		return nullptr; // this should throw an exception instead
+
+	return utils::aob_scan(start, size, reinterpret_cast<const char *>(aob.data()), mask.c_str());
 }
