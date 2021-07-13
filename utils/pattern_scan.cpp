@@ -95,7 +95,7 @@ std::uint8_t *utils::ida_scan(void *start, std::size_t size, const char *signatu
 
 		aob.push_back(byte_result);
 		mask.append("x");
-		if (*++signature) // skip the second nibble, if statement is for ensuring that we dont go oob incase of a bad signature (all sig should be a pair, this will be caught by hex_str_to_byte anyway but just incase, you'll never know.)
+		if (*++signature == '\0') // skip the second nibble, the if statement is for ensuring that we dont go oob incase of a bad signature (all sig should be a pair, this will be caught by hex_str_to_byte anyway but just incase, you'll never know!)
 			return nullptr;
 
 	} while (*++signature != '\0');
