@@ -11,7 +11,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
         const HMODULE &hmod = reinterpret_cast<HMODULE>(hModule);
 
         DisableThreadLibraryCalls(hmod);
-        
+
         if (!gsf::init())
         {
             FreeLibraryAndExitThread(hmod, 0);

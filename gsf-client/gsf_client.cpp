@@ -16,9 +16,22 @@
 #include "hooks/hooks.h"
 #include "features/fps_counter.h"
 
+bool get_game_window_handle(void *&handle_out)
+{
+    int timeout = 30;
+
+    while (handle_out == nullptr && --timeout > 0)
+    {
+        handle_out = FindWindowW(UTILS_A2W_MDEF(GSF_DEF_GAME_WND_CLASS), UTILS_A2W_MDEF(GSF_DEF_GAME_WND_TITLE));
+        Sleep(1000);
+    }
+
+    return handle_out != nullptr;
+}
+
 bool gsf::init()
 {
-    if ((global::game_window = FindWindowW(UTILS_A2W_MDEF(GSF_DEF_GAME_WND_CLASS), UTILS_A2W_MDEF(GSF_DEF_GAME_WND_TITLE))) == nullptr
+    if (!get_game_window_handle(global::game_window)
     #ifdef _DEBUG
     || !con::init()
     || !SetConsoleTitleW(utils::random_str().c_str())
@@ -137,8 +150,8 @@ void gsf::render_imgui()
             ImGui::EndMenu();
         }
 
+        ImGui::Separator();
         ImGui::Text("(%d/%d)", gsf::script::count_loaded_scripts, gsf::script_manager::get_scripts().size());
-
         ImGui::Separator();
         gsf_draw_menubaritems();
     }
