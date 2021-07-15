@@ -18,6 +18,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sol", "thirdparty\sol\sol.vcxitems", "{4C58FEAD-6F55-48E8-8B76-63337A70C361}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gsf-launcher", "gsf-launcher\gsf-launcher.vcxproj", "{A3415378-0073-4E01-982E-A7B99C249819}"
+	ProjectSection(ProjectDependencies) = postProject
+		{36330540-2FDF-46AC-ACCA-68FBED6692AC} = {36330540-2FDF-46AC-ACCA-68FBED6692AC}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -31,6 +34,8 @@ Global
 		thirdparty\imgui\imgui.vcxitems*{69063e09-d8a8-4fa9-a306-69f5f615db38}*SharedItemsImports = 9
 		thirdparty\lua\lua.vcxitems*{8754e545-8e7d-4a4c-88d5-f5cc94a1ba04}*SharedItemsImports = 9
 		utils\utils.vcxitems*{a2d09ac9-23c1-4b03-af08-2ef6798147e3}*SharedItemsImports = 9
+		thirdparty\minhook\minhook.vcxitems*{a3415378-0073-4e01-982e-a7b99c249819}*SharedItemsImports = 4
+		utils\utils.vcxitems*{a3415378-0073-4e01-982e-a7b99c249819}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

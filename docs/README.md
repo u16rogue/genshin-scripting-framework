@@ -5,7 +5,7 @@
 [![license](https://img.shields.io/github/license/genshcript-dev/genshin-scripting-framework?style=for-the-badge)](https://github.com/genshcript-dev/genshin-scripting-framework/blob/master/LICENSE)
 
 
-[About](#About) • [Getting Started](#Getting-Started) • [Scripting API Documentation](script_api.md) • [Change Logs](change_logs.md) • [Libraries](#Libraries) • [License](#License)
+[About](#About) • [Getting Started](#Getting-Started) • [Usage](#Usage) • [Scripting API Documentation](script_api.md) • [Change Logs](change_logs.md) • [Libraries](#Libraries) • [License](#License) • [Todo](#Todo)
 
 ![](client_ss.jpg)
 
@@ -19,14 +19,16 @@
 ## About
 Provides a scripting framework and API for the game [Genshin Impact](https://genshin.mihoyo.com/).
 
-*GSF is not a cheat/hack. GSF does not contain any "advantage" enchancement features built in. GSF only provides a framework and API to its users.*
+#### Disclaimer:
+* *GSF is not a cheat/hack. GSF does not contain any "advantage" enchancement features built in. GSF only provides a framework and API to its users.*
+* *The contributors of this repository/project/software bear no responsibility on whatever purpose the user does with this.*
 
 ## Getting Started
 
 ### Prerequisite
 * Windows
-* [DirectX SDK](https://www.microsoft.com/en-au/download/details.aspx?id=6812)
-* [Visual Studio 2019](https://visualstudio.microsoft.com/)
+* [DirectX 11 SDK](https://www.microsoft.com/en-au/download/details.aspx?id=6812)
+* [Visual Studio 2019](https://visualstudio.microsoft.com/) or greater
 * [Git](https://git-scm.com/downloads)
 
 ### Cloning
@@ -44,6 +46,11 @@ This requires [Git](https://git-scm.com/). If you don't have Git yet you can [do
     git clone --depth 1 https://github.com/rogueeeee/genshin-scripting-framework.git
     ```
 
+### Projects
+
+* `gsf-client` - The client that's loaded into the game, this provides the scripting API and ability to load LUA scripts.
+* `gsf-launcher` - (*optional*) Used for launching the game and loading `gsf-client` into it. Requires gsf-client to be built (This is already set up in the project as a dependency).
+
 ### Compiling
 The project is ready to compile immediately, you can proceed by opening the solution file, set up the configuration (Release x64), and start building.
 
@@ -51,6 +58,25 @@ The project is ready to compile immediately, you can proceed by opening the solu
 
 ### Output
 The built binaries are located at `build\Release_x64` for release builds and `build\Debug_x64` debug builds.
+
+## Usage
+
+### Prerequisite
+* [Microsoft Visual C++ Redistributable for Visual Studio 2019](https://visualstudio.microsoft.com/downloads/#microsoft-visual-c-redistributable-for-visual-studio-2019)
+* *(optional)* Bypass for mhyprot2
+
+### Injecting
+General usage of GSF is by injecting `gsf-client.dll` to `GenshinImpact.exe`. Upon successful injection a top menu bar should appear ingame where you can access GSF's features.
+
+You can also use `gsf-launcher` to load GSF to Genshin Impact. if you are using this method make sure that the game is currently not running and run the launcher as with administrator privilege.
+
+**Note:** `gsf-launcher` does **NOT** disable the anti-cheat mhyprot2. GSF might load in-game but the anti-cheat is still active in the background, do also take note that both the launcher and client do not provide *evasion* against detection (if any is in place anyway).
+
+### Loading LUA Scripts
+LUA Scripts can be loaded through the `Script Manager` window which can be accessed by opening the `Genshin Scripting Framework` dropdown on the top menu bar. Inside the `Script Manager` window you can import LUA scripts through the `Import` dropdown, upon a successful import the script should appear in the window's list where a button is provided for loading the script.
+
+### Unloading / Shutting down GSF
+You can either use the <kbd>DELETE</kbd> key or the `Shutdown` option under GSF's dropdown on the top menu bar.
 
 ## Libraries
 * [MinHook](https://github.com/TsudaKageyu/minhook) 1.3.3 - TsudaKageyu
@@ -60,3 +86,8 @@ The built binaries are located at `build\Release_x64` for release builds and `bu
 
 ## License
 [GNU General Public License 3.0](https://www.gnu.org/licenses/gpl-3.0.en.html)
+
+## Todo
+* xlua interfacing from GSF
+* imported script list persistence
+* autoexec lua

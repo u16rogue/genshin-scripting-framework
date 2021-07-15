@@ -3,6 +3,7 @@
 #include "misc_utils.h"
 #include "winapi_helper.h"
 #include "winternal.h"
+#include <filesystem>
 
 using LoadLibraryA_t = decltype(LoadLibraryA) *;
 using LoadLibraryW_t = decltype(LoadLibraryW) *;
@@ -50,7 +51,7 @@ bool utils::map_module(void *proc_handle, void *thread_handle, void *module_bin,
     // Suspend thread
 	if (thread_handle && SuspendThread(thread_handle) == 0xFFFFFF)
         return false;
-    
+
     PIMAGE_NT_HEADERS nt_header      = utils::pe_get_ntheaderptr(module_bin);
 	std::size_t       shellcode_size = 4096; // utils::unsafe_get_subroutine_size(shellcode_map_module);
 
@@ -79,7 +80,7 @@ bool utils::map_module(void *proc_handle, void *thread_handle, void *module_bin,
     utils::remote_allocate sh_alloc(proc_handle, shellcode_size + sizeof(map_module_info_t), PAGE_EXECUTE_READWRITE);
     if (!sh_alloc)
         return false;
-    
+
     std::uint8_t *sh_local = reinterpret_cast<std::uint8_t*>(shellcode_map_module);
     // check if the compiler placed it in a jump table
     if (sh_local[0] == 0xE9)
@@ -105,7 +106,7 @@ bool utils::map_module(void *proc_handle, void *thread_handle, void *module_bin,
 
     if (!WriteProcessMemory(proc_handle, info_alloc, &info, sizeof(info), nullptr))
         return false;
-    
+
     // Execute shellcode
     utils::remote_execute sh_exec(proc_handle, sh_alloc.ptr, info_alloc);
     if (!sh_exec.execute())
@@ -123,7 +124,7 @@ bool utils::map_module(void *proc_handle, void *thread_handle, void *module_bin,
 
 bool utils::remote_loadlibrary(void *proc_handle, std::wstring_view path)
 {
-    if (!proc_handle || path.empty())
+    if (proc_handle == nullptr || path.empty() || !std::filesystem::exists(path))
         return false;
 
     std::size_t buffer_len = (path.length() + 1) * sizeof(wchar_t);
