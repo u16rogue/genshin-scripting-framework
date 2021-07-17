@@ -2,7 +2,7 @@
 
 #include <Windows.h>
 #include <filesystem>
-
+#include <winternal.h>
 #include <macro.h>
 
 gsf::script::script(std::string_view filepath_)
@@ -109,14 +109,34 @@ void gsf::script::internal_log_error(std::string_view msg)
 
 bool gsf::script::setup_script_api(std::unique_ptr<sol::state> &state)
 {
+	// gsf namespace
 	auto namespace_gsf = state->operator[]("gsf").get_or_create<sol::table>();
-	namespace_gsf.set_function("log", &gsf::script::__internal_lua_api_gsf_log, this);
+	namespace_gsf.set_function("log", &gsf::script::_api_gsf_log, this);
+
+	// winternal namespace
+	auto namespace_winternal = state->operator[]("winternal").get_or_create<sol::table>();
+	namespace_winternal.set_function("find_module", &gsf::script::_api_winternal_find_module, this);
 
 	return true;
 }
 
-void gsf::script::__internal_lua_api_gsf_log(std::string txt)
+void gsf::script::_api_gsf_log(std::string txt)
 {
 	DEBUG_COUT("\n[SCRIPT] " << txt);
 	this->logs.push_back(txt);
+}
+
+sol::table gsf::script::_api_winternal_find_module(std::wstring mod_name)
+{
+	std::uintptr_t base = 0, size = 0;
+
+	auto ldr = utils::ldr_data_table_entry_find(mod_name.c_str());
+
+	if (ldr)
+	{
+		base = reinterpret_cast<std::uintptr_t>(ldr->dll_base);
+		size = ldr->size_of_image;
+	}
+
+	return this->lua_state->create_table_with("base_address", base, "size", size);
 }

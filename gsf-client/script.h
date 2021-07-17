@@ -3,6 +3,7 @@
 #include <sol.hpp>
 #include <memory>
 #include <string>
+#include <cstdint>
 
 namespace gsf
 {
@@ -35,8 +36,15 @@ namespace gsf
 		void internal_log_error(std::string_view msg);
 		bool setup_script_api(std::unique_ptr<sol::state> &state);
 
-	private: // API IMPLEMENTATION
-		void __internal_lua_api_gsf_log(std::string txt);
+	private:
+		// ====================
+		//  API IMPLEMENTATION
+		// ====================
 
+		// gsf
+		void _api_gsf_log(std::string txt);
+
+		// winternal
+		sol::table _api_winternal_find_module(std::wstring mod_name);
 	};
 }
