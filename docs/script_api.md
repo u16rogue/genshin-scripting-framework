@@ -40,11 +40,12 @@ end
 | Name                              | Purpose                                        |
 |:---------------------------------:|:----------------------------------------------:|
 | [gsf](#gsf-Namespace)             | Provides internal script related API's for GSF |
-| [winternal](#winternal-Namespace) | Windows API and internals                      |
+| [win](#win-Namespace)             | Windows API and internals                      |
+| [mem](#mem-Namespace)             | Process memory access and API's                |
 
-## gsf Namespace
+## `gsf` Namespace
 
-### gsf.log `gsf.log(str_msg)`
+### `gsf.log(str_msg)`
 Used for logging messages into the script's internal script log and if GSF is in debug mode, to the debug console.
 * Parameters
     * str_msg - [string] Message to be logged
@@ -54,9 +55,9 @@ Used for logging messages into the script's internal script log and if GSF is in
 * Permission
     * None
 
-## winternal Namespace
+## `win` Namespace
 
-### winternal.find_module `winternal.find_module(module_name)`
+### `win.find_module(module_name)`
 Parses the game's LDR table list and finds the specified module.
 * Parameters
     * module_name - [string] Name of the module to find.
@@ -73,6 +74,8 @@ Parses the game's LDR table list and finds the specified module.
     * module_name parameter will still require the `.dll` postfix as this API will use exact string matches.
 * Permission
     * None
+
+## `mem` Namespace
 
 ## Callbacks
 n/a

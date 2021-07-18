@@ -45,6 +45,6 @@ namespace gsf
 		void _api_gsf_log(std::string txt);
 
 		// winternal
-		sol::table _api_winternal_find_module(std::wstring mod_name);
+		sol::table _api_win_find_module(std::wstring mod_name);
 	};
 }

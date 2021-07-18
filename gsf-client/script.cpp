@@ -114,8 +114,8 @@ bool gsf::script::setup_script_api(std::unique_ptr<sol::state> &state)
 	namespace_gsf.set_function("log", &gsf::script::_api_gsf_log, this);
 
 	// winternal namespace
-	auto namespace_winternal = state->operator[]("winternal").get_or_create<sol::table>();
-	namespace_winternal.set_function("find_module", &gsf::script::_api_winternal_find_module, this);
+	auto namespace_winternal = state->operator[]("win").get_or_create<sol::table>();
+	namespace_winternal.set_function("find_module", &gsf::script::_api_win_find_module, this);
 
 	return true;
 }
@@ -126,7 +126,7 @@ void gsf::script::_api_gsf_log(std::string txt)
 	this->logs.push_back(txt);
 }
 
-sol::table gsf::script::_api_winternal_find_module(std::wstring mod_name)
+sol::table gsf::script::_api_win_find_module(std::wstring mod_name)
 {
 	std::uintptr_t base = 0, size = 0;
 
