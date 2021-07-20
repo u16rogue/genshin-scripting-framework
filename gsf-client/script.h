@@ -44,7 +44,10 @@ namespace gsf
 		// gsf
 		void _api_gsf_log(std::string txt);
 
-		// winternal
+		// win
 		sol::table _api_win_find_module(std::wstring mod_name);
+
+		// mem
+		std::uintptr_t _api_mem_ida_scan(std::uintptr_t base_adr, std::size_t size, std::string ida_pattern);
 	};
 }

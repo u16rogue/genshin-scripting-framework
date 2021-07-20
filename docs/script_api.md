@@ -41,7 +41,7 @@ end
 |:---------------------------------:|:----------------------------------------------:|
 | [gsf](#gsf-Namespace)             | Provides internal script related API's for GSF |
 | [win](#win-Namespace)             | Windows API and internals                      |
-| [mem](#mem-Namespace)             | Process memory access and API's                |
+| [mem](#mem-Namespace)             | Process memory access                          |
 
 ## `gsf` Namespace
 
@@ -76,6 +76,18 @@ Parses the game's LDR table list and finds the specified module.
     * None
 
 ## `mem` Namespace
+
+### `mem.ida_scan(start_adr, size, ida_pattern)`
+Scans the memory starting at `start_adr` up until the max limit defined by the `size` parameter for a pattern provided in an IDA signature style.
+* Parameters
+    * start_adr - [pointer] Starting address of the scan.
+    * size - [integer] Size limit of the scan from the starting address
+    * ida_pattern - [string] IDA signature style pattern used for the scan
+* Return
+    * address - [pointer] Address of where the first occurence of the pattern was found.
+* Remarks
+* Permission
+    * None
 
 ## Callbacks
 n/a

@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <winternal.h>
 #include <macro.h>
+#include <pattern_scan.h>
 
 gsf::script::script(std::string_view filepath_)
 	: filepath(filepath_)
@@ -113,9 +114,13 @@ bool gsf::script::setup_script_api(std::unique_ptr<sol::state> &state)
 	auto namespace_gsf = state->operator[]("gsf").get_or_create<sol::table>();
 	namespace_gsf.set_function("log", &gsf::script::_api_gsf_log, this);
 
-	// winternal namespace
-	auto namespace_winternal = state->operator[]("win").get_or_create<sol::table>();
-	namespace_winternal.set_function("find_module", &gsf::script::_api_win_find_module, this);
+	// win namespace
+	auto namespace_win = state->operator[]("win").get_or_create<sol::table>();
+	namespace_win.set_function("find_module", &gsf::script::_api_win_find_module, this);
+
+	// mem namespace
+	auto namespace_mem = state->operator[]("mem").get_or_create<sol::table>();
+	namespace_mem.set_function("ida_scan", &gsf::script::_api_mem_ida_scan, this);
 
 	return true;
 }
@@ -139,4 +144,9 @@ sol::table gsf::script::_api_win_find_module(std::wstring mod_name)
 	}
 
 	return this->lua_state->create_table_with("base_address", base, "size", size);
+}
+
+std::uintptr_t gsf::script::_api_mem_ida_scan(std::uintptr_t base_adr, std::size_t size, std::string ida_pattern)
+{
+	return reinterpret_cast<std::uintptr_t>(utils::ida_scan(reinterpret_cast<void *>(base_adr), size, ida_pattern.c_str()));
 }
