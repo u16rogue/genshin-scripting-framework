@@ -45,9 +45,10 @@ namespace gsf
 		void _api_gsf_log(std::string txt);
 
 		// win
-		sol::table _api_win_find_module(std::wstring mod_name);
+		sol::table _api_win_find_module(std::wstring module_name);
 
 		// mem
-		std::uintptr_t _api_mem_ida_scan(std::uintptr_t base_adr, std::size_t size, std::string ida_pattern);
+		std::uintptr_t _api_mem_ida_scan(std::uintptr_t start_adr, std::size_t size, std::string ida_pattern);
+		int _api_mem_patch(std::uintptr_t addr, std::vector<std::uint8_t> byte_array);
 	};
 }

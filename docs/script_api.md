@@ -89,5 +89,19 @@ Scans the memory starting at `start_adr` up until the max limit defined by the `
 * Permission
     * None
 
+### `mem.patch(addr, byte_array)`
+Patches the memory specified by `addr` with the array of bytes provided from `byte_array`.
+* Parameters
+    * addr - [pointer] Address in memory as to where the `byte_array` is written.
+    * byte_array - [byte array] Array of bytes to be written at the specified address.
+* Return
+    * 0 - Successful
+    * 1 - Already patched
+    * 2 - Failed to change protection to `PAGE_EXECUTE_READWRITE`
+    * 3 - Failed to restore original protection
+* Remarks
+* Permission
+    * None
+
 ## Callbacks
 n/a
