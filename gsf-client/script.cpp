@@ -122,6 +122,7 @@ bool gsf::script::setup_script_api(std::unique_ptr<sol::state> &state)
 	auto namespace_mem = state->operator[]("mem").get_or_create<sol::table>();
 	namespace_mem.set_function("ida_scan", &gsf::script::_api_mem_ida_scan, this);
 	namespace_mem.set_function("patch", &gsf::script::_api_mem_patch, this);
+	namespace_mem.set_function("read_uint", &gsf::script::_api_mem_read_uint, this);
 
 	return true;
 }
@@ -132,19 +133,14 @@ void gsf::script::_api_gsf_log(std::string txt)
 	this->logs.push_back(txt);
 }
 
-sol::table gsf::script::_api_win_find_module(std::wstring module_name)
+sol::object gsf::script::_api_win_find_module(std::wstring module_name)
 {
-	std::uintptr_t base = 0, size = 0;
-
 	auto ldr = utils::ldr_data_table_entry_find(module_name.c_str());
 
 	if (ldr)
-	{
-		base = reinterpret_cast<std::uintptr_t>(ldr->dll_base);
-		size = ldr->size_of_image;
-	}
+		return this->lua_state->create_table_with("base_address", reinterpret_cast<std::uintptr_t>(ldr->dll_base), "size", ldr->size_of_image);
 
-	return this->lua_state->create_table_with("base_address", base, "size", size);
+	return sol::nil;
 }
 
 std::uintptr_t gsf::script::_api_mem_ida_scan(std::uintptr_t start_adr, std::size_t size, std::string ida_pattern)
@@ -163,18 +159,38 @@ int gsf::script::_api_mem_patch(std::uintptr_t addr, std::vector<std::uint8_t> b
 	};
 
 	// TODO: store in a global static list all the patched memory and check for collisions
+	// TODO: use win api helper
 
 	void *addr_void = reinterpret_cast<void *>(addr);
 	std::size_t byte_arr_size = byte_array.size();
 	DWORD old_prot = 0;
 
 	if (!VirtualProtect(addr_void, byte_arr_size, PAGE_EXECUTE_READWRITE, &old_prot))
+	{
+		this->internal_log_error("mem.patch # exception: PROT_CHANGE_XRW_FAILED");
 		return result_e::PROT_CHANGE_XRW_FAILED;
+	}
 
 	std::memcpy(addr_void, byte_array.data(), byte_arr_size);
 
 	if (!VirtualProtect(addr_void, byte_arr_size, old_prot, &old_prot))
+	{
+		this->internal_log_error("mem.patch # exception: PROT_CHANGE_RESTORE_FAILED");
 		return result_e::PROT_CHANGE_RESTORE_FAILED;
+	}
 
 	return result_e::SUCCESSFUL;
+}
+
+std::uint64_t gsf::script::_api_mem_read_uint(std::uintptr_t addr, std::size_t prim_t_size)
+{
+	if (prim_t_size > 8)
+	{
+		this->internal_log_error("mem.read_uint # parameter prim_t_size is out of bound");
+		return -1;
+	}
+
+	std::uint64_t result = 0;
+	std::memcpy(&result, reinterpret_cast<void *>(addr), prim_t_size);
+	return result;
 }

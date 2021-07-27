@@ -103,5 +103,31 @@ Patches the memory specified by `addr` with the array of bytes provided from `by
 * Permission
     * None
 
+### `mem.read_uint(addr, prim_t_size)`
+Reads the specified memory address as an unisgned integer with a specified size.
+* Parameters
+    * addr - [pointer] Address in memory to read from.
+    * prim_t_size - [integer] Size of the primitive int type to read
+        * 1 - BYTE
+        * 2 - U16
+        * 4 - U32
+        * 8 - U64
+        * 8 - Pointer
+* Return
+    * value - [integer] value that was read from the target address
+* Remarks
+* Permission
+    * None
+
 ## Callbacks
 n/a
+
+<!--
+### `x.x()`
+x.
+* Parameters
+* Return
+* Remarks
+* Permission
+    * None
+-->
