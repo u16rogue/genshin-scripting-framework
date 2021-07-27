@@ -37,7 +37,7 @@ function example()
 end
 ```
 
-| Name                              | Purpose                                        |
+| Namespaces                        | Purpose                                        |
 |:---------------------------------:|:----------------------------------------------:|
 | [gsf](#gsf-Namespace)             | Provides internal script related API's for GSF |
 | [win](#win-Namespace)             | Windows API and internals                      |
@@ -71,6 +71,7 @@ Parses the game's LDR table list and finds the specified module.
     * base_address - Contains the starting/base address of the module
     * size - Size of the module
 * Remarks
+    * When the module is not found, this function returns a `nil`.
     * module_name parameter will still require the `.dll` postfix as this API will use exact string matches.
 * Permission
     * None
