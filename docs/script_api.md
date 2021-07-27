@@ -1,6 +1,6 @@
 # Genshin Impact Scripting Framework API
 
-[Information](#Information) • [Namespaces](#Namespaces) • [Callbacks](#Callbacks)
+[Information](#Information) • [API](#API) • [Callbacks](#Callbacks)
 
 ## Information
 * You need to add a function named `on_load` on your script. This function gets called after the script is successfuly loaded into GSF
@@ -21,7 +21,7 @@
 
 * Snake cases.
 
-## Namespaces
+## API
 **NOTE:** These namespaces are "pseudo" namespaces implemented through tables. There's a slight performance issue when you call/use the API from the "namespace" due to lua having to "resolve" these values from the "namespace". If you are calling/using an API a lot it is recommended to copy it to a local variable then use that instead.
 
 Example:
