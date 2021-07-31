@@ -51,5 +51,6 @@ namespace gsf
 		std::uintptr_t _api_mem_ida_scan(std::uintptr_t start_adr, std::size_t size, std::string ida_pattern);
 		int _api_mem_patch(std::uintptr_t addr, std::vector<std::uint8_t> byte_array);
 		std::uint64_t _api_mem_read_uint(std::uintptr_t addr, std::size_t prim_t_size);
+		void _api_mem_write_uint(std::uintptr_t addr, std::size_t prim_t_size, std::uint64_t value);
 	};
 }

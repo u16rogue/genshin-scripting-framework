@@ -123,6 +123,7 @@ bool gsf::script::setup_script_api(std::unique_ptr<sol::state> &state)
 	namespace_mem.set_function("ida_scan", &gsf::script::_api_mem_ida_scan, this);
 	namespace_mem.set_function("patch", &gsf::script::_api_mem_patch, this);
 	namespace_mem.set_function("read_uint", &gsf::script::_api_mem_read_uint, this);
+	namespace_mem.set_function("write_uint", &gsf::script::_api_mem_write_uint, this);
 
 	return true;
 }
@@ -193,4 +194,14 @@ std::uint64_t gsf::script::_api_mem_read_uint(std::uintptr_t addr, std::size_t p
 	std::uint64_t result = 0;
 	std::memcpy(&result, reinterpret_cast<void *>(addr), prim_t_size);
 	return result;
+}
+
+void gsf::script::_api_mem_write_uint(std::uintptr_t addr, std::size_t prim_t_size, std::uint64_t value)
+{
+	if (prim_t_size > 8)
+	{
+		this->internal_log_error("mem.write_uint # parameter prim_t_size is out of bound");
+	}
+
+	std::memcpy(reinterpret_cast<void *>(addr), &value, prim_t_size);
 }

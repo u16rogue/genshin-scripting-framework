@@ -120,6 +120,22 @@ Reads the specified memory address as an unisgned integer with a specified size.
 * Permission
     * None
 
+### `mem.write_uint(addr, prim_t_size, value)`
+Writes the `value` to a specified memory address
+* Parameters
+    * addr - [pointer] Address in memory to write.
+    * prim_t_size - [integer] Size of the primitive int type to write
+        * 1 - BYTE
+        * 2 - U16
+        * 4 - U32
+        * 8 - U64
+        * 8 - Pointer
+    * value - [integer] Value to write
+* Return
+* Remarks
+* Permission
+    * None
+
 ## Callbacks
 n/a
 
