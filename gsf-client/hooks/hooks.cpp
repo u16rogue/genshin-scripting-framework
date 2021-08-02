@@ -8,51 +8,58 @@
 
 bool hooks::install()
 {
-	if (MH_Initialize() != MH_OK)
+    DEBUG_CON_PRINT("\nInstalling hooks...");
+
+	if (!CON_C_LOG(L"Initializing MinHook...", MH_Initialize() == MH_OK))
 		return 0;
 
 	// WindowProc
-	hooks::ch_wndproc->init(global::game_window);
-    
+	CON_C_LOG(L"Init WndProc hook...", hooks::ch_wndproc->init(global::game_window));
+
 	ID3D11Device   *dummy_device_ptr;
 	IDXGISwapChain *dummy_swapchain_ptr;
 
 	D3D_FEATURE_LEVEL fl;
     DXGI_SWAP_CHAIN_DESC scd =
     {
-                                                     // DXGI_MODE_DESC
-        {                                            
-            800,                                     // Width
-            600,                                     // Height
-            { 60, 1 },                               // RefreshRate
-            DXGI_FORMAT_R8G8B8A8_UNORM,              // Format
-            DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED,    // ScanlineOrdering
-            DXGI_MODE_SCALING_UNSPECIFIED            // Scaling
-        },                                           
-                                                     // DXGI_SAMPLE_DESC
-        {                                            
-            1,                                       // Count
-            0                                        // Quality
+        .BufferDesc
+        {
+            .Width            = 800,
+            .Height           = 600,
+            .RefreshRate      = { 60, 1 },
+            .Format           = DXGI_FORMAT_R8G8B8A8_UNORM,
+            .ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED,
+            .Scaling          = DXGI_MODE_SCALING_UNSPECIFIED
         },
 
-        DXGI_USAGE_RENDER_TARGET_OUTPUT,             // BufferUsage
-        1,                                           // BufferCount
-        reinterpret_cast<HWND>(global::game_window), // OutputWindow
-        TRUE,                                        // Windowed
-        DXGI_SWAP_EFFECT_DISCARD,                    // SwapEffect
-        0                                            // Flags
+        .SampleDesc
+        {
+            .Count   = 1,
+            .Quality = 0
+        },
+
+        .BufferUsage  = DXGI_USAGE_RENDER_TARGET_OUTPUT,
+        .BufferCount  = 1,
+        .OutputWindow = reinterpret_cast<HWND>(global::game_window),
+        .Windowed     = TRUE,
+        .SwapEffect   = DXGI_SWAP_EFFECT_DISCARD,
+        .Flags        = 0
     };
 
-    if (FAILED(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_REFERENCE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &scd, &dummy_swapchain_ptr, &dummy_device_ptr, &fl, nullptr)))
+
+
+    if (!CON_C_LOG(L"D3D11CreateDeviceAndSwapChain...", SUCCEEDED(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_REFERENCE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &scd, &dummy_swapchain_ptr, &dummy_device_ptr, &fl, nullptr))) || !dummy_swapchain_ptr)
     {
         return false;
     }
-    
-    void **swapchain_vtable = *reinterpret_cast<void ***>(dummy_swapchain_ptr);
 
-    // IDXGISwapChain::Present
-	hooks::ch_present->init(GET_VFUNC_FROM_VTABLE_BY_IDX(swapchain_vtable, gsf::def::vtidx::IDXGISwapChain::Present));
+    ID3D11DeviceContext *dummy_device_context_ptr = nullptr;
+    dummy_device_ptr->GetImmediateContext(&dummy_device_context_ptr);
 
+	CON_C_LOG(L"Init IDXGISwapChain::Present hook...",   hooks::ch_present->init(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_swapchain_ptr, 0, gsf::def::vtidx::IDXGISwapChain::Present)));     // IDXGISwapChain::Present
+    CON_C_LOG(L"Init ID3D11DeviceContext::Draw hook...", hooks::ch_draw->init(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_device_context_ptr, 0, gsf::def::vtidx::ID3D11DeviceContext::Draw))); // ID3D11DeviceContext::Draw
+
+    dummy_device_context_ptr->Release();
 	dummy_swapchain_ptr->Release();
 	dummy_device_ptr->Release();
 

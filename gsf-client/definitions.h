@@ -9,4 +9,10 @@ namespace gsf::def::vtidx
 	{
 		Present = 8,
 	};
+
+	enum class ID3D11DeviceContext
+	{
+		DrawIndexed = 12,
+		Draw = 13
+	};
 }

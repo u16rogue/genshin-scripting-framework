@@ -147,6 +147,7 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClCompile Include="features\fps_counter.cpp" />
     <ClCompile Include="gsf_client.cpp" />
     <ClCompile Include="helpers\imgui_prompts.cpp" />
+    <ClCompile Include="hooks\Draw.cpp" />
     <ClCompile Include="hooks\hooks.cpp" />
     <ClCompile Include="hooks\Present.cpp" />
     <ClCompile Include="hooks\WindowProc.cpp" />
