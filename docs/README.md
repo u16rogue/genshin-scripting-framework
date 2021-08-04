@@ -37,13 +37,13 @@ This requires [Git](https://git-scm.com/). If you don't have Git yet you can [do
 * If you are planning on contributing or want access to the repo's history locally:
     
     ```sh
-    git clone https://github.com/rogueeeee/genshin-scripting-framework.git
+    git clone https://github.com/u16rogue/genshin-scripting-framework.git
     ```
 
 * If you only want to compile and use GSF:
 
     ```sh
-    git clone --depth 1 https://github.com/rogueeeee/genshin-scripting-framework.git
+    git clone --depth 1 https://github.com/u16rogue/genshin-scripting-framework.git
     ```
 
 ### Projects
