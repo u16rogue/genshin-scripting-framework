@@ -6,6 +6,34 @@
 #include <macro.h>
 #include <pattern_scan.h>
 
+/// <summary>
+/// RAII implementation of applying script state value
+/// Reasoning: im not gonna type [this->state_value = gsf::script::state::UNLOADED;] for every [return false;] in gsf::script::load()
+/// </summary>
+class _load_state_trigger
+{
+public:
+	_load_state_trigger(gsf::script::state &state_value_)
+		: state_value(state_value_)
+	{
+		this->state_value = gsf::script::state::LOADING;
+	}
+
+	~_load_state_trigger()
+	{
+		if (this->state_value == gsf::script::state::LOADING)
+			this->state_value = gsf::script::state::UNLOADED;
+	}
+
+	void set_state_loaded()
+	{
+		this->state_value = gsf::script::state::LOADED;
+	}
+
+private:
+	gsf::script::state &state_value;
+};
+
 gsf::script::script(std::string_view filepath_)
 	: filepath(filepath_)
 {
@@ -18,6 +46,8 @@ bool gsf::script::load()
 
 	if (!this->script_file_exists())
 		return false;
+
+	_load_state_trigger state_trigger(this->current_state);
 
 	// We use a std::unique_ptr in the stack so incase of failure we can just immediately return and automatically destroy the lua state
 	// and this->lua_state will remain invalid (we use the bool operator to validate a script instance which internally just checks if a lua state exists)
@@ -58,14 +88,14 @@ bool gsf::script::load()
 
 	// upon success we can move the unique_ptr from this scope to the class
 	this->lua_state = std::move(temp_lua_state);
+	state_trigger.set_state_loaded();
+	++gsf::script::count_loaded_scripts;
 
 	DEBUG_COUT("\nLoaded lua: " << this->filepath);
 	this->logs.push_back("Successfuly loaded.");
 
 	// Run the script
 	callback_onload();
-
-	++gsf::script::count_loaded_scripts;
 	return true;
 }
 
@@ -75,10 +105,11 @@ bool gsf::script::unload()
 		return false;
 
 	this->logs.clear();
+	this->lua_state.reset();
+	this->current_state = gsf::script::state::UNLOADED;
+	--gsf::script::count_loaded_scripts;
 
 	DEBUG_COUT("\nUnloaded script: " << this->filepath);
-	this->lua_state.reset();
-	--gsf::script::count_loaded_scripts;
 	return true;
 }
 
@@ -100,6 +131,11 @@ const std::vector<std::string> &gsf::script::get_logs()
 const std::string_view gsf::script::get_filepath()
 {
 	return this->filepath;
+}
+
+const gsf::script::state gsf::script::get_current_state()
+{
+	return this->current_state;
 }
 
 void gsf::script::internal_log_error(std::string_view msg)

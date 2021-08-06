@@ -13,6 +13,14 @@ namespace gsf
 	class script
 	{
 	public:
+		enum class state
+		{
+			UNLOADED,
+			LOADING,
+			LOADED,
+		};
+
+	public:
 		script(std::string_view filepath_);
 
 		bool load();
@@ -22,15 +30,17 @@ namespace gsf
 		operator bool() const;
 
 		const std::vector<std::string> &get_logs();
-		const std::string_view get_filepath();
+		const std::string_view          get_filepath();
+		const gsf::script::state        get_current_state();
 
 	public:
 		inline static std::size_t count_loaded_scripts = 0;
 
 	private:
-		const std::string filepath;
-		std::vector<std::string> logs;
-		std::unique_ptr<sol::state> lua_state = nullptr;
+		const std::string           filepath;
+		std::vector<std::string>    logs;
+		std::unique_ptr<sol::state> lua_state     = nullptr;
+		script::state               current_state = script::state::UNLOADED;
 
 	private:
 		void internal_log_error(std::string_view msg);

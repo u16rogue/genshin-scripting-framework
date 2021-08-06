@@ -8,17 +8,9 @@
 #include <misc_utils.h>
 #include <macro.h>
 #include <thread>
-#include <deque>
 #include "helpers/imgui_prompts.h"
 
 // TODO: optional header to load autoexec lua thing
-
-// TODO: load and unload scripts in a separate thread
-#if 0
-std::thread script_action_queue;
-std::deque<gsf::script *> script_queued_load;
-std::deque<gsf::script *> script_queued_unload;
-#endif
 
 std::vector<gsf::script> script_instances;
 bool                     visible = false;
@@ -123,6 +115,7 @@ void imported_scripts_list_draw()
 
         ImGui::TextColored(inst ? file_color_loaded : file_color_unloaded, inst.get_filepath().data());
 
+        /*
         #ifdef _DEBUG
         if (ImGui::Button("Remove"))
         {
@@ -132,8 +125,8 @@ void imported_scripts_list_draw()
             }
         }
         #endif
+        */
 
-        ImGui::SameLine();
         if (ImGui::Button("Show Logs"))
         {
             if (script_log_window_selected == &inst || !script_log_window_selected)
@@ -154,12 +147,26 @@ void imported_scripts_list_draw()
         }
 
         ImGui::SameLine();
-        if (ImGui::Button(inst ? "Unload" : "Load"))
+        auto script_state = inst.get_current_state();
+
+        if (script_state == gsf::script::state::LOADING)
         {
-            if (!inst)
-                inst.load();
-            else
-                inst.unload();
+            ImGui::Text("Loading...");
+        }
+        else if (ImGui::Button(script_state == gsf::script::state::LOADED ? "Unload" : "Load"))
+        {
+            // uhhh...
+            std::thread([](auto script, auto state)
+            {
+                if (state == gsf::script::state::LOADED)
+                {
+                    script->unload();
+                }
+                else
+                {
+                    script->load();
+                }
+            }, &inst, script_state).detach();
         }
 
         ImGui::Separator();
