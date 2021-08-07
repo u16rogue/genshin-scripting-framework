@@ -55,6 +55,18 @@ Used for logging messages into the script's internal script log and if GSF is in
 * Permission
     * None
 
+### `gsf.register_callback(id, callback)`
+Registers a lua callback function to be called based off the provided ID.
+* Parameters
+    * id - [string] ID of the callback to register for.
+    * callback - [function] Lua function to be called for the event id.
+* Return
+    * result - [boolean] Returns **true** if the callback was successfuly registered, otherwise **false**.
+* Remarks
+    * Check the [Callbacks](#Callbacks) section for more information regarding function signatures and ID's
+* Permission
+    * None
+
 ## `win` Namespace
 
 ### `win.find_module(module_name)`
@@ -137,8 +149,17 @@ Writes the `value` to a specified memory address
     * None
 
 ## Callbacks
-n/a
 
+### on_imgui_draw
+Callback used for calling ImGUI API and ImGUI rendering.
+* ID: `on_imgui_draw`
+* Function signature
+```lua
+function foo()
+
+end
+```
+* Remarks
 <!--
 ### `x.x()`
 x.
@@ -147,4 +168,12 @@ x.
 * Remarks
 * Permission
     * None
+
+### 
+.
+* ID: ``
+* Function signature
+```lua
+```
+* Remarks
 -->

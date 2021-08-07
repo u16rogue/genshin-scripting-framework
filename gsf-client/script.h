@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <cstdint>
+#include <unordered_map>
 
 namespace gsf
 {
@@ -20,6 +21,18 @@ namespace gsf
 			LOADED,
 		};
 
+		struct callback
+		{
+			bool active = false;
+			sol::function callback_function;
+
+			void reg_cb(sol::function &function_)
+			{
+				this->callback_function = function_;
+				this->active = true;
+			}
+		};
+
 	public:
 		script(std::string_view filepath_);
 
@@ -29,9 +42,9 @@ namespace gsf
 		bool script_file_exists();
 		operator bool() const;
 
-		const std::vector<std::string> &get_logs();
-		const std::string_view          get_filepath();
-		const gsf::script::state        get_current_state();
+		const std::vector<std::string> &get_logs() const;
+		const std::string_view          get_filepath() const;
+		const gsf::script::state        get_current_state() const;
 
 	public:
 		inline static std::size_t count_loaded_scripts = 0;
@@ -41,6 +54,15 @@ namespace gsf
 		std::vector<std::string>    logs;
 		std::unique_ptr<sol::state> lua_state     = nullptr;
 		script::state               current_state = script::state::UNLOADED;
+
+	private:
+		struct _callbacks
+		{
+			script::callback on_imgui_draw;
+		} callbacks;
+
+	public:
+		const script::_callbacks &get_callbacks() const;
 
 	private:
 		void internal_log_error(std::string_view msg);
@@ -53,6 +75,7 @@ namespace gsf
 
 		// gsf
 		void _api_gsf_log(std::string txt);
+		bool _api_gsf_register_callback(std::string id, sol::function callback);
 
 		// win
 		sol::object _api_win_find_module(std::wstring module_name);

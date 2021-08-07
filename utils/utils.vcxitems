@@ -23,6 +23,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)winternal.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)hash.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)pattern_scan.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)console.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)hooking.h" />

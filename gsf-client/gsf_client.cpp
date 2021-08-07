@@ -137,6 +137,8 @@ inline void gsf_draw_menubaritems()
 
 void gsf::render_imgui()
 {
+    auto &imported_scripts = gsf::script_manager::get_scripts();
+
     if (ImGui::BeginMainMenuBar())
     {
         if (ImGui::BeginMenu(
@@ -151,7 +153,7 @@ void gsf::render_imgui()
         }
 
         ImGui::Separator();
-        ImGui::Text("(%d/%d)", gsf::script::count_loaded_scripts, gsf::script_manager::get_scripts().size());
+        ImGui::Text("(%d/%d)", gsf::script::count_loaded_scripts, imported_scripts.size());
         ImGui::Separator();
         gsf_draw_menubaritems();
     }
@@ -161,6 +163,16 @@ void gsf::render_imgui()
 
     if (gsf_about_menu_visible)
         gsf_about_on_imgui_draw();
+
+    for (auto &script : imported_scripts)
+    {
+        auto &on_imgui_callback = script.get_callbacks().on_imgui_draw;
+
+        if (!on_imgui_callback.active)
+            continue;
+
+        on_imgui_callback.callback_function();
+    }
 
     helpers::imgui_popup_modal::on_imgui_draw();
 }

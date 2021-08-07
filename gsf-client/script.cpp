@@ -5,6 +5,7 @@
 #include <winternal.h>
 #include <macro.h>
 #include <pattern_scan.h>
+#include <hash.h>
 
 /// <summary>
 /// RAII implementation of applying script state value
@@ -123,19 +124,24 @@ gsf::script::operator bool() const
 	return this->lua_state.operator bool();
 }
 
-const std::vector<std::string> &gsf::script::get_logs()
+const std::vector<std::string> &gsf::script::get_logs() const
 {
 	return this->logs;
 }
 
-const std::string_view gsf::script::get_filepath()
+const std::string_view gsf::script::get_filepath() const
 {
 	return this->filepath;
 }
 
-const gsf::script::state gsf::script::get_current_state()
+const gsf::script::state gsf::script::get_current_state() const
 {
 	return this->current_state;
+}
+
+const gsf::script::_callbacks &gsf::script::get_callbacks() const
+{
+	return this->callbacks;
 }
 
 void gsf::script::internal_log_error(std::string_view msg)
@@ -149,6 +155,7 @@ bool gsf::script::setup_script_api(std::unique_ptr<sol::state> &state)
 	// gsf namespace
 	auto namespace_gsf = state->operator[]("gsf").get_or_create<sol::table>();
 	namespace_gsf.set_function("log", &gsf::script::_api_gsf_log, this);
+	namespace_gsf.set_function("register_callback", &gsf::script::_api_gsf_register_callback, this);
 
 	// win namespace
 	auto namespace_win = state->operator[]("win").get_or_create<sol::table>();
@@ -168,6 +175,22 @@ void gsf::script::_api_gsf_log(std::string txt)
 {
 	DEBUG_COUT("\n[SCRIPT] " << txt);
 	this->logs.push_back(txt);
+}
+
+bool gsf::script::_api_gsf_register_callback(std::string id, sol::function callback)
+{
+	switch (utils::hash_fnv1a(id.c_str()))
+	{
+		case utils::hash_fnv1a_cv("on_imgui_draw"):
+			this->callbacks.on_imgui_draw.reg_cb(callback);
+			break;
+
+		default:
+			this->internal_log_error("Invalid callback ID: " + id);
+			return false;
+	}
+
+	return true;
 }
 
 sol::object gsf::script::_api_win_find_module(std::wstring module_name)
