@@ -26,11 +26,17 @@ namespace gsf
 			bool active = false;
 			sol::function callback_function;
 
-			void reg_cb(sol::function &function_)
+			void reg(sol::function &function_)
 			{
 				this->callback_function = function_;
 				this->active = true;
-			}
+			};
+
+			void unreg()
+			{
+				this->callback_function = sol::nil;
+				this->active = false;
+			};
 		};
 
 	public:

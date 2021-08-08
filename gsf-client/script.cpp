@@ -105,6 +105,12 @@ bool gsf::script::unload()
 	if (!this->lua_state.operator bool())
 		return false;
 
+	script::callback *arr_callbacks = reinterpret_cast<script::callback *>(&this->callbacks);
+	for (int i = 0; i < sizeof(this->callbacks) / sizeof(callback); ++i)
+	{
+		arr_callbacks[i].unreg();
+	}
+
 	this->logs.clear();
 	this->lua_state.reset();
 	this->current_state = gsf::script::state::UNLOADED;
@@ -182,7 +188,7 @@ bool gsf::script::_api_gsf_register_callback(std::string id, sol::function callb
 	switch (utils::hash_fnv1a(id.c_str()))
 	{
 		case utils::hash_fnv1a_cv("on_imgui_draw"):
-			this->callbacks.on_imgui_draw.reg_cb(callback);
+			this->callbacks.on_imgui_draw.reg(callback);
 			break;
 
 		default:

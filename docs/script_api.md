@@ -159,6 +159,7 @@ function foo()
 
 end
 ```
+* Function signature arguments
 * Remarks
 <!--
 ### `x.x()`
@@ -175,5 +176,6 @@ x.
 * Function signature
 ```lua
 ```
+* Function signature arguments
 * Remarks
 -->

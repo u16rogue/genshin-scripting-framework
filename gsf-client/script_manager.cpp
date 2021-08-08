@@ -180,7 +180,8 @@ void script_log_window_draw()
         return;
 
     ImGui::SetNextWindowSize({ 446, 336 }, ImGuiCond_::ImGuiCond_FirstUseEver);
-    if (ImGui::Begin("Script Logs", &script_log_window_visible, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse))
+    // TODO: use window title to display current log file
+    if (ImGui::Begin("Script Logs ###script_logs_window", &script_log_window_visible, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse))
     {
         const char *header_text = "No script selected.";
         if (script_log_window_selected)
@@ -188,18 +189,19 @@ void script_log_window_draw()
 
         ImGui::Text("Logs of script file: %s", header_text);
 
-        ImGui::BeginChild("Script Logs List", ImVec2(0, 0), true);
-
-        const auto &curr_logs = script_log_window_selected->get_logs();
-        for (long long i = curr_logs.size() - 1; i >= 0; --i)
+        if (script_log_window_selected)
         {
-            ImGui::TextWrapped("[%d] %s", i, curr_logs[i].c_str());
-            // ImGui::Separator();
+            ImGui::BeginChild("Script Logs List", ImVec2(0, 0), true);
+
+            const auto &curr_logs = script_log_window_selected->get_logs();
+            for (long long i = curr_logs.size() - 1; i >= 0; --i) //for (auto log_entry = curr_logs.rbegin(); log_entry != curr_logs.rend(); ++log_entry)
+            {
+                ImGui::TextWrapped("[%d] %s", i, curr_logs[i].c_str());
+                // ImGui::Separator();
+            }
+
+            ImGui::EndChild();
         }
-
-        //for (auto log_entry = curr_logs.rbegin(); log_entry != curr_logs.rend(); ++log_entry)
-        ImGui::EndChild();
-
     }
     ImGui::End();
 }
