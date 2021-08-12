@@ -17,6 +17,8 @@ bool                     visible = false;
 
 bool         script_log_window_visible  = false;
 gsf::script *script_log_window_selected = nullptr; // Points to the script instance to read the log from for the log window
+const char * const script_log_window_id = "###script_logs_window";
+std::string  script_log_window_title    = std::string("Script Logs (Nothing selected)") + script_log_window_id;
 
 const char         *error_message         = "No error message provided.";
 bool                error_message_visible = false;
@@ -129,10 +131,12 @@ void imported_scripts_list_draw()
 
         if (ImGui::Button("Show Logs"))
         {
+            // NOTE: no issues right now since scripts cant be removed, pointer should be nulled back in the future
             if (script_log_window_selected == &inst || !script_log_window_selected)
                 script_log_window_visible = !script_log_window_visible;
 
             script_log_window_selected = &inst;
+            script_log_window_title = std::string("Script Logs (") + script_log_window_selected->get_filepath().data() + ")" + script_log_window_id;
         }
         else if (ImGui::IsItemHovered())
         {
@@ -181,27 +185,18 @@ void script_log_window_draw()
 
     ImGui::SetNextWindowSize({ 446, 336 }, ImGuiCond_::ImGuiCond_FirstUseEver);
     // TODO: use window title to display current log file
-    if (ImGui::Begin("Script Logs ###script_logs_window", &script_log_window_visible, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse))
+    if (ImGui::Begin(script_log_window_title.c_str(), &script_log_window_visible, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse) && script_log_window_selected)
     {
-        const char *header_text = "No script selected.";
-        if (script_log_window_selected)
-            header_text = script_log_window_selected->get_filepath().data();
+        ImGui::BeginChild("Script Logs List", ImVec2(0, 0), true);
 
-        ImGui::Text("Logs of script file: %s", header_text);
-
-        if (script_log_window_selected)
+        const auto &curr_logs = script_log_window_selected->get_logs();
+        for (long long i = curr_logs.size() - 1; i >= 0; --i) //for (auto log_entry = curr_logs.rbegin(); log_entry != curr_logs.rend(); ++log_entry)
         {
-            ImGui::BeginChild("Script Logs List", ImVec2(0, 0), true);
-
-            const auto &curr_logs = script_log_window_selected->get_logs();
-            for (long long i = curr_logs.size() - 1; i >= 0; --i) //for (auto log_entry = curr_logs.rbegin(); log_entry != curr_logs.rend(); ++log_entry)
-            {
-                ImGui::TextWrapped("[%d] %s", i, curr_logs[i].c_str());
-                // ImGui::Separator();
-            }
-
-            ImGui::EndChild();
+            ImGui::TextWrapped("[%d] %s", i, curr_logs[i].c_str());
+            // ImGui::Separator();
         }
+
+        ImGui::EndChild();
     }
     ImGui::End();
 }
