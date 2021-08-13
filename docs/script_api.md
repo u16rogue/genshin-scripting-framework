@@ -42,6 +42,7 @@ end
 | [gsf](#gsf-Namespace)             | Provides internal script related API's for GSF |
 | [win](#win-Namespace)             | Windows API and internals                      |
 | [mem](#mem-Namespace)             | Process memory access                          |
+| [imgui](#imgui-Namespace)         | API wrapper to ImGui                           |
 
 ## `gsf` Namespace
 
@@ -147,6 +148,20 @@ Writes the `value` to a specified memory address
 * Remarks
 * Permission
     * None
+
+## `imgui` Namespace
+This API is only a wrapper for ImGui. Documentation for each function exists in the [ImGui repo](https://github.com/ocornut/imgui).
+
+**NOTE:** These API must be called from an [on_imgui_draw](#on_imgui_draw) callback.
+
+| API | Wraps | Translation |
+|:---:|:-----:|:-----------:|
+| begin     | ImGui::Begin     | `imgui.begin(text)` → `ImGui::Begin(text, nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse)` |
+| iend      | ImGui::End       |  |
+| text      | ImGui::Text      | `imgui.text(text)` → `ImGui::Text(text)` |
+| same_line | ImGui::SameLine  |  |
+| button    | ImGui::Button    | `imgui.button(text)` → `ImGui::Button(text)` |
+| separator | ImGui::Separator | |
 
 ## Callbacks
 

@@ -184,7 +184,6 @@ void script_log_window_draw()
         return;
 
     ImGui::SetNextWindowSize({ 446, 336 }, ImGuiCond_::ImGuiCond_FirstUseEver);
-    // TODO: use window title to display current log file
     if (ImGui::Begin(script_log_window_title.c_str(), &script_log_window_visible, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse) && script_log_window_selected)
     {
         ImGui::BeginChild("Script Logs List", ImVec2(0, 0), true);

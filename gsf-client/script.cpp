@@ -6,6 +6,7 @@
 #include <macro.h>
 #include <pattern_scan.h>
 #include <hash.h>
+#include <imgui.h>
 
 /// <summary>
 /// RAII implementation of applying script state value
@@ -173,6 +174,15 @@ bool gsf::script::setup_script_api(std::unique_ptr<sol::state> &state)
 	namespace_mem.set_function("patch", &gsf::script::_api_mem_patch, this);
 	namespace_mem.set_function("read_uint", &gsf::script::_api_mem_read_uint, this);
 	namespace_mem.set_function("write_uint", &gsf::script::_api_mem_write_uint, this);
+
+	// imgui namespace
+	auto namespace_imgui = state->operator[]("imgui").get_or_create<sol::table>();
+	namespace_imgui.set_function("begin", [](const char *text) -> bool { return ImGui::Begin(text, nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse); });
+	namespace_imgui.set_function("iend", &ImGui::End);
+	namespace_imgui.set_function("text", [](const char *text) { ImGui::Text(text); } );
+	namespace_imgui.set_function("same_line", &ImGui::SameLine);
+	namespace_imgui.set_function("button", [](const char *text) -> bool { return ImGui::Button(text); });
+	namespace_imgui.set_function("separator", &ImGui::Separator);
 
 	return true;
 }
