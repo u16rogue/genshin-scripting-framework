@@ -28,7 +28,7 @@ const std::vector<gsf::script> &gsf::script_manager::get_scripts()
     return script_instances;
 }
 
-bool gsf::script_manager::import_script(std::string_view file_path)
+bool gsf::script_manager::script_import(std::string_view file_path, gsf::script **script_instance_out)
 {
     if (!std::filesystem::exists(file_path))
         return false;
@@ -37,7 +37,10 @@ bool gsf::script_manager::import_script(std::string_view file_path)
         if (script.get_filepath() == file_path)
             return false;
 
-    script_instances.emplace_back(file_path);
+    auto &loaded_script = script_instances.emplace_back(file_path);
+    if (script_instance_out)
+        *script_instance_out = &loaded_script;
+
     return true;
 }
 
@@ -58,7 +61,7 @@ void import_prompt_callback()
     ImGui::SameLine();
     if (ImGui::Button("Import") || input_enter_keyed)
     {
-        if (gsf::script_manager::import_script(buffer_import))
+        if (gsf::script_manager::script_import(buffer_import))
         {
             std::memset(buffer_import, '\0', sizeof(buffer_import));
             ImGui::CloseCurrentPopup();

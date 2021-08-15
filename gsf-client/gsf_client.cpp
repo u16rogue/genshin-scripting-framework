@@ -50,8 +50,8 @@ bool gsf::init()
 
     #ifdef GSF_AUTOEXEC_SCRIPT_PATH
     {
-        if (gsf::script_manager::import_script(GSF_AUTOEXEC_SCRIPT_PATH))
-            const_cast<gsf::script *>(&gsf::script_manager::get_scripts()[0])->load(); // TODO: implement this properly
+        if (gsf::script *script = nullptr; gsf::script_manager::script_import(GSF_AUTOEXEC_SCRIPT_PATH, &script))
+            script->load();
     }
     #endif
 
