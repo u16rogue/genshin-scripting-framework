@@ -16,6 +16,10 @@
 #include "hooks/hooks.h"
 #include "features/fps_counter.h"
 
+#if __has_include("autoexecdef.h") && !defined( GSF_AUTOEXEC_SCRIPT_PATH )
+    #include "autoexecdef.h"
+#endif
+
 bool get_game_window_handle(void *&handle_out)
 {
     int timeout = 30;
@@ -43,6 +47,13 @@ bool gsf::init()
 
     ImGui::CreateContext();
     ImGui::GetIO().IniFilename = nullptr;
+
+    #ifdef GSF_AUTOEXEC_SCRIPT_PATH
+    {
+        if (gsf::script_manager::import_script(GSF_AUTOEXEC_SCRIPT_PATH))
+            const_cast<gsf::script *>(&gsf::script_manager::get_scripts()[0])->load(); // TODO: implement this properly
+    }
+    #endif
 
 	return true;
 }
