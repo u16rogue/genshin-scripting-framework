@@ -101,11 +101,10 @@ inline void gsf_draw_dropmenu()
 {
     if (ImGui::MenuItem("Script Manager"))
     {
-        bool &toggle = gsf::script_manager::get_visible_flag();
-        toggle = !toggle;
+        gsf::script_manager::visible ^= true; // gsf::script_manager::visible = !gsf::script_manager::visible
     }
 
-    ImGui::Checkbox("FPS Counter", &gsf::features::fps_counter::get_active_flag());
+    ImGui::Checkbox("FPS Counter", &gsf::features::fps_counter::active);
 
     if (ImGui::BeginMenu("Theme"))
     {

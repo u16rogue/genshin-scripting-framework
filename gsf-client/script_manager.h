@@ -6,7 +6,8 @@
 
 namespace gsf::script_manager
 {
-	bool &get_visible_flag();
+	inline bool visible = false;
 	void on_imgui_draw();
 	const std::vector<gsf::script> &get_scripts();
+	bool import_script(std::string_view file_path);
 }

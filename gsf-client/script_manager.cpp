@@ -13,7 +13,6 @@
 // TODO: optional header to load autoexec lua thing
 
 std::vector<gsf::script> script_instances;
-bool                     visible = false;
 
 bool         script_log_window_visible  = false;
 gsf::script *script_log_window_selected = nullptr; // Points to the script instance to read the log from for the log window
@@ -24,14 +23,22 @@ const char         *error_message         = "No error message provided.";
 bool                error_message_visible = false;
 utils::fader_float  error_message_fader   = utils::fader_float(1000, 3000);
 
-bool &gsf::script_manager::get_visible_flag()
-{
-    return visible;
-}
-
 const std::vector<gsf::script> &gsf::script_manager::get_scripts()
 {
     return script_instances;
+}
+
+bool gsf::script_manager::import_script(std::string_view file_path)
+{
+    if (!std::filesystem::exists(file_path))
+        return false;
+
+    for (auto &script : script_instances)
+        if (script.get_filepath() == file_path)
+            return false;
+
+    script_instances.emplace_back(file_path);
+    return true;
 }
 
 void show_error(const char *msg)
@@ -51,32 +58,14 @@ void import_prompt_callback()
     ImGui::SameLine();
     if (ImGui::Button("Import") || input_enter_keyed)
     {
-        if (std::filesystem::exists(buffer_import))
+        if (gsf::script_manager::import_script(buffer_import))
         {
-            bool already_exists = false;
-            for (auto &inst : script_instances)
-            {
-                if (inst.get_filepath() == buffer_import)
-                {
-                    already_exists = true;
-                    break;
-                }
-            }
-
-            if (already_exists)
-            {
-                show_error("Script already imported!");
-            }
-            else
-            {
-                script_instances.emplace_back(buffer_import);
-                std::memset(buffer_import, '\0', sizeof(buffer_import));
-                ImGui::CloseCurrentPopup();
-            }
+            std::memset(buffer_import, '\0', sizeof(buffer_import));
+            ImGui::CloseCurrentPopup();
         }
         else
         {
-            show_error("File not found!");
+            show_error("Failed to import script!");
         }
     }
 
@@ -189,7 +178,7 @@ void script_log_window_draw()
         ImGui::BeginChild("Script Logs List", ImVec2(0, 0), true);
 
         const auto &curr_logs = script_log_window_selected->get_logs();
-        for (long long i = curr_logs.size() - 1; i >= 0; --i) //for (auto log_entry = curr_logs.rbegin(); log_entry != curr_logs.rend(); ++log_entry)
+        for (auto i = curr_logs.size() - 1; i >= 0; --i) //for (auto log_entry = curr_logs.rbegin(); log_entry != curr_logs.rend(); ++log_entry)
         {
             ImGui::TextWrapped("[%d] %s", i, curr_logs[i].c_str());
             // ImGui::Separator();

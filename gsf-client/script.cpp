@@ -180,7 +180,7 @@ bool gsf::script::setup_script_api(std::unique_ptr<sol::state> &state)
 	namespace_imgui.set_function("begin", [](const char *text) -> bool { return ImGui::Begin(text, nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse); });
 	namespace_imgui.set_function("iend", &ImGui::End);
 	namespace_imgui.set_function("text", [](const char *text) { ImGui::Text(text); } );
-	namespace_imgui.set_function("same_line", &ImGui::SameLine);
+	namespace_imgui.set_function("same_line", []() { ImGui::SameLine(); } );
 	namespace_imgui.set_function("button", [](const char *text) -> bool { return ImGui::Button(text); });
 	namespace_imgui.set_function("separator", &ImGui::Separator);
 

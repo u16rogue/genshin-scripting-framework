@@ -6,7 +6,7 @@
 
 namespace gsf::features::fps_counter
 {
-	bool &get_active_flag();
+	inline bool active = true;
 
 	void on_present();
 	void on_gsf_draw_menubaritems();
