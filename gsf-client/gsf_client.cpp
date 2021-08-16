@@ -49,10 +49,7 @@ bool gsf::init()
     ImGui::GetIO().IniFilename = nullptr;
 
     #ifdef GSF_AUTOEXEC_SCRIPT_PATH
-    {
-        if (gsf::script *script = nullptr; gsf::script_manager::script_import(GSF_AUTOEXEC_SCRIPT_PATH, &script))
-            script->load();
-    }
+    gsf::script_manager::script_autoexec(GSF_AUTOEXEC_SCRIPT_PATH);
     #endif
 
 	return true;

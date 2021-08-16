@@ -28,6 +28,32 @@ const std::vector<gsf::script> &gsf::script_manager::get_scripts()
     return script_instances;
 }
 
+bool gsf::script_manager::script_autoexec(std::string_view file_path)
+{
+    if (!std::filesystem::exists(file_path))
+        return false;
+
+    sol::state autoexec_script;
+
+    auto namespace_gsf = autoexec_script["gsf"].get_or_create<sol::table>();
+    namespace_gsf.set_function("import", [](const char *file_path) -> bool
+    {
+        return gsf::script_manager::script_import(file_path);
+    });
+
+    namespace_gsf.set_function("load", [](const char *file_path) -> bool
+    {
+        if (gsf::script *script = nullptr; gsf::script_manager::script_import(file_path, &script))
+            return script->load();
+
+        return false;
+    });
+
+    autoexec_script.script_file(file_path.data());
+
+    return true;
+}
+
 bool gsf::script_manager::script_import(std::string_view file_path, gsf::script **script_instance_out)
 {
     if (!std::filesystem::exists(file_path))
@@ -172,7 +198,7 @@ void imported_scripts_list_draw()
 
 void script_log_window_draw()
 {
-    if (!script_log_window_visible)
+    if (!script_log_window_visible || !script_log_window_selected)
         return;
 
     ImGui::SetNextWindowSize({ 446, 336 }, ImGuiCond_::ImGuiCond_FirstUseEver);
@@ -181,7 +207,7 @@ void script_log_window_draw()
         ImGui::BeginChild("Script Logs List", ImVec2(0, 0), true);
 
         const auto &curr_logs = script_log_window_selected->get_logs();
-        for (auto i = curr_logs.size() - 1; i >= 0; --i) //for (auto log_entry = curr_logs.rbegin(); log_entry != curr_logs.rend(); ++log_entry)
+        for (auto i = curr_logs.size() - 1; i != -1; --i) //for (auto log_entry = curr_logs.rbegin(); log_entry != curr_logs.rend(); ++log_entry)
         {
             ImGui::TextWrapped("[%d] %s", i, curr_logs[i].c_str());
             // ImGui::Separator();
