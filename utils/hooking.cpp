@@ -15,7 +15,7 @@ bool utils::hook_vmt_swap(void **vtable, int index, void *hook_fn, void **out_or
 
 	if (out_orig_fn)
 		*out_orig_fn = *vfunc_entry;
-	
+
 	*vfunc_entry = hook_fn;
 
 	if (!VirtualProtect(vfunc_entry, sizeof(void *), o_prot, &o_prot))

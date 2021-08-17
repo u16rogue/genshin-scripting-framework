@@ -5,7 +5,6 @@
 #include <winternal.h>
 #include <macro.h>
 #include <pattern_scan.h>
-#include <hash.h>
 #include <imgui.h>
 
 /// <summary>
@@ -82,7 +81,7 @@ bool gsf::script::load()
 		}
 	}
 
-	if (!this->setup_script_api(temp_lua_state))
+	if (!gsf::script::setup_script_api(*temp_lua_state.get()))
 	{
 		this->internal_log_error("Failed to load API in lua state");
 		return false;
@@ -146,6 +145,11 @@ const gsf::script::state gsf::script::get_current_state() const
 	return this->current_state;
 }
 
+sol::state &gsf::script::get_lua() const
+{
+	return *this->lua_state.get();
+}
+
 const gsf::script::_callbacks &gsf::script::get_callbacks() const
 {
 	return this->callbacks;
@@ -157,26 +161,26 @@ void gsf::script::internal_log_error(std::string_view msg)
 	this->logs.emplace_back(msg.data());
 }
 
-bool gsf::script::setup_script_api(std::unique_ptr<sol::state> &state)
+bool gsf::script::setup_script_api(sol::state &state)
 {
 	// gsf namespace
-	auto namespace_gsf = state->operator[]("gsf").get_or_create<sol::table>();
+	auto namespace_gsf = state["gsf"].get_or_create<sol::table>();
 	namespace_gsf.set_function("log", &gsf::script::_api_gsf_log, this);
 	namespace_gsf.set_function("register_callback", &gsf::script::_api_gsf_register_callback, this);
 
 	// win namespace
-	auto namespace_win = state->operator[]("win").get_or_create<sol::table>();
+	auto namespace_win = state["win"].get_or_create<sol::table>();
 	namespace_win.set_function("find_module", &gsf::script::_api_win_find_module, this);
 
 	// mem namespace
-	auto namespace_mem = state->operator[]("mem").get_or_create<sol::table>();
+	auto namespace_mem = state["mem"].get_or_create<sol::table>();
 	namespace_mem.set_function("ida_scan", &gsf::script::_api_mem_ida_scan, this);
 	namespace_mem.set_function("patch", &gsf::script::_api_mem_patch, this);
 	namespace_mem.set_function("read_uint", &gsf::script::_api_mem_read_uint, this);
 	namespace_mem.set_function("write_uint", &gsf::script::_api_mem_write_uint, this);
 
 	// imgui namespace
-	auto namespace_imgui = state->operator[]("imgui").get_or_create<sol::table>();
+	auto namespace_imgui = state["imgui"].get_or_create<sol::table>();
 	namespace_imgui.set_function("begin", [](const char *text) -> bool { return ImGui::Begin(text, nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse); });
 	namespace_imgui.set_function("iend", &ImGui::End);
 	namespace_imgui.set_function("text", [](const char *text) { ImGui::Text(text); } );
@@ -195,18 +199,19 @@ void gsf::script::_api_gsf_log(std::string txt)
 
 bool gsf::script::_api_gsf_register_callback(std::string id, sol::function callback)
 {
-	switch (utils::hash_fnv1a(id.c_str()))
+	auto hashed_id = utils::hash_fnv1a(id.c_str());
+	script::callback *arr_callbacks = reinterpret_cast<script::callback *>(&this->callbacks);
+	for (int i = 0; i < sizeof(this->callbacks) / sizeof(callback); ++i)
 	{
-		case utils::hash_fnv1a_cv("on_imgui_draw"):
-			this->callbacks.on_imgui_draw.reg(callback);
-			break;
-
-		default:
-			this->internal_log_error("Invalid callback ID: " + id);
-			return false;
+		if (arr_callbacks[i].active == false && hashed_id == arr_callbacks[i].hashed_name)
+		{
+			arr_callbacks[i].reg(callback);
+			return true;
+		}
 	}
 
-	return true;
+	this->internal_log_error("Invalid callback ID: " + id);
+	return false;
 }
 
 sol::object gsf::script::_api_win_find_module(std::wstring module_name)

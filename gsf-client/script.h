@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 #include <cstdint>
-#include <unordered_map>
+#include <hash.h>
 
 namespace gsf
 {
@@ -23,6 +23,11 @@ namespace gsf
 
 		struct callback
 		{
+			callback(std::uint64_t hashed_name_)
+				: hashed_name(hashed_name_)
+			{}
+
+			const std::uint64_t hashed_name;
 			bool active = false;
 			sol::function callback_function;
 
@@ -47,6 +52,7 @@ namespace gsf
 
 		bool script_file_exists();
 		operator bool() const;
+		sol::state &get_lua() const;
 
 		const std::vector<std::string> &get_logs() const;
 		const std::string_view          get_filepath() const;
@@ -62,17 +68,19 @@ namespace gsf
 		script::state               current_state = script::state::UNLOADED;
 
 	private:
+		#define _GSF_SCRIPT_DECLARE_CALLBACK(name) script::callback name = script::callback(utils::hash_fnv1a(#name))
 		struct _callbacks
 		{
-			script::callback on_imgui_draw;
+			_GSF_SCRIPT_DECLARE_CALLBACK(on_imgui_draw);
+			_GSF_SCRIPT_DECLARE_CALLBACK(dx_draw);
 		} callbacks;
-
+		#undef _GSF_SCRIPT_DECLARE_CALLBACK
 	public:
 		const script::_callbacks &get_callbacks() const;
 
 	private:
 		void internal_log_error(std::string_view msg);
-		bool setup_script_api(std::unique_ptr<sol::state> &state);
+		bool setup_script_api(sol::state &state);
 
 	private:
 		// ====================

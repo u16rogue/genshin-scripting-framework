@@ -176,6 +176,22 @@ end
 ```
 * Function signature arguments
 * Remarks
+
+### dx_draw
+Callback function for `ID3D11DeviceContext::Draw`
+* ID: `dx_draw`
+* Function signature
+```lua
+function foo(args)
+end
+```
+* Function signature arguments
+    * args - [table] Contains event and callback arguments
+        * cancel - [bool] Cancels the callback preventing the call
+        * VertexCount - [int] *See callback function*
+        * StartVertexLocation - [int] *See callback function*
+* Remarks
+
 <!--
 ### `x.x()`
 x.
