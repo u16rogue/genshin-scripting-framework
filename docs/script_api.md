@@ -183,6 +183,7 @@ Callback function for `ID3D11DeviceContext::Draw`
 * Function signature
 ```lua
 function foo(args)
+
 end
 ```
 * Function signature arguments
@@ -190,6 +191,23 @@ end
         * cancel - [bool] Cancels the callback preventing the call
         * VertexCount - [int] *See callback function*
         * StartVertexLocation - [int] *See callback function*
+* Remarks
+
+### dx_drawindexed
+Callback function for `ID3D11DeviceContext::DrawIndexed`
+* ID: `dx_drawindexed`
+* Function signature
+```lua
+function foo(args)
+
+end
+```
+* Function signature arguments
+    * args - [table] Contains event and callback arguments
+        * cancel - [bool] Cancels the callback preventing the call
+        * IndexCount - [int] *See callback function*
+        * StartIndexLocation - [int] *See callback function*
+        * BaseVertexLocation - [int] *See callback function*
 * Remarks
 
 <!--

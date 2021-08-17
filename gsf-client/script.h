@@ -73,6 +73,7 @@ namespace gsf
 		{
 			_GSF_SCRIPT_DECLARE_CALLBACK(on_imgui_draw);
 			_GSF_SCRIPT_DECLARE_CALLBACK(dx_draw);
+			_GSF_SCRIPT_DECLARE_CALLBACK(dx_drawindexed);
 		} callbacks;
 		#undef _GSF_SCRIPT_DECLARE_CALLBACK
 	public:
