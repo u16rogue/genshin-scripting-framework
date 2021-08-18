@@ -100,7 +100,7 @@ inline void gsf_about_on_imgui_draw()
             "Build Date: " __DATE__ " " __TIME__ "\n"
             "Git info: " GIT_HASH " @ " GIT_BRANCH "\n"
             "\n"
-            "https://github.com/rogueeeee/genshin-scripting-framework\n"
+            "https://github.com/u16rogue/genshin-scripting-framework\n"
             "\n"
             "This software is licensed under the GNU General Public License 3.0\n"
         );
