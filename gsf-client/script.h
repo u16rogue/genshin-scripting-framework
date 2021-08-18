@@ -5,6 +5,7 @@
 #include <string>
 #include <cstdint>
 #include <hash.h>
+#include <mutex>
 
 namespace gsf
 {
@@ -16,6 +17,7 @@ namespace gsf
 	public:
 		enum class state
 		{
+			UNLOADING,
 			UNLOADED,
 			LOADING,
 			LOADED,
@@ -24,12 +26,12 @@ namespace gsf
 		struct callback
 		{
 			callback(std::uint64_t hashed_name_)
-				: hashed_name(hashed_name_)
-			{}
+				: hashed_name(hashed_name_) {}
 
 			const std::uint64_t hashed_name;
 			bool active = false;
 			sol::function callback_function;
+			mutable std::mutex mutex;
 
 			void reg(sol::function &function_)
 			{
@@ -44,8 +46,18 @@ namespace gsf
 			};
 		};
 
+		#define _GSF_SCRIPT_DECLARE_CALLBACK(name) script::callback name = script::callback(utils::hash_fnv1a(#name))
+		struct callbacks_container
+		{
+			_GSF_SCRIPT_DECLARE_CALLBACK(on_imgui_draw);
+			_GSF_SCRIPT_DECLARE_CALLBACK(dx_draw);
+			_GSF_SCRIPT_DECLARE_CALLBACK(dx_drawindexed);
+		};
+		#undef _GSF_SCRIPT_DECLARE_CALLBACK
+
 	public:
 		script(std::string_view filepath_);
+		script(const script &) = default;
 
 		bool load();
 		bool unload();
@@ -68,16 +80,9 @@ namespace gsf
 		script::state               current_state = script::state::UNLOADED;
 
 	private:
-		#define _GSF_SCRIPT_DECLARE_CALLBACK(name) script::callback name = script::callback(utils::hash_fnv1a(#name))
-		struct _callbacks
-		{
-			_GSF_SCRIPT_DECLARE_CALLBACK(on_imgui_draw);
-			_GSF_SCRIPT_DECLARE_CALLBACK(dx_draw);
-			_GSF_SCRIPT_DECLARE_CALLBACK(dx_drawindexed);
-		} callbacks;
-		#undef _GSF_SCRIPT_DECLARE_CALLBACK
+		script::callbacks_container callbacks;
 	public:
-		const script::_callbacks &get_callbacks() const;
+		const script::callbacks_container &get_callbacks() const;
 
 	private:
 		void internal_log_error(std::string_view msg);

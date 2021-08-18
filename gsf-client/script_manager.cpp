@@ -10,9 +10,7 @@
 #include <thread>
 #include "helpers/imgui_prompts.h"
 
-// TODO: optional header to load autoexec lua thing
-
-std::vector<gsf::script> script_instances;
+std::vector<std::unique_ptr<gsf::script>> script_instances;
 
 bool         script_log_window_visible  = false;
 gsf::script *script_log_window_selected = nullptr; // Points to the script instance to read the log from for the log window
@@ -23,7 +21,7 @@ const char         *error_message         = "No error message provided.";
 bool                error_message_visible = false;
 utils::fader_float  error_message_fader   = utils::fader_float(1000, 3000);
 
-const std::vector<gsf::script> &gsf::script_manager::get_scripts()
+const std::vector<std::unique_ptr<gsf::script>> &gsf::script_manager::get_scripts()
 {
     return script_instances;
 }
@@ -60,12 +58,12 @@ bool gsf::script_manager::script_import(std::string_view file_path, gsf::script 
         return false;
 
     for (auto &script : script_instances)
-        if (script.get_filepath() == file_path)
+        if (script->get_filepath() == file_path)
             return false;
 
-    auto &loaded_script = script_instances.emplace_back(file_path);
+    auto &loaded_script = script_instances.emplace_back(std::make_unique<gsf::script>(file_path));
     if (script_instance_out)
-        *script_instance_out = &loaded_script;
+        *script_instance_out = loaded_script.get();
 
     return true;
 }
@@ -123,7 +121,7 @@ helpers::imgui_popup_modal import_prompt = helpers::imgui_popup_modal("Import Sc
 
 void imported_scripts_list_draw()
 {
-    for (gsf::script &inst : script_instances)
+    for (auto &inst : script_instances)
     {
         ImGui::PushID(&inst);
 
@@ -133,32 +131,20 @@ void imported_scripts_list_draw()
         static ImVec4 file_color_loaded   { 0.f, 1.f, 0.f, 1.f };
         static ImVec4 file_color_unloaded { 1.f, 0.f, 0.f, 1.f };
 
-        ImGui::TextColored(inst ? file_color_loaded : file_color_unloaded, inst.get_filepath().data());
-
-        /*
-        #ifdef _DEBUG
-        if (ImGui::Button("Remove"))
-        {
-            if (inst.unload())
-            {
-                // queued_for_removal = &inst;
-            }
-        }
-        #endif
-        */
+        ImGui::TextColored(inst->operator bool() ? file_color_loaded : file_color_unloaded, inst->get_filepath().data());
 
         if (ImGui::Button("Show Logs"))
         {
             // NOTE: no issues right now since scripts cant be removed, pointer should be nulled back in the future
-            if (script_log_window_selected == &inst || !script_log_window_selected)
+            if (script_log_window_selected == inst.get() || !script_log_window_selected)
                 script_log_window_visible = !script_log_window_visible;
 
-            script_log_window_selected = &inst;
+            script_log_window_selected = inst.get();
             script_log_window_title = std::string("Script Logs (") + script_log_window_selected->get_filepath().data() + ")" + script_log_window_id;
         }
         else if (ImGui::IsItemHovered())
         {
-            auto &logs = inst.get_logs();
+            auto &logs = inst->get_logs();
             ImGui::SetTooltip(logs.empty() ? "No recent logs" : logs.back().c_str());
         }
 
@@ -169,9 +155,9 @@ void imported_scripts_list_draw()
         }
 
         ImGui::SameLine();
-        auto script_state = inst.get_current_state();
+        auto script_state = inst->get_current_state();
 
-        if (script_state == gsf::script::state::LOADING)
+        if (script_state == gsf::script::state::LOADING || script_state == gsf::script::state::UNLOADING)
         {
             ImGui::Text("Loading...");
         }
@@ -188,7 +174,7 @@ void imported_scripts_list_draw()
                 {
                     script->load();
                 }
-            }, &inst, script_state).detach();
+            }, inst.get(), script_state).detach();
         }
 
         ImGui::Separator();
@@ -233,22 +219,8 @@ void gsf::script_manager::on_imgui_draw()
                 if (ImGui::MenuItem("Add File"))
                     import_prompt.show();
 
-                #ifdef _DEBUG
-                if (ImGui::MenuItem("Add Folder")) {}
-
-                if (ImGui::MenuItem("Link")) {}
-                #endif
-
                 ImGui::EndMenu();
             }
-
-            #ifdef _DEBUG
-            if (ImGui::BeginMenu("Permissions"))
-            {
-
-                ImGui::EndMenu();
-            }
-            #endif
 
             ImGui::EndMenuBar();
         }

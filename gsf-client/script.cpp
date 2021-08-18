@@ -56,7 +56,7 @@ bool gsf::script::load()
 	if (!temp_lua_state)
 		return false;
 
-	temp_lua_state->open_libraries(sol::lib::string, sol::lib::math);
+	temp_lua_state->open_libraries(sol::lib::string, sol::lib::math, sol::lib::table, sol::lib::base, sol::lib::bit32, sol::lib::coroutine);
 
 	auto load_res = temp_lua_state->script_file(this->filepath);
 
@@ -105,10 +105,16 @@ bool gsf::script::unload()
 	if (!this->lua_state.operator bool())
 		return false;
 
+	this->current_state = script::state::UNLOADING;
+
 	script::callback *arr_callbacks = reinterpret_cast<script::callback *>(&this->callbacks);
 	for (int i = 0; i < sizeof(this->callbacks) / sizeof(callback); ++i)
 	{
-		arr_callbacks[i].unreg();
+		if (auto &callback = arr_callbacks[i]; callback.active)
+		{
+			const std::lock_guard<std::mutex> lock(callback.mutex);
+			callback.unreg();
+		}
 	}
 
 	this->logs.clear();
@@ -150,7 +156,7 @@ sol::state &gsf::script::get_lua() const
 	return *this->lua_state.get();
 }
 
-const gsf::script::_callbacks &gsf::script::get_callbacks() const
+const gsf::script::callbacks_container &gsf::script::get_callbacks() const
 {
 	return this->callbacks;
 }

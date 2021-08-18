@@ -35,22 +35,25 @@ bool get_game_window_handle(void *&handle_out)
 
 bool gsf::init()
 {
-    if (!get_game_window_handle(global::game_window)
     #ifdef _DEBUG
-    || !con::init()
-    || !SetConsoleTitleW(utils::random_str().c_str())
-    #endif
-    || !hooks::install()
-    ) {
-        return false;
+    {
+        if (!con::init() || !SetConsoleTitleW(utils::random_str().c_str()))
+            return false;
     }
+    #endif
+
+    #ifdef GSF_AUTOEXEC_SCRIPT_PATH
+    {
+        if (!gsf::script_manager::script_autoexec(GSF_AUTOEXEC_SCRIPT_PATH))
+            return false;
+    }
+    #endif
+
+    if (!get_game_window_handle(global::game_window) || !hooks::install())
+        return false;
 
     ImGui::CreateContext();
     ImGui::GetIO().IniFilename = nullptr;
-
-    #ifdef GSF_AUTOEXEC_SCRIPT_PATH
-    gsf::script_manager::script_autoexec(GSF_AUTOEXEC_SCRIPT_PATH);
-    #endif
 
 	return true;
 }
@@ -173,12 +176,21 @@ void gsf::render_imgui()
 
     for (auto &script : imported_scripts)
     {
-        auto &on_imgui_callback = script.get_callbacks().on_imgui_draw;
+        auto &callback = script->get_callbacks().on_imgui_draw;
 
-        if (!on_imgui_callback.active)
+        if (!callback.active)
             continue;
 
-        on_imgui_callback.callback_function();
+        const std::lock_guard<std::mutex> lock(callback.mutex);
+
+        switch (script->get_current_state())
+        {
+            case gsf::script::state::UNLOADED:
+            case gsf::script::state::UNLOADING:
+                continue;
+        }
+
+        callback.callback_function();
     }
 
     helpers::imgui_popup_modal::on_imgui_draw();

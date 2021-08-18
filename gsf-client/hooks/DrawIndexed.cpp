@@ -8,11 +8,11 @@ void hk_DrawIndexed(ID3D11DeviceContext *thisptr, UINT IndexCount, UINT StartInd
 {
 	for (auto &script : gsf::script_manager::get_scripts())
 	{
-		auto &callback = script.get_callbacks().dx_drawindexed;
+		auto &callback = script->get_callbacks().dx_drawindexed;
 		if (!callback.active)
 			continue;
 
-		auto args = script.get_lua().create_table_with("cancel", false, "IndexCount", IndexCount, "StartIndexLocation", StartIndexLocation, "BaseVertexLocation", BaseVertexLocation);
+		auto args = script->get_lua().create_table_with("cancel", false, "IndexCount", IndexCount, "StartIndexLocation", StartIndexLocation, "BaseVertexLocation", BaseVertexLocation);
 
 		callback.callback_function(args);
 

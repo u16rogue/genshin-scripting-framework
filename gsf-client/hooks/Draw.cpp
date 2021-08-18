@@ -9,11 +9,11 @@ void __stdcall hk_Draw(ID3D11DeviceContext *thisptr, UINT VertexCount, UINT Star
 {
 	for (auto &script : gsf::script_manager::get_scripts())
 	{
-		auto &callback = script.get_callbacks().dx_draw;
+		auto &callback = script->get_callbacks().dx_draw;
 		if (!callback.active)
 			continue;
 
-		auto args = script.get_lua().create_table_with("cancel", false, "VertexCount", VertexCount, "StartVertexLocation", StartVertexLocation);
+		auto args = script->get_lua().create_table_with("cancel", false, "VertexCount", VertexCount, "StartVertexLocation", StartVertexLocation);
 
 		callback.callback_function(args);
 
