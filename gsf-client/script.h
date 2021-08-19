@@ -56,6 +56,9 @@ namespace gsf
 		#undef _GSF_SCRIPT_DECLARE_CALLBACK
 
 	public:
+		inline static std::size_t count_loaded_scripts = 0;
+
+	public:
 		script(std::string_view filepath_);
 		script(const script &) = default;
 
@@ -66,23 +69,17 @@ namespace gsf
 		operator bool() const;
 		sol::state &get_lua() const;
 
-		const std::vector<std::string> &get_logs() const;
-		const std::string_view          get_filepath() const;
-		const gsf::script::state        get_current_state() const;
-
-	public:
-		inline static std::size_t count_loaded_scripts = 0;
+		const std::vector<std::string>    &get_logs() const;
+		const std::string_view             get_filepath() const;
+		const gsf::script::state           get_current_state() const;
+		const script::callbacks_container &get_callbacks() const;
 
 	private:
 		const std::string           filepath;
 		std::vector<std::string>    logs;
 		std::unique_ptr<sol::state> lua_state     = nullptr;
 		script::state               current_state = script::state::UNLOADED;
-
-	private:
 		script::callbacks_container callbacks;
-	public:
-		const script::callbacks_container &get_callbacks() const;
 
 	private:
 		void internal_log_error(std::string_view msg);

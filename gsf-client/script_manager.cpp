@@ -75,7 +75,7 @@ void show_error(const char *msg)
     error_message_visible = true;
 }
 
-void import_prompt_callback()
+void import_prompt_ui()
 {
     static char buffer_import[MAX_PATH] = { '\0' };
 
@@ -117,21 +117,15 @@ void import_prompt_callback()
     }
 }
 
-helpers::imgui_popup_modal import_prompt = helpers::imgui_popup_modal("Import Script", &import_prompt_callback);
+helpers::imgui_popup_modal import_prompt = helpers::imgui_popup_modal("Import Script", &import_prompt_ui);
 
-void imported_scripts_list_draw()
+void draw_imported_script_items()
 {
     for (auto &inst : script_instances)
     {
         ImGui::PushID(&inst);
 
-        ImGui::Text("File:");
-        ImGui::SameLine();
-
-        static ImVec4 file_color_loaded   { 0.f, 1.f, 0.f, 1.f };
-        static ImVec4 file_color_unloaded { 1.f, 0.f, 0.f, 1.f };
-
-        ImGui::TextColored(inst->operator bool() ? file_color_loaded : file_color_unloaded, inst->get_filepath().data());
+        ImGui::Text("File: %s", inst->get_filepath().data());
 
         if (ImGui::Button("Show Logs"))
         {
@@ -206,6 +200,8 @@ void script_log_window_draw()
 
 void gsf::script_manager::on_imgui_draw()
 {
+    script_log_window_draw();
+
     if (!visible)
         return;
 
@@ -225,9 +221,7 @@ void gsf::script_manager::on_imgui_draw()
             ImGui::EndMenuBar();
         }
 
-        imported_scripts_list_draw();
+        draw_imported_script_items();
     }
     ImGui::End();
-
-    script_log_window_draw();
 }
