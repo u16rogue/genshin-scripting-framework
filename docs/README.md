@@ -62,7 +62,7 @@ The built binaries are located at `build\Release_x64` for release builds and `bu
 ### Implementing an autoexec lua script
 An autoexec lua script is a script that automatically gets loaded and executed the moment GSF is loaded. To implement:
 1. Create a header file named `autoexecdef.h` in `gsf-client`. (`gsf-client\autoexecdef.h`)
-1. Create a define named `GSF_AUTOEXEC_SCRIPT_PATH` and set the value as the **absolute** path of your designated autoexec script (`#define GSF_AUTOEXEC_SCRIPT_PATH "C:\autoexec.lua"`)
+1. Define a macro named `GSF_AUTOEXEC_SCRIPT_PATH` and set the value as the **absolute** path of your designated autoexec script (`#define GSF_AUTOEXEC_SCRIPT_PATH "C:\autoexec.lua"`)
 
 **Note:** `autoexec` scripts is limited to 2 API's which is [gsf.import](script_api.md#gsfimportfile_path) and [gsf.load](script_api.md#gsfloadfile_path)
 

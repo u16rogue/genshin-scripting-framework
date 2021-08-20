@@ -51,7 +51,7 @@ Import a script to GSF
 * Parameters
     * file_path - [string] File path to the lua script to import
 * Return
-    * nil
+    * result - [bool] Returns true if the operation was successful, otherwise false.
 * Remarks
     * This API is only available to the designated autoexec lua script
 * Permission
@@ -62,7 +62,7 @@ Import and load a script to GSF
 * Parameters
     * file_path - [string] File path to the lua script to import and load
 * Return
-    * nil
+    * result - [bool] Returns true if the operation was successful, otherwise false.
 * Remarks
     * This API is only available to the designated autoexec lua script
 * Permission
@@ -73,7 +73,6 @@ Used for logging messages into the script's internal script log and if GSF is in
 * Parameters
     * str_msg - [string] Message to be logged
 * Return
-    * nil
 * Remarks
 * Permission
     * None
