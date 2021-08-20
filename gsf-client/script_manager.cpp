@@ -10,16 +10,16 @@
 #include <thread>
 #include "helpers/imgui_prompts.h"
 
-std::vector<std::unique_ptr<gsf::script>> script_instances;
+static std::vector<std::unique_ptr<gsf::script>> script_instances;
 
-bool         script_log_window_visible  = false;
-gsf::script *script_log_window_selected = nullptr; // Points to the script instance to read the log from for the log window
-const char * const script_log_window_id = "###script_logs_window";
-std::string  script_log_window_title    = std::string("Script Logs (Nothing selected)") + script_log_window_id;
+static bool         script_log_window_visible  = false;
+static gsf::script *script_log_window_selected = nullptr; // Points to the script instance to read the log from for the log window
+static const char * const script_log_window_id = "###script_logs_window";
+static std::string  script_log_window_title    = std::string("Script Logs (Nothing selected)") + script_log_window_id;
 
-const char         *error_message         = "No error message provided.";
-bool                error_message_visible = false;
-utils::fader_float  error_message_fader   = utils::fader_float(1000, 3000);
+static const char         *error_message         = "No error message provided.";
+static bool                error_message_visible = false;
+static utils::fader_float  error_message_fader   = utils::fader_float(1000, 3000);
 
 const std::vector<std::unique_ptr<gsf::script>> &gsf::script_manager::get_scripts()
 {
@@ -117,7 +117,7 @@ void import_prompt_ui()
     }
 }
 
-helpers::imgui_popup_modal import_prompt = helpers::imgui_popup_modal("Import Script", &import_prompt_ui);
+static helpers::imgui_popup_modal import_prompt = helpers::imgui_popup_modal("Import Script", &import_prompt_ui);
 
 void draw_imported_script_items()
 {

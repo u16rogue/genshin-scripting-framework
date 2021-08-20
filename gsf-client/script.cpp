@@ -193,6 +193,8 @@ bool gsf::script::setup_script_api(sol::state &state)
 	namespace_imgui.set_function("same_line", []() { ImGui::SameLine(); } );
 	namespace_imgui.set_function("button", [](const char *text) -> bool { return ImGui::Button(text); });
 	namespace_imgui.set_function("separator", &ImGui::Separator);
+	namespace_imgui.set_function("push_id", static_cast<void(*)(int)>(&ImGui::PushID));
+	namespace_imgui.set_function("pop_id", &ImGui::PopID);
 
 	return true;
 }

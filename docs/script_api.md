@@ -154,14 +154,16 @@ This API is only a wrapper for ImGui. Documentation for each function exists in 
 
 **NOTE:** These API must be called from an [on_imgui_draw](#on_imgui_draw) callback.
 
-| API       | Wraps            | Translation                                                                                         |
-|:---------:|:----------------:|:---------------------------------------------------------------------------------------------------:|
-| begin     | ImGui::Begin     | `imgui.begin(text)` → `ImGui::Begin(text, nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse)` |
-| iend      | ImGui::End       |                                                                                                     |
-| text      | ImGui::Text      | `imgui.text(text)` → `ImGui::Text(text)`                                                            |
-| same_line | ImGui::SameLine  | `imgui.same_line()` → `ImGui::SameLine()`                                                           |
-| button    | ImGui::Button    | `imgui.button(text)` → `ImGui::Button(text)`                                                        |
-| separator | ImGui::Separator |                                                                                                     |
+| API       | Wraps             | Translation                                                                                         |
+|:---------:|:-----------------:|:---------------------------------------------------------------------------------------------------:|
+| begin     | ImGui::Begin       | `imgui.begin(text)` → `ImGui::Begin(text, nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse)` |
+| iend      | ImGui::End         |                                                                                                     |
+| text      | ImGui::Text        | `imgui.text(text)` → `ImGui::Text(text)`                                                            |
+| same_line | ImGui::SameLine    | `imgui.same_line()` → `ImGui::SameLine()`                                                           |
+| button    | ImGui::Button      | `imgui.button(text)` → `ImGui::Button(text)`                                                        |
+| separator | ImGui::Separator   |                                                                                                     |
+| push_id   | ImGui::PushID(int) |                                                                                                     |
+| pop_id    | ImGui::PopID       |                                                                                                     |
 
 ## Callbacks
 
