@@ -46,6 +46,28 @@ end
 
 ## `gsf` Namespace
 
+### `gsf.import(file_path)`
+Import a script to GSF
+* Parameters
+    * file_path - [string] File path to the lua script to import
+* Return
+    * nil
+* Remarks
+    * This API is only available to the designated autoexec lua script
+* Permission
+    * None
+
+### `gsf.load(file_path)`
+Import and load a script to GSF
+* Parameters
+    * file_path - [string] File path to the lua script to import and load
+* Return
+    * nil
+* Remarks
+    * This API is only available to the designated autoexec lua script
+* Permission
+    * None
+
 ### `gsf.log(str_msg)`
 Used for logging messages into the script's internal script log and if GSF is in debug mode, to the debug console.
 * Parameters
