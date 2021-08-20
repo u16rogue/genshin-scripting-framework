@@ -154,8 +154,8 @@ This API is only a wrapper for ImGui. Documentation for each function exists in 
 
 **NOTE:** These API must be called from an [on_imgui_draw](#on_imgui_draw) callback.
 
-| API       | Wraps             | Translation                                                                                         |
-|:---------:|:-----------------:|:---------------------------------------------------------------------------------------------------:|
+| API       | Wraps             | Translation                                                                                          |
+|:---------:|:-----------------:|:----------------------------------------------------------------------------------------------------:|
 | begin     | ImGui::Begin       | `imgui.begin(text)` → `ImGui::Begin(text, nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse)` |
 | iend      | ImGui::End         |                                                                                                     |
 | text      | ImGui::Text        | `imgui.text(text)` → `ImGui::Text(text)`                                                            |

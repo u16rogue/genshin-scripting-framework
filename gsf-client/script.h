@@ -74,6 +74,11 @@ namespace gsf
 		const gsf::script::state           get_current_state() const;
 		const script::callbacks_container &get_callbacks() const;
 
+	public:
+		// Used for tracking the number of imgui.begin calls to automatically call ImGui::End. This is to prevent imgui
+		// from crashing GSF when a script stops execution before properly calling imgui.iend
+		mutable int imgui_active_begin_count = 0;
+
 	private:
 		const std::string           filepath;
 		std::vector<std::string>    logs;
@@ -102,5 +107,9 @@ namespace gsf
 		int _api_mem_patch(std::uintptr_t addr, std::vector<std::uint8_t> byte_array);
 		std::uint64_t _api_mem_read_uint(std::uintptr_t addr, std::size_t prim_t_size);
 		void _api_mem_write_uint(std::uintptr_t addr, std::size_t prim_t_size, std::uint64_t value);
+
+		// imgui
+		bool _api_imgui_begin(const char *text);
+		void _api_imgui_iend();
 	};
 }

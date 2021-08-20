@@ -191,6 +191,12 @@ void gsf::render_imgui()
         }
 
         callback.callback_function();
+
+        while (script->imgui_active_begin_count)
+        {
+            ImGui::End();
+            --script->imgui_active_begin_count;
+        }
     }
 
     helpers::imgui_popup_modal::on_imgui_draw();

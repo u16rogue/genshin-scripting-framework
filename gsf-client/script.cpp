@@ -187,8 +187,8 @@ bool gsf::script::setup_script_api(sol::state &state)
 
 	// imgui namespace
 	auto namespace_imgui = state["imgui"].get_or_create<sol::table>();
-	namespace_imgui.set_function("begin", [](const char *text) -> bool { return ImGui::Begin(text, nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse); });
-	namespace_imgui.set_function("iend", &ImGui::End);
+	namespace_imgui.set_function("begin", &gsf::script::_api_imgui_begin, this);
+	namespace_imgui.set_function("iend", &gsf::script::_api_imgui_iend, this);
 	namespace_imgui.set_function("text", [](const char *text) { ImGui::Text(text); } );
 	namespace_imgui.set_function("same_line", []() { ImGui::SameLine(); } );
 	namespace_imgui.set_function("button", [](const char *text) -> bool { return ImGui::Button(text); });
@@ -292,4 +292,16 @@ void gsf::script::_api_mem_write_uint(std::uintptr_t addr, std::size_t prim_t_si
 	}
 
 	std::memcpy(reinterpret_cast<void *>(addr), &value, prim_t_size);
+}
+
+bool gsf::script::_api_imgui_begin(const char *text)
+{
+	++this->imgui_active_begin_count;
+	return ImGui::Begin(text, nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+}
+
+void gsf::script::_api_imgui_iend()
+{
+	--this->imgui_active_begin_count;
+	return ImGui::End();
 }
