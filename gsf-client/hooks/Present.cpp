@@ -7,6 +7,7 @@
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
 #include <imgui_internal.h>
+#include <macro.h>
 #include "../gsf_client.h"
 #include "../features/fps_counter.h"
 
@@ -17,32 +18,29 @@ HRESULT __stdcall hk_Present(IDXGISwapChain *thisptr, UINT SyncInterval, UINT Fl
 {
     static bool init_success = [&, thisptr]() -> bool
     {
-        DEBUG_WCOUT("\nhooks::hk_Present # initialization # Get device");
         ID3D11Device *dx_device = nullptr;
-        if (FAILED(thisptr->GetDevice(__uuidof(ID3D11Device), reinterpret_cast<void **>(&dx_device))))
+        if (!CON_C_LOG(L"Get device", SUCCEEDED(thisptr->GetDevice(__uuidof(ID3D11Device), reinterpret_cast<void **>(&dx_device)))))
             return false;
 
-        DEBUG_WCOUT("\nhooks::hk_Present # initialization # Get context");
         dx_device->GetImmediateContext(&dx_context);
+        CON_C_LOG(L"Get context", dx_context != nullptr);
 
-        DEBUG_WCOUT("\nhooks::hk_Present # initialization # Get buffer");
         ID3D11Texture2D *dx_backbuffer = nullptr;
-        if (FAILED(thisptr->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void **>(&dx_backbuffer))))
+        if (!CON_C_LOG(L"Get buffer", SUCCEEDED(thisptr->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void **>(&dx_backbuffer)))))
             return false;
 
-        DEBUG_WCOUT("\nhooks::hk_Present # initialization # Create render target");
-        dx_device->CreateRenderTargetView(dx_backbuffer, nullptr, &dx_render_target_view);
+        if (!CON_C_LOG(L"Create render target", SUCCEEDED(dx_device->CreateRenderTargetView(dx_backbuffer, nullptr, &dx_render_target_view))))
+            return false;
+
         dx_backbuffer->Release();
 
-        DEBUG_WCOUT("\nhooks::hk_Present # initialization # Get swap chain description");
         DXGI_SWAP_CHAIN_DESC scd;
-        thisptr->GetDesc(&scd);
+        if (!CON_C_LOG(L"Get swap chain description", SUCCEEDED(thisptr->GetDesc(&scd))))
+            return false;
 
-        DEBUG_WCOUT("\nhooks::hk_Present # initialization # Initialize ImGui implementation");
-        ImGui_ImplWin32_Init(scd.OutputWindow);
-        ImGui_ImplDX11_Init(dx_device, dx_context);
+        if (!CON_C_LOG(L"Initialize ImGui implementation", ImGui_ImplWin32_Init(scd.OutputWindow) && ImGui_ImplDX11_Init(dx_device, dx_context)))
+            return false;
 
-        DEBUG_WCOUT("\nhooks::hk_Present # initialization # Initialization succesful!");
         return true;
     }();
 
