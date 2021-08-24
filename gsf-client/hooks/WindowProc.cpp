@@ -25,9 +25,9 @@ LRESULT CALLBACK hk_WindowProc(_In_ HWND hwnd, _In_ UINT uMsg, _In_ WPARAM wPara
     static auto &imgui_io = ImGui::GetIO();
     if (imgui_io.WantCaptureKeyboard || imgui_io.WantCaptureMouse)
         return TRUE;
-    
-    static auto o_WindowProc = hooks::ch_wndproc->get_original<decltype(hk_WindowProc)>();
+
+    static auto o_WindowProc = gsf::hooks::ch_wndproc->get_original<decltype(hk_WindowProc)>();
     return o_WindowProc(hwnd, uMsg, wParam, lParam);
 }
 
-std::unique_ptr<utils::hook_wndproc> hooks::ch_wndproc = std::make_unique<utils::hook_wndproc>(hk_WindowProc);
+std::unique_ptr<utils::hook_wndproc> gsf::hooks::ch_wndproc = std::make_unique<utils::hook_wndproc>(hk_WindowProc);

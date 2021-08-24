@@ -6,7 +6,7 @@
 #include <macro.h>
 #include "../definitions.h"
 
-bool hooks::install()
+bool gsf::hooks::install()
 {
     DEBUG_CON_PRINT("\nInstalling hooks...");
 
@@ -14,7 +14,7 @@ bool hooks::install()
 		return 0;
 
 	// WindowProc
-	CON_C_LOG(L"Init WndProc hook...", hooks::ch_wndproc->init(global::game_window));
+	CON_C_LOG(L"Init WndProc hook...", gsf::hooks::ch_wndproc->init(global::game_window));
 
 	ID3D11Device   *dummy_device_ptr;
 	IDXGISwapChain *dummy_swapchain_ptr;
@@ -56,9 +56,9 @@ bool hooks::install()
     ID3D11DeviceContext *dummy_device_context_ptr = nullptr;
     dummy_device_ptr->GetImmediateContext(&dummy_device_context_ptr);
 
-	CON_C_LOG(L"Init IDXGISwapChain::Present hook...",          hooks::ch_present->init(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_swapchain_ptr, 0, gsf::def::vtidx::IDXGISwapChain::Present)));                   // IDXGISwapChain::Present
-    CON_C_LOG(L"Init ID3D11DeviceContext::Draw hook...",        hooks::ch_draw->init(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_device_context_ptr, 0, gsf::def::vtidx::ID3D11DeviceContext::Draw)));               // ID3D11DeviceContext::Draw
-    CON_C_LOG(L"Init ID3D11DeviceContext::DrawIndexed hook...", hooks::ch_drawindexed->init(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_device_context_ptr, 0, gsf::def::vtidx::ID3D11DeviceContext::DrawIndexed))); // ID3D11DeviceContext::DrawIndexed
+	CON_C_LOG(L"Init IDXGISwapChain::Present hook...",          gsf::hooks::ch_present->init(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_swapchain_ptr, 0, gsf::def::vtidx::IDXGISwapChain::Present)));                   // IDXGISwapChain::Present
+    CON_C_LOG(L"Init ID3D11DeviceContext::Draw hook...",        gsf::hooks::ch_draw->init(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_device_context_ptr, 0, gsf::def::vtidx::ID3D11DeviceContext::Draw)));               // ID3D11DeviceContext::Draw
+    CON_C_LOG(L"Init ID3D11DeviceContext::DrawIndexed hook...", gsf::hooks::ch_drawindexed->init(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_device_context_ptr, 0, gsf::def::vtidx::ID3D11DeviceContext::DrawIndexed))); // ID3D11DeviceContext::DrawIndexed
 
     dummy_device_context_ptr->Release();
 	dummy_swapchain_ptr->Release();
@@ -72,7 +72,7 @@ bool hooks::install()
 	return true;
 }
 
-bool hooks::uninstall()
+bool gsf::hooks::uninstall()
 {
 	// Copy the entire list to a vector before iterating through and calling unhook.
 	// This is done since we can't iterate the list while modifying it in the middle of an iteration.

@@ -14,6 +14,7 @@
 #include "script_manager.h"
 #include "helpers/imgui_prompts.h"
 #include "hooks/hooks.h"
+#include "values.h"
 #include "features/fps_counter.h"
 
 #if __has_include("autoexecdef.h") && !defined( GSF_AUTOEXEC_SCRIPT_PATH )
@@ -49,7 +50,7 @@ bool gsf::init()
     }
     #endif
 
-    if (!get_game_window_handle(global::game_window) || !hooks::install())
+    if (!get_game_window_handle(global::game_window) || !gsf::values::load() || !gsf::hooks::install())
         return false;
 
     ImGui::CreateContext();

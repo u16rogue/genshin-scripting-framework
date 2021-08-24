@@ -21,8 +21,8 @@ void __stdcall hk_Draw(ID3D11DeviceContext *thisptr, UINT VertexCount, UINT Star
 			return;
 	}
 
-	static auto o_Draw = hooks::ch_draw->get_original<decltype(hk_Draw)>();
+	static auto o_Draw = gsf::hooks::ch_draw->get_original<decltype(hk_Draw)>();
 	return o_Draw(thisptr, VertexCount, StartVertexLocation);
 }
 
-std::unique_ptr<utils::hook_detour> hooks::ch_draw = std::make_unique<utils::hook_detour>(hk_Draw);
+std::unique_ptr<utils::hook_detour> gsf::hooks::ch_draw = std::make_unique<utils::hook_detour>(hk_Draw);

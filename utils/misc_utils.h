@@ -23,4 +23,5 @@ namespace utils
 		float duration_absolute = 0;
 	};
 
+	std::uint8_t *calc_rel_address_32(void *instruction_address, std::size_t instruction_size, std::size_t instruction_operand_relative_offset);
 }

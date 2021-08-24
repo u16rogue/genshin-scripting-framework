@@ -48,6 +48,9 @@
     <ClCompile Include="hooks\DrawIndexed.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="values.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
@@ -72,6 +75,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="helpers\imgui_prompts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="values.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\structures.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

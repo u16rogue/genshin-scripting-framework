@@ -9,7 +9,7 @@ obj/
 *.idb
 *.pdb
 gsf-client/git_hash.h
-cool.txt
 gsf-client/git_info.h
 gsf-client/autoexecdef.h
 scripts/
+re_stuff/
