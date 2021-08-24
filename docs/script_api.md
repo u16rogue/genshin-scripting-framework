@@ -121,6 +121,7 @@ Scans the memory starting at `start_adr` up until the max limit defined by the `
 * Return
     * address - [pointer] Address of where the first occurence of the pattern was found.
 * Remarks
+    * This function returns `nil` if there are no matches for the given signature.
 * Permission
     * None
 

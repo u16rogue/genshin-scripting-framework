@@ -232,9 +232,14 @@ sol::object gsf::script::_api_win_find_module(std::wstring module_name)
 	return sol::nil;
 }
 
-std::uintptr_t gsf::script::_api_mem_ida_scan(std::uintptr_t start_adr, std::size_t size, std::string ida_pattern)
+sol::object gsf::script::_api_mem_ida_scan(std::uintptr_t start_adr, std::size_t size, std::string ida_pattern)
 {
-	return reinterpret_cast<std::uintptr_t>(utils::ida_scan(reinterpret_cast<void *>(start_adr), size, ida_pattern.c_str()));
+	auto result = utils::ida_scan(reinterpret_cast<void *>(start_adr), size, ida_pattern.c_str());
+
+	if (!result)
+		return sol::nil;
+
+	return sol::make_object(*this->lua_state.get(), reinterpret_cast<std::uintptr_t>(result));
 }
 
 int gsf::script::_api_mem_patch(std::uintptr_t addr, std::vector<std::uint8_t> byte_array)
