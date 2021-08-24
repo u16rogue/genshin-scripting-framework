@@ -43,6 +43,7 @@ end
 | [win](#win-Namespace)             | Windows API and internals                      |
 | [mem](#mem-Namespace)             | Process memory access                          |
 | [imgui](#imgui-Namespace)         | API wrapper to ImGui                           |
+| [player](#player-Namespace)       | API for local player                           |
 
 ## `gsf` Namespace
 
@@ -95,15 +96,15 @@ Registers a lua callback function to be called based off the provided ID.
 Parses the game's LDR table list and finds the specified module.
 * Parameters
     * module_name - [string] Name of the module to find.
-* Return
+* Return [table]
     ```
     {
         base_address,
         size
     }
     ```
-    * base_address - Contains the starting/base address of the module
-    * size - Size of the module
+    * base_address - [pointer] Contains the starting/base address of the module
+    * size - [int] Size of the module
 * Remarks
     * When the module is not found, this function returns a `nil`.
     * module_name parameter will still require the `.dll` postfix as this API will use exact string matches.
@@ -176,16 +177,33 @@ This API is only a wrapper for ImGui. Documentation for each function exists in 
 
 **NOTE:** These API must be called from an [on_imgui_draw](#on_imgui_draw) callback.
 
-| API       | Wraps             | Translation                                                                                          |
-|:---------:|:-----------------:|:----------------------------------------------------------------------------------------------------:|
-| begin     | ImGui::Begin       | `imgui.begin(text)` → `ImGui::Begin(text, nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse)` |
-| iend      | ImGui::End         |                                                                                                     |
-| text      | ImGui::Text        | `imgui.text(text)` → `ImGui::Text(text)`                                                            |
-| same_line | ImGui::SameLine    | `imgui.same_line()` → `ImGui::SameLine()`                                                           |
-| button    | ImGui::Button      | `imgui.button(text)` → `ImGui::Button(text)`                                                        |
-| separator | ImGui::Separator   |                                                                                                     |
-| push_id   | ImGui::PushID(int) |                                                                                                     |
-| pop_id    | ImGui::PopID       |                                                                                                     |
+| API             | Wraps              | Translation                                                                                         |
+|:---------------:|:------------------:|:---------------------------------------------------------------------------------------------------:|
+| imgui.begin     | ImGui::Begin       | `imgui.begin(text)` → `ImGui::Begin(text, nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse)` |
+| imgui.iend      | ImGui::End         |                                                                                                     |
+| imgui.text      | ImGui::Text        | `imgui.text(text)` → `ImGui::Text(text)`                                                            |
+| imgui.same_line | ImGui::SameLine    | `imgui.same_line()` → `ImGui::SameLine()`                                                           |
+| imgui.button    | ImGui::Button      | `imgui.button(text)` → `ImGui::Button(text)`                                                        |
+| imgui.separator | ImGui::Separator   |                                                                                                     |
+| imgui.push_id   | ImGui::PushID(int) |                                                                                                     |
+| imgui.pop_id    | ImGui::PopID       |                                                                                                     |
+
+## `player` Namespace
+
+### `player.get_map_coords()`
+Obtains the current player map coordinates
+* Parameters
+* Return [table]
+    ```
+    {
+        x, z
+    }
+    ```
+    * x - [float] The player x coordinate
+    * z - [float] The player z coordinate
+* Remarks
+* Permission
+    * None
 
 ## Callbacks
 

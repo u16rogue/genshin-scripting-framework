@@ -111,5 +111,8 @@ namespace gsf
 		// imgui
 		bool _api_imgui_begin(const char *text);
 		void _api_imgui_iend();
+
+		// player
+		sol::table _api_player_get_map_coords();
 	};
 }

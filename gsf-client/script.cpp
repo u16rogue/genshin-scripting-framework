@@ -7,6 +7,8 @@
 #include <pattern_scan.h>
 #include <imgui.h>
 
+#include "values.h"
+
 /// <summary>
 /// RAII implementation of applying script state value
 /// Reasoning: im not gonna type [this->state_value = gsf::script::state::UNLOADED;] for every [return false;] in gsf::script::load()
@@ -196,6 +198,10 @@ bool gsf::script::setup_script_api(sol::state &state)
 	namespace_imgui.set_function("push_id", static_cast<void(*)(int)>(&ImGui::PushID));
 	namespace_imgui.set_function("pop_id", &ImGui::PopID);
 
+	// player namespace
+	auto namespace_player = state["player"].get_or_create<sol::table>();
+	namespace_player.set_function("get_map_coords", &gsf::script::_api_player_get_map_coords, this);
+
 	return true;
 }
 
@@ -309,4 +315,9 @@ void gsf::script::_api_imgui_iend()
 {
 	--this->imgui_active_begin_count;
 	return ImGui::End();
+}
+
+sol::table gsf::script::_api_player_get_map_coords()
+{
+	return this->lua_state->create_table_with("x", gsf::values::player_map_coords->x, "z", gsf::values::player_map_coords->z);
 }
