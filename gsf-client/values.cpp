@@ -18,7 +18,7 @@ static bool w_aob_scan(utils::ldr_data_table_entry *mod, void **out_result, cons
 bool gsf::values::load()
 {
 	#pragma warning(disable: 6011)
-	DEBUG_COUT("Starting to load values...\nLoading modules...");
+	DEBUG_COUT("\nStarting to load values...\nLoading modules...");
 
 	// Modules
 	utils::ldr_data_table_entry *mod_unity_player;

@@ -50,6 +50,9 @@ bool gsf::init()
     }
     #endif
 
+    if (CURSORINFO ci = { .cbSize = sizeof(ci) }; CON_C_LOG(L"Loading cursor info", GetCursorInfo(&ci)))
+        global::cursor_is_visible = ci.flags == CURSOR_SHOWING;
+
     if (!get_game_window_handle(global::game_window) || !gsf::values::load() || !gsf::hooks::install())
         return false;
 
@@ -170,10 +173,13 @@ void gsf::render_imgui()
     }
     ImGui::EndMainMenuBar();
 
-    gsf::script_manager::on_imgui_draw();
+    if (global::cursor_is_visible)
+    {
+        gsf::script_manager::on_imgui_draw();
 
-    if (gsf_about_menu_visible)
-        gsf_about_on_imgui_draw();
+        if (gsf_about_menu_visible)
+            gsf_about_on_imgui_draw();
+    }
 
     for (auto &script : imported_scripts)
     {

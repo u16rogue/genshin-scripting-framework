@@ -8,6 +8,7 @@ namespace gsf::hooks
 	extern std::unique_ptr<utils::hook_wndproc> ch_wndproc;
 	extern std::unique_ptr<utils::hook_detour>  ch_draw;
 	extern std::unique_ptr<utils::hook_detour>  ch_drawindexed;
+	extern std::unique_ptr<utils::hook_detour>  ch_showcursor;
 
 	bool install();
 	bool uninstall();

@@ -13,8 +13,8 @@ bool gsf::hooks::install()
 	if (!CON_C_LOG(L"Initializing MinHook...", MH_Initialize() == MH_OK))
 		return 0;
 
-	// WindowProc
-	CON_C_LOG(L"Init WndProc hook...", gsf::hooks::ch_wndproc->init(global::game_window));
+	CON_C_LOG(L"Init WndProc hook...", gsf::hooks::ch_wndproc->init(global::game_window)); // WindowProc
+    CON_C_LOG(L"Init ShowCursor hook...", gsf::hooks::ch_showcursor->init(ShowCursor));    // ShowCursor
 
 	ID3D11Device   *dummy_device_ptr;
 	IDXGISwapChain *dummy_swapchain_ptr;
