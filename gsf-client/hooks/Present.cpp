@@ -19,26 +19,26 @@ HRESULT __stdcall hk_Present(IDXGISwapChain *thisptr, UINT SyncInterval, UINT Fl
     static bool init_success = [&, thisptr]() -> bool
     {
         ID3D11Device *dx_device = nullptr;
-        if (!CON_C_LOG(L"Get device", SUCCEEDED(thisptr->GetDevice(__uuidof(ID3D11Device), reinterpret_cast<void **>(&dx_device)))))
+        if (!DEBUG_CON_C_LOG(L"Get device", SUCCEEDED(thisptr->GetDevice(__uuidof(ID3D11Device), reinterpret_cast<void **>(&dx_device)))))
             return false;
 
         dx_device->GetImmediateContext(&dx_context);
-        CON_C_LOG(L"Get context", dx_context != nullptr);
+        DEBUG_CON_C_LOG(L"Get context", dx_context != nullptr);
 
         ID3D11Texture2D *dx_backbuffer = nullptr;
-        if (!CON_C_LOG(L"Get buffer", SUCCEEDED(thisptr->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void **>(&dx_backbuffer)))))
+        if (!DEBUG_CON_C_LOG(L"Get buffer", SUCCEEDED(thisptr->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void **>(&dx_backbuffer)))))
             return false;
 
-        if (!CON_C_LOG(L"Create render target", SUCCEEDED(dx_device->CreateRenderTargetView(dx_backbuffer, nullptr, &dx_render_target_view))))
+        if (!DEBUG_CON_C_LOG(L"Create render target", SUCCEEDED(dx_device->CreateRenderTargetView(dx_backbuffer, nullptr, &dx_render_target_view))))
             return false;
 
         dx_backbuffer->Release();
 
         DXGI_SWAP_CHAIN_DESC scd;
-        if (!CON_C_LOG(L"Get swap chain description", SUCCEEDED(thisptr->GetDesc(&scd))))
+        if (!DEBUG_CON_C_LOG(L"Get swap chain description", SUCCEEDED(thisptr->GetDesc(&scd))))
             return false;
 
-        if (!CON_C_LOG(L"Initialize ImGui implementation", ImGui_ImplWin32_Init(scd.OutputWindow) && ImGui_ImplDX11_Init(dx_device, dx_context)))
+        if (!DEBUG_CON_C_LOG(L"Initialize ImGui implementation", ImGui_ImplWin32_Init(scd.OutputWindow) && ImGui_ImplDX11_Init(dx_device, dx_context)))
             return false;
 
         return true;

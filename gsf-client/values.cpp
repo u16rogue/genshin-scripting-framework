@@ -18,7 +18,7 @@ static bool w_aob_scan(utils::ldr_data_table_entry *mod, void **out_result, cons
 bool gsf::values::load()
 {
 	#pragma warning(disable: 6011)
-	DEBUG_COUT("\nStarting to load values...\nLoading modules...");
+	DEBUG_COUT("\nStarting to load values...");
 
 	// Modules
 	utils::ldr_data_table_entry *mod_unity_player;
@@ -28,14 +28,14 @@ bool gsf::values::load()
 
 	// Load modules
 	DEBUG_COUT("\nLOAD MODULES:");
-	if (!CON_C_LOG(L"UnityPlayer.dll", utils::ldr_data_table_entry_find(L"UnityPlayer.dll", mod_unity_player))
+	if (!DEBUG_CON_C_LOG(L"UnityPlayer.dll", utils::ldr_data_table_entry_find(L"UnityPlayer.dll", mod_unity_player))
 	) {
 		return false;
 	}
 
 	// Load signatures
 	DEBUG_COUT("\nLOAD SIGNATURES:");
-	if (!CON_C_LOG(L"Player map coordinate", w_aob_scan(mod_unity_player, &sig_player_map_coord, "\xF2\x0F\x11\x0D\x00\x00\x00\x00\x48\x83\xC4\x00\x5B\xC3\x48\x8D\x0D", "xxxx????xxx?xxxxx"))
+	if (!DEBUG_CON_C_LOG(L"Player map coordinate", w_aob_scan(mod_unity_player, &sig_player_map_coord, "\xF2\x0F\x11\x0D\x00\x00\x00\x00\x48\x83\xC4\x00\x5B\xC3\x48\x8D\x0D", "xxxx????xxx?xxxxx"))
 	) {
 		return false;
 	}

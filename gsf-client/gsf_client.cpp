@@ -50,7 +50,7 @@ bool gsf::init()
     }
     #endif
 
-    if (CURSORINFO ci = { .cbSize = sizeof(ci) }; CON_C_LOG(L"Loading cursor info", GetCursorInfo(&ci)))
+    if (CURSORINFO ci = { .cbSize = sizeof(ci) }; DEBUG_CON_C_LOG(L"Loading cursor info", GetCursorInfo(&ci)))
         global::cursor_is_visible = ci.flags == CURSOR_SHOWING;
 
     if (!get_game_window_handle(global::game_window) || !gsf::values::load() || !gsf::hooks::install())

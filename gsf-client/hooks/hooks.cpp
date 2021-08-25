@@ -10,11 +10,11 @@ bool gsf::hooks::install()
 {
     DEBUG_CON_PRINT("\nInstalling hooks...");
 
-	if (!CON_C_LOG(L"Initializing MinHook...", MH_Initialize() == MH_OK))
+	if (!DEBUG_CON_C_LOG(L"Initializing MinHook...", MH_Initialize() == MH_OK))
 		return 0;
 
-	CON_C_LOG(L"Init WndProc hook...", gsf::hooks::ch_wndproc->init(global::game_window)); // WindowProc
-    CON_C_LOG(L"Init ShowCursor hook...", gsf::hooks::ch_showcursor->init(ShowCursor));    // ShowCursor
+	DEBUG_CON_C_LOG(L"Init WndProc hook...", gsf::hooks::ch_wndproc->init(global::game_window)); // WindowProc
+    DEBUG_CON_C_LOG(L"Init ShowCursor hook...", gsf::hooks::ch_showcursor->init(ShowCursor));    // ShowCursor
 
 	ID3D11Device   *dummy_device_ptr;
 	IDXGISwapChain *dummy_swapchain_ptr;
@@ -48,7 +48,7 @@ bool gsf::hooks::install()
 
 
 
-    if (!CON_C_LOG(L"D3D11CreateDeviceAndSwapChain...", SUCCEEDED(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_REFERENCE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &scd, &dummy_swapchain_ptr, &dummy_device_ptr, &fl, nullptr))) || !dummy_swapchain_ptr)
+    if (!DEBUG_CON_C_LOG(L"D3D11CreateDeviceAndSwapChain...", SUCCEEDED(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_REFERENCE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &scd, &dummy_swapchain_ptr, &dummy_device_ptr, &fl, nullptr))) || !dummy_swapchain_ptr)
     {
         return false;
     }
@@ -56,9 +56,9 @@ bool gsf::hooks::install()
     ID3D11DeviceContext *dummy_device_context_ptr = nullptr;
     dummy_device_ptr->GetImmediateContext(&dummy_device_context_ptr);
 
-	CON_C_LOG(L"Init IDXGISwapChain::Present hook...",          gsf::hooks::ch_present->init(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_swapchain_ptr, 0, gsf::def::vtidx::IDXGISwapChain::Present)));                   // IDXGISwapChain::Present
-    CON_C_LOG(L"Init ID3D11DeviceContext::Draw hook...",        gsf::hooks::ch_draw->init(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_device_context_ptr, 0, gsf::def::vtidx::ID3D11DeviceContext::Draw)));               // ID3D11DeviceContext::Draw
-    CON_C_LOG(L"Init ID3D11DeviceContext::DrawIndexed hook...", gsf::hooks::ch_drawindexed->init(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_device_context_ptr, 0, gsf::def::vtidx::ID3D11DeviceContext::DrawIndexed))); // ID3D11DeviceContext::DrawIndexed
+	DEBUG_CON_C_LOG(L"Init IDXGISwapChain::Present hook...",          gsf::hooks::ch_present->init(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_swapchain_ptr, 0, gsf::def::vtidx::IDXGISwapChain::Present)));                   // IDXGISwapChain::Present
+    DEBUG_CON_C_LOG(L"Init ID3D11DeviceContext::Draw hook...",        gsf::hooks::ch_draw->init(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_device_context_ptr, 0, gsf::def::vtidx::ID3D11DeviceContext::Draw)));               // ID3D11DeviceContext::Draw
+    DEBUG_CON_C_LOG(L"Init ID3D11DeviceContext::DrawIndexed hook...", gsf::hooks::ch_drawindexed->init(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_device_context_ptr, 0, gsf::def::vtidx::ID3D11DeviceContext::DrawIndexed))); // ID3D11DeviceContext::DrawIndexed
 
     dummy_device_context_ptr->Release();
 	dummy_swapchain_ptr->Release();
