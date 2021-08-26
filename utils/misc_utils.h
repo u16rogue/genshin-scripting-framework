@@ -25,5 +25,5 @@ namespace utils
 
 	// REMARK: instruction_operand_relative_offset - This is the offset relative to instruction_address for where the relative address operand starts.
 	// ex. jmp 0x1 which is equivalent to 0xE9 0x01 0x00 0x00 0x00 the offset in this case is 1 since the rel offset is after the E9 which is only 1 byte then the rest of the 4 bytes is the operand / rel offset
-	std::uint8_t *calc_rel_address_32(void *instruction_address, std::size_t instruction_size, std::size_t instruction_operand_relative_offset);
+	std::uint8_t *calc_rel_address_32(void *instruction_address, std::size_t instruction_operand_relative_offset);
 }

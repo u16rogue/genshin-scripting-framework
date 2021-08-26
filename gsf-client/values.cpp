@@ -40,7 +40,7 @@ bool gsf::values::load()
 		return false;
 	}
 
-	gsf::values::player_map_coords = reinterpret_cast<gsf::sdk::player_map_coords *>(utils::calc_rel_address_32(sig_player_map_coord, 0x8, 0x4));
+	gsf::values::player_map_coords = reinterpret_cast<gsf::sdk::player_map_coords *>(utils::calc_rel_address_32(sig_player_map_coord, 0x4));
 
 	return true;
 	#pragma warning(default: 6011)

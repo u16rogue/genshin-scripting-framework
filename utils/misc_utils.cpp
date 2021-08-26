@@ -21,10 +21,10 @@ std::wstring utils::random_str(int length, std::wstring_view char_set)
 	return result;
 }
 
-std::uint8_t *utils::calc_rel_address_32(void *instruction_address, std::size_t instruction_size, std::size_t instruction_operand_relative_offset)
+std::uint8_t *utils::calc_rel_address_32(void *instruction_address, std::size_t instruction_operand_relative_offset)
 {
 	std::int32_t offset = *reinterpret_cast<std::int32_t *>(reinterpret_cast<std::uint8_t *>(instruction_address) + instruction_operand_relative_offset);
-	std::uintptr_t next_instruction = reinterpret_cast<std::uintptr_t>(instruction_address) + instruction_size;
+	std::uintptr_t next_instruction = reinterpret_cast<std::uintptr_t>(instruction_address) + instruction_operand_relative_offset + sizeof(std::int32_t);
 	return reinterpret_cast<std::uint8_t *>(next_instruction + offset);
 }
 
