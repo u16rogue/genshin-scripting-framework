@@ -172,11 +172,11 @@ Writes the `value` to a specified memory address
 * Permission
     * None
 
-### `mem.calc_rel_address_32(instruction_address, instruction_operand_relative_offset)`
-Calculates the 4 byte operand relative address of the instruction.
+### `mem.calc_rel_address_32(inst_addr, inst_operand_offset)`
+Calculates the 4 byte operand relative address of the instruction to its absolute address.
 * Parameters
-    * instruction_address - [pointer] Address of the instruction.
-    * instruction_operand_relative_offset - [int] Offset to the operand.
+    * inst_addr - [pointer] Address of the instruction.
+    * inst_operand_offset - [integer] Offset to the operand.
 * Return
     * absolute_address - [pointer] The resulting absolute address.
 * Remarks

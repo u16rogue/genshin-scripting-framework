@@ -307,9 +307,9 @@ void gsf::script::_api_mem_write_uint(std::uintptr_t addr, std::size_t prim_t_si
 	std::memcpy(reinterpret_cast<void *>(addr), &value, prim_t_size);
 }
 
-std::uintptr_t gsf::script::_api_mem_calc_rel_address_32(std::uintptr_t instruction_address, std::size_t instruction_operand_relative_offset)
+std::uintptr_t gsf::script::_api_mem_calc_rel_address_32(std::uintptr_t inst_addr, std::size_t inst_operand_offset)
 {
-	return reinterpret_cast<std::uintptr_t>(utils::calc_rel_address_32(reinterpret_cast<void *>(instruction_address), instruction_operand_relative_offset));
+	return reinterpret_cast<std::uintptr_t>(utils::calc_rel_address_32(reinterpret_cast<void *>(inst_addr), inst_operand_offset));
 }
 
 bool gsf::script::_api_imgui_begin(const char *text)
