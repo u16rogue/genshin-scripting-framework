@@ -107,6 +107,7 @@ namespace gsf
 		int _api_mem_patch(std::uintptr_t addr, std::vector<std::uint8_t> byte_array);
 		std::uint64_t _api_mem_read_uint(std::uintptr_t addr, std::size_t prim_t_size);
 		void _api_mem_write_uint(std::uintptr_t addr, std::size_t prim_t_size, std::uint64_t value);
+		std::uintptr_t _api_mem_calc_rel_address_32(std::uintptr_t instruction_address, std::size_t instruction_operand_relative_offset);
 
 		// imgui
 		bool _api_imgui_begin(const char *text);

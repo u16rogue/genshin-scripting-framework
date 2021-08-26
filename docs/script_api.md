@@ -172,6 +172,17 @@ Writes the `value` to a specified memory address
 * Permission
     * None
 
+### `mem.calc_rel_address_32(instruction_address, instruction_operand_relative_offset)`
+Calculates the 4 byte operand relative address of the instruction.
+* Parameters
+    * instruction_address - [pointer] Address of the instruction.
+    * instruction_operand_relative_offset - [int] Offset to the operand.
+* Return
+    * absolute_address - [pointer] The resulting absolute address.
+* Remarks
+* Permission
+    * None
+
 ## `imgui` Namespace
 This API is only a wrapper for ImGui. Documentation for each function exists in the [ImGui repo](https://github.com/ocornut/imgui).
 

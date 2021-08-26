@@ -6,6 +6,7 @@
 #include <macro.h>
 #include <pattern_scan.h>
 #include <imgui.h>
+#include <misc_utils.h>
 
 #include "values.h"
 
@@ -186,6 +187,7 @@ bool gsf::script::setup_script_api(sol::state &state)
 	namespace_mem.set_function("patch", &gsf::script::_api_mem_patch, this);
 	namespace_mem.set_function("read_uint", &gsf::script::_api_mem_read_uint, this);
 	namespace_mem.set_function("write_uint", &gsf::script::_api_mem_write_uint, this);
+	namespace_mem.set_function("calc_rel_address_32", &gsf::script::_api_mem_calc_rel_address_32, this);
 
 	// imgui namespace
 	auto namespace_imgui = state["imgui"].get_or_create<sol::table>();
@@ -303,6 +305,11 @@ void gsf::script::_api_mem_write_uint(std::uintptr_t addr, std::size_t prim_t_si
 	}
 
 	std::memcpy(reinterpret_cast<void *>(addr), &value, prim_t_size);
+}
+
+std::uintptr_t gsf::script::_api_mem_calc_rel_address_32(std::uintptr_t instruction_address, std::size_t instruction_operand_relative_offset)
+{
+	return reinterpret_cast<std::uintptr_t>(utils::calc_rel_address_32(reinterpret_cast<void *>(instruction_address), instruction_operand_relative_offset));
 }
 
 bool gsf::script::_api_imgui_begin(const char *text)
