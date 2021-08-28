@@ -14,7 +14,7 @@
 #include "script_manager.h"
 #include "helpers/imgui_prompts.h"
 #include "hooks/hooks.h"
-#include "values.h"
+#include "game/game.h"
 #include "features/fps_counter.h"
 
 #if __has_include("autoexecdef.h") && !defined( GSF_AUTOEXEC_SCRIPT_PATH )
@@ -53,7 +53,7 @@ bool gsf::init()
     if (CURSORINFO ci = { .cbSize = sizeof(ci) }; DEBUG_CON_C_LOG(L"Loading cursor info", GetCursorInfo(&ci)))
         global::cursor_is_visible = ci.flags == CURSOR_SHOWING;
 
-    if (!get_game_window_handle(global::game_window) || !gsf::values::load() || !gsf::hooks::install())
+    if (!get_game_window_handle(global::game_window) || !game::init() || !gsf::hooks::install())
         return false;
 
     ImGui::CreateContext();

@@ -8,7 +8,7 @@
 #include <imgui.h>
 #include <misc_utils.h>
 
-#include "values.h"
+#include "game/game.h"
 
 /// <summary>
 /// RAII implementation of applying script state value
@@ -326,5 +326,5 @@ void gsf::script::_api_imgui_iend()
 
 sol::table gsf::script::_api_player_get_map_coords()
 {
-	return this->lua_state->create_table_with("x", gsf::values::player_map_coords->x, "z", gsf::values::player_map_coords->z);
+	return this->lua_state->create_table_with("x", game::player_map_coords->x, "z", game::player_map_coords->z);
 }

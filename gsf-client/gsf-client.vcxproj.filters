@@ -48,10 +48,10 @@
     <ClCompile Include="hooks\DrawIndexed.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="values.cpp">
+    <ClCompile Include="hooks\ShowCursor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hooks\ShowCursor.cpp">
+    <ClCompile Include="game\game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,10 +80,16 @@
     <ClInclude Include="helpers\imgui_prompts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="values.h">
+    <ClInclude Include="game\game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sdk\structures.h">
+    <ClInclude Include="game\functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\sdk\structures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\values.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
