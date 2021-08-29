@@ -12,6 +12,7 @@ static bool w_aob_scan(utils::ldr_data_table_entry *mod, void **out_result, cons
 		return false;
 
 	*out_result = result;
+	DEBUG_COUT(" @ 0x" << reinterpret_cast<void *>(result));
 	return true;
 }
 

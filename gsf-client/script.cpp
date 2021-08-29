@@ -204,6 +204,10 @@ bool gsf::script::setup_script_api(sol::state &state)
 	auto namespace_player = state["player"].get_or_create<sol::table>();
 	namespace_player.set_function("get_map_coords", &gsf::script::_api_player_get_map_coords, this);
 
+	// game namespace
+	auto namespace_game = state["game"].get_or_create<sol::table>();
+	namespace_game.set_function("get_object", [](const char *name) { return reinterpret_cast<std::uintptr_t>(game::get_object(name)); } );
+
 	return true;
 }
 
