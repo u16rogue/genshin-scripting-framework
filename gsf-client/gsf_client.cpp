@@ -53,10 +53,10 @@ bool gsf::init()
     if (CURSORINFO ci = { .cbSize = sizeof(ci) }; DEBUG_CON_C_LOG(L"Loading cursor info", GetCursorInfo(&ci)))
         global::cursor_is_visible = ci.flags == CURSOR_SHOWING;
 
+    ImGui::CreateContext();
     if (!get_game_window_handle(global::game_window) || !game::init() || !gsf::hooks::install())
         return false;
 
-    ImGui::CreateContext();
     ImGui::GetIO().IniFilename = nullptr;
 
 	return true;

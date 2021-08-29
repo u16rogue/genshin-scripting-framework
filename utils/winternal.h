@@ -70,7 +70,7 @@ namespace utils
             dest = first_entry;
             return true;
         }
-        
+
         if (dest->next == nullptr || dest->next == first_entry)
             return false;
 
@@ -135,8 +135,7 @@ namespace utils
 
         for (std::size_t i = 0; i < image_export->NumberOfFunctions; i++)
         {
-            auto ename = reinterpret_cast<const char *>(base + names[i]);
-            if (strcmp(ename, name) == 0)
+            if (strcmp(reinterpret_cast<const char *>(base + names[i]), name) == 0)
                 return base + (address[ordinals[i]]);
         }
         return nullptr;
