@@ -56,7 +56,7 @@ bool game::init()
 		return false;
 	}
 
-	game::player_map_coords = reinterpret_cast<game::structs::player_map_coords *>(utils::calc_rel_address_32(sig_player_map_coord, 0x4));
+	game::player_map_coords = reinterpret_cast<game::structs::player_map_coords *>(utils::calc_rel_address_32(sig_player_map_coord, 0x8));
 
 	return true;
 	#pragma warning(default: 6011)
