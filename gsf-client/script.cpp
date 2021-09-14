@@ -180,6 +180,7 @@ bool gsf::script::setup_script_api(sol::state &state)
 	// win namespace
 	auto namespace_win = state["win"].get_or_create<sol::table>();
 	namespace_win.set_function("find_module", &gsf::script::_api_win_find_module, this);
+	namespace_win.set_function("get_all_modules", &gsf::script::_api_win_get_all_modules, this);
 
 	// mem namespace
 	auto namespace_mem = state["mem"].get_or_create<sol::table>();
@@ -242,6 +243,20 @@ sol::object gsf::script::_api_win_find_module(std::wstring module_name)
 		return this->lua_state->create_table_with("base_address", reinterpret_cast<std::uintptr_t>(ldr->dll_base), "size", ldr->size_of_image);
 
 	return sol::nil;
+}
+
+sol::table gsf::script::_api_win_get_all_modules()
+{
+	auto result = this->lua_state->create_table();
+
+	utils::ldr_data_table_entry *entry = nullptr;
+	while (utils::ldr_data_table_entry_next(entry))
+	{
+		if (entry->dll_base)
+			result[entry->base_dll_name] = this->lua_state->create_table_with("base_address", reinterpret_cast<std::uintptr_t>(entry->dll_base), "size", entry->size_of_image);
+	}
+
+	return result;
 }
 
 sol::object gsf::script::_api_mem_ida_scan(std::uintptr_t start_adr, std::size_t size, std::string ida_pattern)

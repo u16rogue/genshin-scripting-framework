@@ -101,6 +101,7 @@ namespace gsf
 
 		// win
 		sol::object _api_win_find_module(std::wstring module_name);
+		sol::table _api_win_get_all_modules();
 
 		// mem
 		sol::object _api_mem_ida_scan(std::uintptr_t start_adr, std::size_t size, std::string ida_pattern);

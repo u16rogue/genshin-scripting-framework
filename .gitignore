@@ -11,6 +11,6 @@ obj/
 gsf-client/git_hash.h
 gsf-client/git_info.h
 gsf-client/autoexecdef.h
-scripts/
+gsf-client/scripts/
 re_stuff/
 wiki/
