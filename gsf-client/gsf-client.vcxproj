@@ -143,6 +143,7 @@ echo #endif &gt;&gt; git_info.h</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="api\api_gsf.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="features\fps_counter.cpp" />
     <ClCompile Include="game\game.cpp" />
@@ -158,6 +159,8 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClCompile Include="script_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="api\api_gsf.h" />
+    <ClInclude Include="api\i_api.h" />
     <ClInclude Include="definitions.h" />
     <ClInclude Include="features\fps_counter.h" />
     <ClInclude Include="game\functions.h" />

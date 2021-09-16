@@ -54,6 +54,9 @@
     <ClCompile Include="game\game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="api\api_gsf.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
@@ -90,6 +93,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game\values.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="api\i_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="api\api_gsf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
