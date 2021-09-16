@@ -144,6 +144,8 @@ echo #endif &gt;&gt; git_info.h</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="api\api_gsf.cpp" />
+    <ClCompile Include="api\api_mem.cpp" />
+    <ClCompile Include="api\api_win.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="features\fps_counter.cpp" />
     <ClCompile Include="game\game.cpp" />
@@ -160,6 +162,9 @@ echo #endif &gt;&gt; git_info.h</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="api\api_gsf.h" />
+    <ClInclude Include="api\api_imgui.h" />
+    <ClInclude Include="api\api_mem.h" />
+    <ClInclude Include="api\api_win.h" />
     <ClInclude Include="api\i_api.h" />
     <ClInclude Include="definitions.h" />
     <ClInclude Include="features\fps_counter.h" />
@@ -173,6 +178,9 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClInclude Include="script.h" />
     <ClInclude Include="script_manager.h" />
     <ClInclude Include="game\sdk\structures.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

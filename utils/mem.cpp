@@ -1,4 +1,4 @@
-#include "pattern_scan.h"
+#include "mem.h"
 #include <string>
 #include <memory>
 #include <Windows.h>
@@ -6,12 +6,12 @@
 
 std::uint8_t *utils::aob_scan(void *start, std::size_t size, const char *signature, const char *mask)
 {
-	if ( !start || size < 1 || !signature || !mask )
+	if (!start || size < 1 || !signature || !mask)
 		return nullptr;
 
-	std::uint8_t      *current_address = reinterpret_cast<std::uint8_t *>(start);
-	const std::size_t  byte_count      = std::strlen(mask);
-	const std::uint8_t *end            = current_address + size;
+	std::uint8_t *current_address = reinterpret_cast<std::uint8_t *>(start);
+	const std::size_t  byte_count = std::strlen(mask);
+	const std::uint8_t *end = current_address + size;
 
 	do
 	{
@@ -24,8 +24,7 @@ std::uint8_t *utils::aob_scan(void *start, std::size_t size, const char *signatu
 			else if (mask[i + 1] == '\0')
 				return current_address;
 		}
-	}
-	while (++current_address + byte_count <= end);
+	} 	while (++current_address + byte_count <= end);
 
 	return nullptr;
 }
@@ -40,7 +39,7 @@ std::uint8_t *utils::aob_scan(void *proc_handle, void *start, std::size_t size, 
 	if (!result)
 		return nullptr;
 
-	return reinterpret_cast<std::uint8_t*>(start) + (reinterpret_cast<std::uintptr_t>(result) - reinterpret_cast<std::uintptr_t>(buffer.get()));
+	return reinterpret_cast<std::uint8_t *>(start) + (reinterpret_cast<std::uintptr_t>(result) - reinterpret_cast<std::uintptr_t>(buffer.get()));
 }
 
 constexpr std::uint8_t INVALID_NIBBLE = 0xF0;
@@ -104,4 +103,10 @@ std::uint8_t *utils::ida_scan(void *start, std::size_t size, const char *signatu
 		return nullptr; // this should throw an exception instead
 
 	return utils::aob_scan(start, size, reinterpret_cast<const char *>(aob.data()), mask.c_str());
+}
+
+std::uint8_t *utils::calc_rel_address_32(void *instruction_address, std::size_t instruction_size)
+{
+	auto next_inst = reinterpret_cast<std::uintptr_t>(instruction_address) + instruction_size;
+	return reinterpret_cast<std::uint8_t *>(next_inst + *reinterpret_cast<std::int32_t *>((next_inst - sizeof(std::uint32_t))));
 }

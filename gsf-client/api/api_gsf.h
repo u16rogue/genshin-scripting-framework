@@ -17,40 +17,38 @@ namespace gsf
 				: hashed_name(hashed_name_) {}
 
 			const std::uint64_t hashed_name;
-			bool active = false;
-			sol::function callback_function;
-			mutable std::mutex mutex;
+			bool                active = false;
+			sol::function       callback_function;
+			mutable std::mutex  mutex;
 
-			void reg(sol::function &function_)
-			{
-				this->callback_function = function_;
-				this->active = true;
-			};
-
-			void unreg()
-			{
-				this->callback_function = sol::nil;
-				this->active = false;
-			};
+			void reg(sol::function &function_);
+			void unreg();
 		};
 
-		#define _GSF_SCRIPT_DECLARE_CALLBACK(name) api_gsf::callback name = api_gsf::callback(utils::hash_fnv1a(#name))
+
 		struct callbacks_container
 		{
-			_GSF_SCRIPT_DECLARE_CALLBACK(on_imgui_draw);
-			_GSF_SCRIPT_DECLARE_CALLBACK(dx_draw);
-			_GSF_SCRIPT_DECLARE_CALLBACK(dx_drawindexed);
+			#define _GSF_SCRIPT_DECLARE_CALLBACK(name) api_gsf::callback name = api_gsf::callback(utils::hash_fnv1a(#name));
+
+			_GSF_SCRIPT_DECLARE_CALLBACK(on_imgui_draw)
+			_GSF_SCRIPT_DECLARE_CALLBACK(dx_draw)
+			_GSF_SCRIPT_DECLARE_CALLBACK(dx_drawindexed)
+
+			#undef _GSF_SCRIPT_DECLARE_CALLBACK
 		};
-		#undef _GSF_SCRIPT_DECLARE_CALLBACK
+
+	protected:
+		api_gsf() {};
+		bool setup_api();
 
 	public:
-		api_gsf();
+		const std::vector<std::string> &get_logs() const;
+		const api_gsf::callbacks_container &get_callbacks() const;
 
+	private:
 		std::vector<std::string> logs;
 		api_gsf::callbacks_container callbacks;
 
-	private:
-		bool setup_api();
 		void push_log(std::string msg) override;
 
 	private:

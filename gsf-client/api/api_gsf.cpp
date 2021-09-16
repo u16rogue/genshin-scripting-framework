@@ -1,8 +1,16 @@
 #include "api_gsf.h"
 
-gsf::api_gsf::api_gsf()
+void gsf::api_gsf::callback::reg(sol::function &function_)
 {
-}
+	this->callback_function = function_;
+	this->active = true;
+};
+
+void gsf::api_gsf::callback::unreg()
+{
+	this->callback_function = sol::nil;
+	this->active = false;
+};
 
 bool gsf::api_gsf::setup_api()
 {
@@ -11,6 +19,16 @@ bool gsf::api_gsf::setup_api()
 	namespace_gsf.set_function("register_callback", &api_gsf::_api_register_callback, this);
 
 	return true;
+}
+
+const std::vector<std::string> &gsf::api_gsf::get_logs() const
+{
+	return this->logs;
+}
+
+const gsf::api_gsf::callbacks_container &gsf::api_gsf::get_callbacks() const
+{
+	return this->callbacks;
 }
 
 void gsf::api_gsf::push_log(std::string msg)
