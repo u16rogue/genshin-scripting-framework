@@ -1,4 +1,5 @@
 #include "api_gsf.h"
+#include <macro.h>
 
 void gsf::callback_api::reg(sol::function &function_)
 {
@@ -49,14 +50,15 @@ void gsf::api_gsf::clear_logs()
 	this->logs.clear();
 }
 
-void gsf::api_gsf::push_log(std::string msg)
+void gsf::api_gsf::internal_push_log(std::string msg)
 {
+	DEBUG_COUT("\n[SCRIPT] " << msg);
 	this->logs.emplace_back(std::move(msg));
 }
 
 void gsf::api_gsf::_api_log(std::string txt)
 {
-	this->push_log(std::move(txt));
+	this->internal_push_log(std::move(txt));
 }
 
 bool gsf::api_gsf::_api_register_callback(std::string id, sol::function callback)

@@ -58,7 +58,7 @@ bool gsf::script::load()
 	if (auto load_res = temp_lua_state->script_file(this->filepath); !load_res.valid())
 	{
 		sol::error err_load_res = load_res;
-		api_gsf::push_log(err_load_res.what());
+		api_gsf::internal_push_log(err_load_res.what());
 		return false;
 	}
 
@@ -70,14 +70,14 @@ bool gsf::script::load()
 		}
 		else
 		{
-			api_gsf::push_log("Callback \"on_load\" not found.");
+			api_gsf::internal_push_log("Callback \"on_load\" not found.");
 			return false;
 		}
 	}
 
 	if (!gsf::script_apis::setup_all_apis(*temp_lua_state.get()))
 	{
-		api_gsf::push_log("Failed to load API in lua state");
+		api_gsf::internal_push_log("Failed to load API in lua state");
 		return false;
 	}
 
@@ -87,7 +87,7 @@ bool gsf::script::load()
 	++gsf::script::count_loaded_scripts;
 
 	DEBUG_COUT("\nLoaded lua: " << this->filepath);
-	api_gsf::push_log("Successfuly loaded.");
+	api_gsf::internal_push_log("Successfuly loaded.");
 
 	// Run the script
 	callback_onload();
@@ -133,4 +133,9 @@ const gsf::script::state gsf::script::get_current_state() const
 sol::state &gsf::script::get_lua_state()
 {
 	return *this->lua_state.get();
+}
+
+void gsf::script::push_log(std::string msg)
+{
+	api_gsf::internal_push_log(std::move(msg));
 }

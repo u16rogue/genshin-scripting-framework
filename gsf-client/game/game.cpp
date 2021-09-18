@@ -2,7 +2,7 @@
 
 #include <macro.h>
 #include <winternal.h>
-#include <pattern_scan.h>
+#include <mem.h>
 #include <misc_utils.h>
 
 using entryp_t = utils::ldr_data_table_entry *;

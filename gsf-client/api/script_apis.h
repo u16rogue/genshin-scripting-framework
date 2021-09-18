@@ -24,6 +24,7 @@ namespace gsf
 		api_gsf,
 		api_game,
 		api_imgui,
-		api_mem
+		api_mem,
+		api_win
 	>;
 }
