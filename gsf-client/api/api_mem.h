@@ -8,7 +8,7 @@ namespace gsf
 	{
 	protected:
 		api_mem() {}
-		bool setup_api();
+		bool setup_api(sol::state &slua);
 
 	private:
 		sol::object _api_ida_scan(std::uintptr_t start_adr, std::size_t size, std::string ida_pattern);

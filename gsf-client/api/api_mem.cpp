@@ -1,11 +1,17 @@
 #include "api_mem.h"
-
 #include <mem.h>
 #include <Windows.h>
 
-bool gsf::api_mem::setup_api()
+bool gsf::api_mem::setup_api(sol::state &slua)
 {
-	return false;
+	auto namespace_mem = slua["mem"].get_or_create<sol::table>();
+	namespace_mem.set_function("ida_scan", &gsf::api_mem::_api_ida_scan, this);
+	namespace_mem.set_function("patch", &gsf::api_mem::_api_patch, this);
+	namespace_mem.set_function("read_uint", &gsf::api_mem::_api_read_uint, this);
+	namespace_mem.set_function("write_uint", &gsf::api_mem::_api_write_uint, this);
+	namespace_mem.set_function("calc_rel_address_32", &gsf::api_mem::_api_calc_rel_address_32, this);
+
+	return true;
 }
 
 sol::object gsf::api_mem::_api_ida_scan(std::uintptr_t start_adr, std::size_t size, std::string ida_pattern)

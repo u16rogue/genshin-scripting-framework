@@ -9,7 +9,7 @@ namespace gsf
 	{
 	protected:
 		api_win() {}
-		bool setup_api();
+		bool setup_api(sol::state &slua);
 
 	private:
 		sol::object _api_find_module(std::wstring module_name);
