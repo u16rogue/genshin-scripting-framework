@@ -54,6 +54,21 @@
     <ClCompile Include="game\game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="api\api_gsf.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="api\api_win.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="api\api_mem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="api\api_imgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="api\api_game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
@@ -92,5 +107,29 @@
     <ClInclude Include="game\values.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="api\i_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="api\api_gsf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="api\api_win.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="api\api_mem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="api\api_imgui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="api\api_game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="api\script_apis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

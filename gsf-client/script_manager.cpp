@@ -68,13 +68,6 @@ bool gsf::script_manager::script_import(std::string_view file_path, gsf::script 
     return true;
 }
 
-void show_error(const char *msg)
-{
-    error_message = msg;
-    error_message_fader.mark();
-    error_message_visible = true;
-}
-
 void import_prompt_ui()
 {
     static char buffer_import[MAX_PATH] = { '\0' };
@@ -92,7 +85,9 @@ void import_prompt_ui()
         }
         else
         {
-            show_error("Failed to import script!");
+            error_message = "Failed to import script!";
+            error_message_fader.mark();
+            error_message_visible = true;
         }
     }
 

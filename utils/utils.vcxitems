@@ -14,7 +14,7 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)pattern_scan.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)mem.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)console.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)hooking.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)loadlibrary.cpp" />
@@ -24,13 +24,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)hash.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)pattern_scan.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)mem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)console.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)hooking.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)loadlibrary.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)macro.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)misc_utils.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)singleton.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)winapi_helper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)winternal.h" />
   </ItemGroup>

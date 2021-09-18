@@ -13,7 +13,7 @@ void __stdcall hk_Draw(ID3D11DeviceContext *thisptr, UINT VertexCount, UINT Star
 		if (!callback.active)
 			continue;
 
-		auto args = script->get_lua().create_table_with("cancel", false, "VertexCount", VertexCount, "StartVertexLocation", StartVertexLocation);
+		auto args = script->get_lua_state().create_table_with("cancel", false, "VertexCount", VertexCount, "StartVertexLocation", StartVertexLocation);
 
 		callback.callback_function(args);
 

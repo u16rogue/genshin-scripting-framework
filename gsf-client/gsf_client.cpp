@@ -23,9 +23,9 @@
 
 bool get_game_window_handle(void *&handle_out)
 {
-    int timeout = 30;
+    // int timeout = 30;
 
-    while (handle_out == nullptr && --timeout > 0)
+    while (handle_out == nullptr /* && --timeout > 0 */)
     {
         handle_out = FindWindowW(UTILS_A2W_MDEF(GSF_DEF_GAME_WND_CLASS), UTILS_A2W_MDEF(GSF_DEF_GAME_WND_TITLE));
         Sleep(1000);
@@ -116,7 +116,7 @@ inline void gsf_draw_dropmenu()
 {
     if (ImGui::MenuItem("Script Manager"))
     {
-        gsf::script_manager::visible ^= true; // gsf::script_manager::visible = !gsf::script_manager::visible
+        gsf::script_manager::visible = !gsf::script_manager::visible;
     }
 
     ImGui::Checkbox("FPS Counter", &gsf::features::fps_counter::active);

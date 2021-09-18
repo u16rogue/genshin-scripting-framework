@@ -12,7 +12,7 @@ void hk_DrawIndexed(ID3D11DeviceContext *thisptr, UINT IndexCount, UINT StartInd
 		if (!callback.active)
 			continue;
 
-		auto args = script->get_lua().create_table_with("cancel", false, "IndexCount", IndexCount, "StartIndexLocation", StartIndexLocation, "BaseVertexLocation", BaseVertexLocation);
+		auto args = script->get_lua_state().create_table_with("cancel", false, "IndexCount", IndexCount, "StartIndexLocation", StartIndexLocation, "BaseVertexLocation", BaseVertexLocation);
 
 		callback.callback_function(args);
 

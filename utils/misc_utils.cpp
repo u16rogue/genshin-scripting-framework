@@ -2,12 +2,6 @@
 #include <Windows.h>
 #include <ctime>
 
-void utils::spinlock_key(int key, unsigned int sleepms)
-{
-	while (!GetAsyncKeyState(key))
-		Sleep(sleepms);
-}
-
 std::wstring utils::random_str(int length, std::wstring_view char_set)
 {
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
@@ -19,12 +13,6 @@ std::wstring utils::random_str(int length, std::wstring_view char_set)
 		result += char_set[std::rand() % set_max_idx];
 
 	return result;
-}
-
-std::uint8_t *utils::calc_rel_address_32(void *instruction_address, std::size_t instruction_size)
-{
-	auto next_inst = reinterpret_cast<std::uintptr_t>(instruction_address) + instruction_size;
-	return reinterpret_cast<std::uint8_t *>(next_inst + *reinterpret_cast<std::int32_t*>((next_inst - sizeof(std::uint32_t))));
 }
 
 #pragma warning (disable: 28159)

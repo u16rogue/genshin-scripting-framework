@@ -1,0 +1,5 @@
+// Hint files help the Visual Studio IDE interpret Visual C++ identifiers
+// such as names of functions and macros.
+// For more information see https://go.microsoft.com/fwlink/?linkid=865984
+#define _GSF_SCRIPT_DECLARE_CALLBACK(name) script::callback name = script::callback(utils::hash_fnv1a(#name))
+#define _GSF_SCRIPT_DECLARE_CALLBACK(name) api_gsf::callback name = api_gsf::callback(utils::hash_fnv1a(#name));
