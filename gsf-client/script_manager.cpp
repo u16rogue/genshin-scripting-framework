@@ -120,7 +120,7 @@ void draw_imported_script_items()
     {
         ImGui::PushID(&inst);
 
-        ImGui::Text("File: %s", inst->get_filepath().data());
+        ImGui::Text("File: %s", inst->get_filename().data());
 
         if (ImGui::Button("Show Logs"))
         {
@@ -129,7 +129,7 @@ void draw_imported_script_items()
                 script_log_window_visible = !script_log_window_visible;
 
             script_log_window_selected = inst.get();
-            script_log_window_title = std::string("Script Logs (") + script_log_window_selected->get_filepath().data() + ")" + script_log_window_id;
+            script_log_window_title = std::string("Script Logs (") + script_log_window_selected->get_filename().data() + ")" + script_log_window_id;
         }
         else if (ImGui::IsItemHovered())
         {

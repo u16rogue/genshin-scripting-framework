@@ -4,8 +4,7 @@
 #include <memory>
 #include <string>
 #include <cstdint>
-#include <hash.h>
-#include <mutex>
+#include <filesystem>
 
 #include "api/script_apis.h"
 
@@ -36,6 +35,7 @@ namespace gsf
 		operator bool() const;
 
 		const std::string_view   get_filepath() const;
+		const std::string_view   get_filename() const;
 		const gsf::script::state get_current_state() const;
 
 		sol::state &get_lua_state() override;
@@ -43,6 +43,7 @@ namespace gsf
 
 	private:
 		const std::string           filepath;
+		std::string                 filename;
 		std::unique_ptr<sol::state> lua_state     = nullptr;
 		script::state               current_state = script::state::UNLOADED;
 	};

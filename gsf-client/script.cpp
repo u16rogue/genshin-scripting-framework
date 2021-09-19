@@ -1,7 +1,6 @@
 #include "script.h"
 
 #include <Windows.h>
-#include <filesystem>
 #include <macro.h>
 
 /// <summary>
@@ -36,6 +35,7 @@ gsf::script::script(std::string_view filepath_)
 	: filepath(filepath_)
 {
 	DEBUG_COUT("\nConstructed gsf::script object # " << this->filepath << " # " << filepath_);
+	this->filename = this->filepath.substr(this->filepath.find_last_of("/\\") + 1);
 }
 
 bool gsf::script::load()
@@ -123,6 +123,11 @@ gsf::script::operator bool() const
 const std::string_view gsf::script::get_filepath() const
 {
 	return this->filepath;
+}
+
+const std::string_view gsf::script::get_filename() const
+{
+	return this->filename;
 }
 
 const gsf::script::state gsf::script::get_current_state() const
