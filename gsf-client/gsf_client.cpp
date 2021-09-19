@@ -14,14 +14,14 @@
 #include "script_manager.h"
 #include "helpers/imgui_prompts.h"
 #include "hooks/hooks.h"
-#include "game/game.h"
+#include "game.h"
 #include "features/fps_counter.h"
 
 #if __has_include("autoexecdef.h") && !defined( GSF_AUTOEXEC_SCRIPT_PATH )
     #include "autoexecdef.h"
 #endif
 
-bool get_game_window_handle(void *&handle_out)
+static bool get_game_window_handle(void *&handle_out)
 {
     // int timeout = 30;
 
@@ -83,7 +83,7 @@ bool gsf::shutdown()
 }
 
 static bool gsf_about_menu_visible = false;
-inline void gsf_about_on_imgui_draw()
+static void gsf_about_on_imgui_draw()
 {
     if (ImGui::Begin("About", &gsf_about_menu_visible, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_NoResize))
     {
@@ -112,7 +112,7 @@ inline void gsf_about_on_imgui_draw()
     ImGui::End();
 }
 
-inline void gsf_draw_dropmenu()
+static void gsf_draw_dropmenu()
 {
     if (ImGui::MenuItem("Script Manager"))
     {
@@ -144,7 +144,7 @@ inline void gsf_draw_dropmenu()
         gsf::shutdown();
 }
 
-inline void gsf_draw_menubaritems()
+static void gsf_draw_menubaritems()
 {
     gsf::features::fps_counter::on_gsf_draw_menubaritems();
 }

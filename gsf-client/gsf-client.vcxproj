@@ -150,7 +150,7 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClCompile Include="api\api_win.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="features\fps_counter.cpp" />
-    <ClCompile Include="game\game.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="gsf_client.cpp" />
     <ClCompile Include="helpers\imgui_prompts.cpp" />
     <ClCompile Include="hooks\Draw.cpp" />
@@ -172,16 +172,14 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClInclude Include="api\script_apis.h" />
     <ClInclude Include="definitions.h" />
     <ClInclude Include="features\fps_counter.h" />
-    <ClInclude Include="game\functions.h" />
-    <ClInclude Include="game\game.h" />
-    <ClInclude Include="game\values.h" />
+    <ClInclude Include="game.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="gsf_client.h" />
     <ClInclude Include="helpers\imgui_prompts.h" />
     <ClInclude Include="hooks\hooks.h" />
     <ClInclude Include="script.h" />
     <ClInclude Include="script_manager.h" />
-    <ClInclude Include="game\sdk\structures.h" />
+    <ClInclude Include="sdk\structures.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

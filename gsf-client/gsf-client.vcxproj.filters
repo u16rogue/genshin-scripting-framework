@@ -51,7 +51,7 @@
     <ClCompile Include="hooks\ShowCursor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game\game.cpp">
+    <ClCompile Include="game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="api\api_gsf.cpp">
@@ -95,16 +95,10 @@
     <ClInclude Include="helpers\imgui_prompts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game\game.h">
+    <ClInclude Include="game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game\functions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="game\sdk\structures.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="game\values.h">
+    <ClInclude Include="sdk\structures.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="api\i_api.h">
