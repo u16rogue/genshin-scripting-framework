@@ -20,8 +20,8 @@ void hk_DrawIndexed(ID3D11DeviceContext *thisptr, UINT IndexCount, UINT StartInd
 			return;
 	}
 
-	static auto o_DrawIndexed = gsf::hooks::DX_DrawIndexed.get_original<decltype(hk_DrawIndexed)>();
+	static auto o_DrawIndexed = gsf::hooks::DrawIndexed.get_original<decltype(hk_DrawIndexed)>();
 	return o_DrawIndexed(thisptr, IndexCount, StartIndexLocation, BaseVertexLocation);
 }
 
-utils::hook_detour gsf::hooks::DX_DrawIndexed(hk_DrawIndexed);
+utils::hook_detour gsf::hooks::DrawIndexed(hk_DrawIndexed);

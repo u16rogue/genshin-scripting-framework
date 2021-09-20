@@ -21,8 +21,8 @@ void __stdcall hk_Draw(ID3D11DeviceContext *thisptr, UINT VertexCount, UINT Star
 			return;
 	}
 
-	static auto o_Draw = gsf::hooks::DX_Draw.get_original<decltype(hk_Draw)>();
+	static auto o_Draw = gsf::hooks::Draw.get_original<decltype(hk_Draw)>();
 	return o_Draw(thisptr, VertexCount, StartVertexLocation);
 }
 
-utils::hook_detour gsf::hooks::DX_Draw(hk_Draw);
+utils::hook_detour gsf::hooks::Draw(hk_Draw);

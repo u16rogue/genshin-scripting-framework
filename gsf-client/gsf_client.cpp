@@ -16,6 +16,7 @@
 #include "hooks/hooks.h"
 #include "game.h"
 #include "features/fps_counter.h"
+#include "menu/menu.h"
 
 #if __has_include("autoexecdef.h") && !defined( GSF_AUTOEXEC_SCRIPT_PATH )
     #include "autoexecdef.h"
@@ -172,6 +173,8 @@ void gsf::render_imgui()
         gsf_draw_menubaritems();
     }
     ImGui::EndMainMenuBar();
+
+    gsf::menu::render_imgui();
 
     if (global::cursor_is_visible)
     {

@@ -3,8 +3,10 @@
 #include <imgui.h>
 #include <Windows.h>
 
-namespace menu
+namespace gsf::menu
 {
-	inline bool is_open = true;
+	inline bool is_open = false;
+
+	bool windowproc(UINT msg, WPARAM wParam, LPARAM lParam);
 	void render_imgui();
 }
