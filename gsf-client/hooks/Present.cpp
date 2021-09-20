@@ -44,7 +44,7 @@ HRESULT __stdcall hk_Present(IDXGISwapChain *thisptr, UINT SyncInterval, UINT Fl
         return true;
     }();
 
-    static auto o_Present = gsf::hooks::ch_present->get_original<decltype(hk_Present)>();
+    static auto o_Present = gsf::hooks::DX_Present.get_original<decltype(hk_Present)>();
 
     if (!init_success)
         return o_Present(thisptr, SyncInterval, Flags);
@@ -54,6 +54,7 @@ HRESULT __stdcall hk_Present(IDXGISwapChain *thisptr, UINT SyncInterval, UINT Fl
     ImGui::NewFrame();
 
     gsf::render_imgui();
+
 
     ImGui::Render();
 
@@ -67,4 +68,4 @@ HRESULT __stdcall hk_Present(IDXGISwapChain *thisptr, UINT SyncInterval, UINT Fl
     return result;
 }
 
-std::unique_ptr<utils::hook_detour> gsf::hooks::ch_present = std::make_unique<utils::hook_detour>(hk_Present);
+utils::hook_detour gsf::hooks::DX_Present(hk_Present);

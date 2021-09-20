@@ -23,8 +23,8 @@ LRESULT CALLBACK hk_WindowProc(_In_ HWND hwnd, _In_ UINT uMsg, _In_ WPARAM wPara
             return TRUE;
     }
 
-    static auto o_WindowProc = gsf::hooks::ch_wndproc->get_original<decltype(hk_WindowProc)>();
+    static auto o_WindowProc = gsf::hooks::WndProc.get_original<decltype(hk_WindowProc)>();
     return o_WindowProc(hwnd, uMsg, wParam, lParam);
 }
 
-std::unique_ptr<utils::hook_wndproc> gsf::hooks::ch_wndproc = std::make_unique<utils::hook_wndproc>(hk_WindowProc);
+utils::hook_wndproc gsf::hooks::WndProc(hk_WindowProc);

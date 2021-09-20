@@ -159,6 +159,7 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClCompile Include="hooks\Present.cpp" />
     <ClCompile Include="hooks\ShowCursor.cpp" />
     <ClCompile Include="hooks\WindowProc.cpp" />
+    <ClCompile Include="menu\menu.cpp" />
     <ClCompile Include="script.cpp" />
     <ClCompile Include="script_manager.cpp" />
   </ItemGroup>
@@ -177,6 +178,7 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClInclude Include="gsf_client.h" />
     <ClInclude Include="helpers\imgui_prompts.h" />
     <ClInclude Include="hooks\hooks.h" />
+    <ClInclude Include="menu\menu.h" />
     <ClInclude Include="script.h" />
     <ClInclude Include="script_manager.h" />
     <ClInclude Include="sdk\structures.h" />
