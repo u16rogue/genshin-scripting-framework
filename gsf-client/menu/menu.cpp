@@ -1,15 +1,14 @@
 #include "menu.h"
+#include "../game.h"
 
 bool gsf::menu::windowproc(UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	if (msg == WM_KEYDOWN && wParam == VK_INSERT)
 	{
 		gsf::menu::is_open = !gsf::menu::is_open;
-		if (gsf::menu::is_open)
-		{
-			ShowCursor(TRUE);
-			ClipCursor(nullptr);
-		}
+
+		game::engine_set_cursor_visible(gsf::menu::is_open);
+		game::engine_set_cursor_lockstate(gsf::menu::is_open ? game::sdk::CursorLockMode::None : game::sdk::CursorLockMode::Locked);
 	}
 	return gsf::menu::is_open;
 }

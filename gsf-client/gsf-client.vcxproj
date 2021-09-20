@@ -153,12 +153,13 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gsf_client.cpp" />
     <ClCompile Include="helpers\imgui_prompts.cpp" />
-    <ClCompile Include="hooks\ClipCursor.cpp" />
     <ClCompile Include="hooks\Draw.cpp" />
     <ClCompile Include="hooks\DrawIndexed.cpp" />
     <ClCompile Include="hooks\hooks.cpp" />
     <ClCompile Include="hooks\Present.cpp" />
     <ClCompile Include="hooks\ShowCursor.cpp" />
+    <ClCompile Include="hooks\UnityEngine_Cursor_set_lockState.cpp" />
+    <ClCompile Include="hooks\UnityEngine_Cursor_set_visible.cpp" />
     <ClCompile Include="hooks\WindowProc.cpp" />
     <ClCompile Include="menu\menu.cpp" />
     <ClCompile Include="script.cpp" />
@@ -182,6 +183,9 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClInclude Include="menu\menu.h" />
     <ClInclude Include="script.h" />
     <ClInclude Include="script_manager.h" />
+    <ClInclude Include="sdk\enums.h" />
+    <ClInclude Include="sdk\fn_defs.h" />
+    <ClInclude Include="sdk\sdk.h" />
     <ClInclude Include="sdk\structures.h" />
   </ItemGroup>
   <ItemGroup>

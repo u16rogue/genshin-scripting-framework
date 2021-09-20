@@ -5,6 +5,7 @@
 #include <vector>
 #include <macro.h>
 #include "../definitions.h"
+#include "../game.h"
 
 bool gsf::hooks::install()
 {
@@ -15,6 +16,9 @@ bool gsf::hooks::install()
 
 	DEBUG_CON_C_LOG(L"Init WndProc hook...", gsf::hooks::WindowProc.init(global::game_window));
     DEBUG_CON_C_LOG(L"Init ShowCursor hook...", gsf::hooks::ShowCursor.init(::ShowCursor));
+
+    DEBUG_CON_C_LOG(L"Init UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)...", gsf::hooks::UnityEngine_Cursor_set_lockState.init(game::engine_set_cursor_lockstate));
+    DEBUG_CON_C_LOG(L"Init UnityEngine_Cursor_set_visible...", gsf::hooks::UnityEngine_Cursor_set_visible.init(game::engine_set_cursor_visible));
 
 	ID3D11Device   *dummy_device_ptr;
 	IDXGISwapChain *dummy_swapchain_ptr;
@@ -64,12 +68,19 @@ bool gsf::hooks::install()
 	dummy_swapchain_ptr->Release();
 	dummy_device_ptr->Release();
 
+    DEBUG_COUT("\nEnabling all hooks...");
 	// Hook all initialized hook instances
-	for (auto &hook_instance : utils::hook_base::instances)
-		if (!hook_instance->hook())
-			return false;
+    for (auto &hook_instance : utils::hook_base::instances)
+    {
+        if (!hook_instance->hook())
+        {
+            DEBUG_COUT("failed!");
+            return false;
+        }
+    }
+    DEBUG_COUT("ok!");
 
-	return true;
+    return true;
 }
 
 bool gsf::hooks::uninstall()

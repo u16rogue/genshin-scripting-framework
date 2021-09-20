@@ -14,7 +14,7 @@ static bool w_aob_scan(entryp_t mod, void **out_result, const char *sig, const c
 	if (!out)
 		return false;
 
-	DEBUG_COUT(" @ 0x" << reinterpret_cast<void *>(out));
+	DEBUG_COUT(" @ 0x" << out);
 	return true;
 }
 
@@ -25,6 +25,17 @@ static bool w_load_module(entryp_t &out_result, const wchar_t *name)
 		return false;
 
 	DEBUG_COUT(" @ 0x" << reinterpret_cast<void *>(out_result->dll_base));
+	return true;
+}
+
+static bool w_load_gamefn(const char *name, void **out_result)
+{
+	void *&out = *out_result;
+	out = game::get_fn(name);
+	if (!out)
+		return false;
+
+	DEBUG_COUT(" @ 0x" << out);
 	return true;
 }
 
@@ -50,13 +61,21 @@ bool game::init()
 
 	// Load signatures
 	DEBUG_COUT("\nLOAD SIGNATURES:");
-	if (!DEBUG_CON_C_LOG(L"game::player_map_coords", w_aob_scan(mod_unity_player, &sig_player_map_coord,                         "\xF2\x0F\x11\x0D\x00\x00\x00\x00\x48\x83\xC4\x00\x5B\xC3\x48\x8D\x0D", "xxxx????xxx?xxxxx"))
-	||  !DEBUG_CON_C_LOG(L"game::get_object",        w_aob_scan(mod_user_assembly, reinterpret_cast<void **>(&game::get_object), "\x48\x8b\xc4\x48\x89\x48\x00\x55\x41\x54",                             "xxxxxx?xxx"))
+	if (!DEBUG_CON_C_LOG(L"game::player_map_coords (ref)", w_aob_scan(mod_unity_player, &sig_player_map_coord, "\xF2\x0F\x11\x0D\x00\x00\x00\x00\x48\x83\xC4\x00\x5B\xC3\x48\x8D\x0D", "xxxx????xxx?xxxxx"))
+	||  !DEBUG_CON_C_LOG(L"game::get_fn", w_aob_scan(mod_user_assembly, reinterpret_cast<void **>(&game::get_fn), "\x48\x8b\xc4\x48\x89\x48\x00\x55\x41\x54", "xxxxxx?xxx"))
 	) {
 		return false;
 	}
 
-	game::player_map_coords = reinterpret_cast<game::structs::player_map_coords *>(utils::calc_rel_address_32(sig_player_map_coord, 0x8));
+	// Load game functions
+	DEBUG_COUT("\nLOAD GAME FUNCTIONS:");
+	if (!DEBUG_CON_C_LOG(L"UnityEngine.Cursor::set_visible(System.Boolean)", w_load_gamefn("UnityEngine.Cursor::set_visible(System.Boolean)", reinterpret_cast<void **>(&game::engine_set_cursor_visible)))
+	||  !DEBUG_CON_C_LOG(L"UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)", w_load_gamefn("UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)", reinterpret_cast<void **>(&game::engine_set_cursor_lockstate)))
+	) {
+		return false;
+	}
+
+	game::player_map_coords = reinterpret_cast<game::sdk::player_map_coords *>(utils::calc_rel_address_32(sig_player_map_coord, 0x8));
 
 	return true;
 	#pragma warning(default: 6011)
