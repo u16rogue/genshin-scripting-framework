@@ -143,6 +143,15 @@
     <ClInclude Include="sdk\enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="menu\tab_scripts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="menu\tab_about.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="menu\tab_logs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

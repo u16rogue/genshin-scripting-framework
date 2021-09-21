@@ -181,6 +181,9 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClInclude Include="helpers\imgui_prompts.h" />
     <ClInclude Include="hooks\hooks.h" />
     <ClInclude Include="menu\menu.h" />
+    <ClInclude Include="menu\tab_about.h" />
+    <ClInclude Include="menu\tab_logs.h" />
+    <ClInclude Include="menu\tab_scripts.h" />
     <ClInclude Include="script.h" />
     <ClInclude Include="script_manager.h" />
     <ClInclude Include="sdk\enums.h" />

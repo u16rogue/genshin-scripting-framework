@@ -17,8 +17,8 @@ bool gsf::hooks::install()
 	DEBUG_CON_C_LOG(L"Init WndProc hook...", gsf::hooks::WindowProc.init(global::game_window));
     DEBUG_CON_C_LOG(L"Init ShowCursor hook...", gsf::hooks::ShowCursor.init(::ShowCursor));
 
-    DEBUG_CON_C_LOG(L"Init UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)...", gsf::hooks::UnityEngine_Cursor_set_lockState.init(game::engine_set_cursor_lockstate));
-    DEBUG_CON_C_LOG(L"Init UnityEngine_Cursor_set_visible...", gsf::hooks::UnityEngine_Cursor_set_visible.init(game::engine_set_cursor_visible));
+    DEBUG_CON_C_LOG(L"Init UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)...", gsf::hooks::UnityEngine_Cursor_set_lockState.init(game::engine_cursor_set_lockstate));
+    DEBUG_CON_C_LOG(L"Init UnityEngine_Cursor_set_visible...", gsf::hooks::UnityEngine_Cursor_set_visible.init(game::engine_cursor_set_visible));
 
 	ID3D11Device   *dummy_device_ptr;
 	IDXGISwapChain *dummy_swapchain_ptr;
