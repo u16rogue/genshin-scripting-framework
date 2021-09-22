@@ -110,6 +110,27 @@ bool gsf::script::unload()
 	return true;
 }
 
+bool gsf::script::h_thread_loading(script::state state_req)
+{
+	if (state_req != script::state::LOAD && state_req != script::state::UNLOAD)
+		return false;
+
+	std::thread([state_req, this]()
+	{
+		switch (state_req)
+		{
+			case gsf::script::state::LOAD:
+				this->load();
+				break;
+			case gsf::script::state::UNLOAD:
+				this->unload();
+				break;
+		}
+	}).detach();
+
+	return true;
+}
+
 bool gsf::script::script_file_exists()
 {
 	return std::filesystem::exists(this->filepath);
@@ -143,4 +164,18 @@ sol::state &gsf::script::get_lua_state()
 void gsf::script::push_log(std::string msg)
 {
 	api_gsf::internal_push_log(std::move(msg));
+}
+
+#define CASE_STATE_TO_RET_STR(state_) case gsf::script::state:: ## state_ ## : return #state_
+const char *gsf::script::state_to_cstr(script::state state_)
+{
+	switch (state_)
+	{
+		CASE_STATE_TO_RET_STR(UNLOADING);
+		CASE_STATE_TO_RET_STR(UNLOADED);
+		CASE_STATE_TO_RET_STR(LOADING);
+		CASE_STATE_TO_RET_STR(LOADED);
+	}
+
+	return nullptr;
 }

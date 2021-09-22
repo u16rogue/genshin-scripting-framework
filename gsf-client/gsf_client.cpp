@@ -83,66 +83,9 @@ bool gsf::shutdown()
 	return true;
 }
 
-static bool gsf_about_menu_visible = false;
-static void gsf_about_on_imgui_draw()
-{
-    if (ImGui::Begin("About", &gsf_about_menu_visible, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_NoResize))
-    {
-        ImGui::Text(
-            "Scripting API and Framework for Genshin Impact\n"
-            "\n"
-
-            "Build type: "
-            #if defined(_DEBUG) && !defined(NDEBUG)
-            "Debug"
-            #elif defined(NDEBUG) && !defined(_DEBUG)
-            "Release"
-            #else
-            "Unknown"
-            #endif
-            "\n"
-
-            "Build Date: " __DATE__ " " __TIME__ "\n"
-            "Git info: " GIT_HASH " @ " GIT_BRANCH "\n"
-            "\n"
-            "https://github.com/u16rogue/genshin-scripting-framework\n"
-            "\n"
-            "This software is licensed under the GNU General Public License 3.0\n"
-        );
-    }
-    ImGui::End();
-}
-
 static void gsf_draw_dropmenu()
 {
-    if (ImGui::MenuItem("Script Manager"))
-    {
-        gsf::script_manager::visible = !gsf::script_manager::visible;
-    }
 
-    ImGui::Checkbox("FPS Counter", &gsf::features::fps_counter::active);
-
-    if (ImGui::BeginMenu("Theme"))
-    {
-        if (ImGui::MenuItem("Default"))
-            ImGui::StyleColorsClassic();
-
-        if (ImGui::MenuItem("Light"))
-            ImGui::StyleColorsLight();
-
-        if (ImGui::MenuItem("Dark"))
-            ImGui::StyleColorsDark();
-
-        ImGui::EndMenu();
-    }
-
-    if (ImGui::MenuItem("About"))
-        gsf_about_menu_visible = !gsf_about_menu_visible;
-
-    ImGui::Separator();
-
-    if (ImGui::MenuItem("Shutdown (Delete key)"))
-        gsf::shutdown();
 }
 
 static void gsf_draw_menubaritems()
@@ -175,14 +118,6 @@ void gsf::render_imgui()
     ImGui::EndMainMenuBar();
 
     gsf::menu::render_imgui();
-
-    if (global::cursor_is_visible)
-    {
-        gsf::script_manager::on_imgui_draw();
-
-        if (gsf_about_menu_visible)
-            gsf_about_on_imgui_draw();
-    }
 
     for (auto &script : imported_scripts)
     {
