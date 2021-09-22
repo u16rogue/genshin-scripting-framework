@@ -5,7 +5,6 @@
 #include <string>
 #include <cstdint>
 #include <filesystem>
-
 #include "api/script_apis.h"
 
 namespace gsf
