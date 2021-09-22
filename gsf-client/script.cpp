@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include <macro.h>
+#include "log_manager.h"
 
 /// <summary>
 /// RAII implementation of applying script state value
@@ -40,8 +41,6 @@ gsf::script::script(std::string_view filepath_)
 
 bool gsf::script::load()
 {
-	api_gsf::clear_logs();
-
 	if (!this->script_file_exists())
 		return false;
 
@@ -58,7 +57,7 @@ bool gsf::script::load()
 	if (auto load_res = temp_lua_state->script_file(this->filepath); !load_res.valid())
 	{
 		sol::error err_load_res = load_res;
-		api_gsf::internal_push_log(err_load_res.what());
+		gsf::log_manager::push_log(err_load_res.what(), gsf::log_manager::log_type::LUA);
 		return false;
 	}
 
@@ -70,14 +69,14 @@ bool gsf::script::load()
 		}
 		else
 		{
-			api_gsf::internal_push_log("Callback \"on_load\" not found.");
+			gsf::log_manager::push_log("Callback \"on_load\" not found.", gsf::log_manager::log_type::GSF);
 			return false;
 		}
 	}
 
 	if (!gsf::script_apis::setup_all_apis(*temp_lua_state.get()))
 	{
-		api_gsf::internal_push_log("Failed to load API in lua state");
+		gsf::log_manager::push_log("Failed to load API in lua state", gsf::log_manager::log_type::GSF);
 		return false;
 	}
 
@@ -87,7 +86,7 @@ bool gsf::script::load()
 	++gsf::script::count_loaded_scripts;
 
 	DEBUG_COUT("\nLoaded lua: " << this->filepath);
-	api_gsf::internal_push_log("Successfuly loaded.");
+	gsf::log_manager::push_log("Script Loaded: " + this->filename, gsf::log_manager::log_type::GSF);
 
 	// Run the script
 	callback_onload();
@@ -107,6 +106,7 @@ bool gsf::script::unload()
 	--gsf::script::count_loaded_scripts;
 
 	DEBUG_COUT("\nUnloaded script: " << this->filepath);
+	gsf::log_manager::push_log("Script Unloaded: " + this->filename, gsf::log_manager::log_type::GSF);
 	return true;
 }
 
@@ -161,9 +161,9 @@ sol::state &gsf::script::get_lua_state()
 	return *this->lua_state.get();
 }
 
-void gsf::script::push_log(std::string msg)
+void gsf::script::script_push_log(std::string msg)
 {
-	api_gsf::internal_push_log(std::move(msg));
+	api_gsf::script_push_log(std::move(msg));
 }
 
 #define CASE_STATE_TO_RET_STR(state_) case gsf::script::state:: ## state_ ## : return #state_

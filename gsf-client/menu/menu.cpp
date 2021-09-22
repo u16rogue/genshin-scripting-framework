@@ -5,6 +5,7 @@
 #include "../gsf_client.h"
 
 #include "tab_scripts.h"
+#include "tab_logs.h"
 #include "tab_about.h"
 
 static bool internal_window_vis_state = gsf::menu::is_open;
@@ -36,6 +37,8 @@ bool gsf::menu::windowproc(UINT msg, WPARAM wParam, LPARAM lParam)
 
 void gsf::menu::render_imgui()
 {
+	gsf::menu::tab_logs::render_window();
+
 	if (!gsf::menu::is_open)
 		return;
 
@@ -67,6 +70,7 @@ void gsf::menu::render_imgui()
 		if (ImGui::BeginTabBar("##gsf_tabs"))
 		{
 			tab_scripts::render_tab();
+			tab_logs::render_tab();
 			tab_about::render_tab();
 
 			ImGui::EndTabBar();

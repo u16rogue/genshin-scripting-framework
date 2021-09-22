@@ -44,7 +44,7 @@ namespace gsf
 		const gsf::script::state get_current_state() const;
 
 		sol::state &get_lua_state() override;
-		void push_log(std::string msg) override;
+		void script_push_log(std::string msg) override;
 
 		static const char *state_to_cstr(script::state state_);
 
