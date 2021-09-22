@@ -3,10 +3,12 @@
 #include "../git_info.h"
 #include "../features/fps_counter.h"
 #include "../gsf_client.h"
+#include <imgui.h>
 
 #include "tab_scripts.h"
 #include "tab_logs.h"
 #include "tab_about.h"
+#include "tab_misc.h"
 
 static bool internal_window_vis_state = gsf::menu::is_open;
 
@@ -37,6 +39,7 @@ bool gsf::menu::windowproc(UINT msg, WPARAM wParam, LPARAM lParam)
 
 void gsf::menu::render_imgui()
 {
+	gsf::menu::tab_misc::render_window();
 	gsf::menu::tab_logs::render_window();
 
 	if (!gsf::menu::is_open)
@@ -70,6 +73,7 @@ void gsf::menu::render_imgui()
 		if (ImGui::BeginTabBar("##gsf_tabs"))
 		{
 			tab_scripts::render_tab();
+			tab_misc::render_tab();
 			tab_logs::render_tab();
 			tab_about::render_tab();
 

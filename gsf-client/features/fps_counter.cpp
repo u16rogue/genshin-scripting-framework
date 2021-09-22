@@ -11,7 +11,17 @@ std::size_t total_accumilation   = 0;
 std::size_t last_accumilation    = 0;
 std::size_t next_tick_accumilate = 0;
 
-std::string fps_str = "FPS: Accumilating...";
+// std::string fps_str = "Accumilating...";
+
+std::size_t gsf::features::fps_counter::get_fps()
+{
+	return total_accumilation;
+}
+
+// const char *gsf::features::fps_counter::get_fps_cstr()
+// {
+// 	return fps_str.c_str();
+// }
 
 void gsf::features::fps_counter::on_present()
 {
@@ -26,18 +36,10 @@ void gsf::features::fps_counter::on_present()
 		last_accumilation = total_accumilation;
 		total_accumilation = current_accumilation;
 		current_accumilation = 0;
+
+		// if (total_accumilation != last_accumilation)
+		// 	fps_str = std::to_string(total_accumilation);
 	}
 
 	++current_accumilation;
-}
-
-void gsf::features::fps_counter::on_gsf_draw_menubaritems()
-{
-	if (!active)
-		return;
-
-	if (total_accumilation != last_accumilation)
-		fps_str = "FPS: " + std::to_string(total_accumilation);
-
-	ImGui::Text(fps_str.c_str());
 }

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <imgui.h>
 #include <Windows.h>
 
 namespace gsf::menu

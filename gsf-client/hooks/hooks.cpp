@@ -68,17 +68,16 @@ bool gsf::hooks::install()
 	dummy_swapchain_ptr->Release();
 	dummy_device_ptr->Release();
 
-    DEBUG_COUT("\nEnabling all hooks...");
 	// Hook all initialized hook instances
     for (auto &hook_instance : utils::hook_base::instances)
     {
         if (!hook_instance->hook())
         {
-            DEBUG_COUT("failed!");
+            DEBUG_COUT("\nEnabling all hooks... failed!");
             return false;
         }
     }
-    DEBUG_COUT("ok!");
+    DEBUG_COUT("\nEnabling all hooks... ok!");
 
     return true;
 }

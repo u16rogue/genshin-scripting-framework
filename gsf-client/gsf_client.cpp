@@ -83,43 +83,11 @@ bool gsf::shutdown()
 	return true;
 }
 
-static void gsf_draw_dropmenu()
-{
-
-}
-
-static void gsf_draw_menubaritems()
-{
-    gsf::features::fps_counter::on_gsf_draw_menubaritems();
-}
-
 void gsf::render_imgui()
 {
-    auto &imported_scripts = gsf::script_manager::get_scripts();
-
-    if (ImGui::BeginMainMenuBar())
-    {
-        if (ImGui::BeginMenu(
-            "Genshin Scripting Framework"
-            #if defined(_DEBUG) && !defined(_NDEBUG)
-            " [DEBUG]"
-            #endif
-        ))
-        {
-            gsf_draw_dropmenu();
-            ImGui::EndMenu();
-        }
-
-        ImGui::Separator();
-        ImGui::Text("(%d/%d)", gsf::script::count_loaded_scripts, imported_scripts.size());
-        ImGui::Separator();
-        gsf_draw_menubaritems();
-    }
-    ImGui::EndMainMenuBar();
-
     gsf::menu::render_imgui();
 
-    for (auto &script : imported_scripts)
+    for (auto &script : gsf::script_manager::get_scripts())
     {
         auto &callback = script->get_callbacks().on_imgui_draw;
 
