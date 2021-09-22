@@ -1,5 +1,6 @@
 #include "api_gsf.h"
 #include <macro.h>
+#include "../log_manager.h"
 
 void gsf::callback_api::reg(sol::function &function_)
 {
@@ -22,11 +23,6 @@ bool gsf::api_gsf::setup_api(sol::state &slua)
 	return true;
 }
 
-const std::vector<std::string> &gsf::api_gsf::get_logs() const
-{
-	return this->logs;
-}
-
 void gsf::api_gsf::clear_callbacks()
 {
 	gsf::callback_api *arr_callbacks = reinterpret_cast<gsf::callback_api *>(&this->callbacks);
@@ -45,20 +41,15 @@ const gsf::callbacks_container &gsf::api_gsf::get_callbacks() const
 	return this->callbacks;
 }
 
-void gsf::api_gsf::clear_logs()
-{
-	this->logs.clear();
-}
-
-void gsf::api_gsf::internal_push_log(std::string msg)
+void gsf::api_gsf::script_push_log(std::string msg)
 {
 	DEBUG_COUT("\n[SCRIPT] " << msg);
-	this->logs.emplace_back(std::move(msg));
+	gsf::log_manager::push_log(std::move(msg), gsf::log_manager::log_type::SCRIPTS);
 }
 
 void gsf::api_gsf::_api_log(std::string txt)
 {
-	this->internal_push_log(std::move(txt));
+	this->script_push_log(std::move(txt));
 }
 
 bool gsf::api_gsf::_api_register_callback(std::string id, sol::function callback)
@@ -74,6 +65,6 @@ bool gsf::api_gsf::_api_register_callback(std::string id, sol::function callback
 		}
 	}
 
-	this->push_log("Invalid callback ID: " + id);
+	gsf::log_manager::push_log("Invalid callback ID: " + id, gsf::log_manager::log_type::GSF);
 	return false;
 }

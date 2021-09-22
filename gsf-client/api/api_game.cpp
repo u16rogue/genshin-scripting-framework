@@ -1,11 +1,11 @@
 #include "api_game.h"
-#include "../game/game.h"
+#include "../game.h"
 
 bool gsf::api_game::setup_api(sol::state &slua)
 {
 	auto namespace_game = slua["game"].get_or_create<sol::table>();
 	namespace_game.set_function("get_map_coords", &gsf::api_game::_api_get_map_coords, this);
-	namespace_game.set_function("get_object", [](const char *name) { return reinterpret_cast<std::uintptr_t>(game::get_object(name)); });
+	namespace_game.set_function("get_fn", [](const char *name) { return reinterpret_cast<std::uintptr_t>(game::get_fn(name)); });
 
 	return true;
 }

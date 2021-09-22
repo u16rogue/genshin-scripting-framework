@@ -1,6 +1,6 @@
 #pragma once
 
-namespace game::structs
+namespace game::sdk
 {
 	struct player_map_coords
 	{

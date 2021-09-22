@@ -4,8 +4,9 @@
 #include <memory>
 #include <string>
 #include <cstdint>
-#include <hash.h>
-#include <mutex>
+#include <filesystem>
+
+#include "api/script_apis.h"
 
 #include "api/script_apis.h"
 
@@ -14,12 +15,16 @@ namespace gsf
 	class script : public script_apis
 	{
 	public:
+
 		enum class state
 		{
 			UNLOADING,
 			UNLOADED,
 			LOADING,
 			LOADED,
+
+			LOAD,
+			UNLOAD
 		};
 
 	public:
@@ -31,18 +36,27 @@ namespace gsf
 
 		bool load();
 		bool unload();
+		bool h_thread_loading(script::state state_req);
 
 		bool script_file_exists();
 		operator bool() const;
 
 		const std::string_view   get_filepath() const;
+		const std::string_view   get_filename() const;
 		const gsf::script::state get_current_state() const;
 
 		sol::state &get_lua_state() override;
-		void push_log(std::string msg) override;
+		void script_push_log(std::string msg) override;
+
+		static const char *state_to_cstr(script::state state_);
+
+	public:
+		mutable bool _tab_script_selected = false;
+		mutable std::string _tab_script_notice = "None";
 
 	private:
 		const std::string           filepath;
+		std::string                 filename;
 		std::unique_ptr<sol::state> lua_state     = nullptr;
 		script::state               current_state = script::state::UNLOADED;
 	};

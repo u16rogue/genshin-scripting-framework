@@ -4,11 +4,13 @@
 
 namespace gsf::hooks
 {
-	extern std::unique_ptr<utils::hook_detour>  ch_present;
-	extern std::unique_ptr<utils::hook_wndproc> ch_wndproc;
-	extern std::unique_ptr<utils::hook_detour>  ch_draw;
-	extern std::unique_ptr<utils::hook_detour>  ch_drawindexed;
-	extern std::unique_ptr<utils::hook_detour>  ch_showcursor;
+	extern utils::hook_detour  Present;
+	extern utils::hook_wndproc WindowProc;
+	extern utils::hook_detour  Draw;
+	extern utils::hook_detour  DrawIndexed;
+	extern utils::hook_detour  ShowCursor;
+	extern utils::hook_detour  UnityEngine_Cursor_set_lockState;
+	extern utils::hook_detour  UnityEngine_Cursor_set_visible;
 
 	bool install();
 	bool uninstall();

@@ -42,11 +42,9 @@ namespace gsf
 		bool setup_api(sol::state &slua);
 		std::vector<std::string> logs;
 		callbacks_container callbacks;
-		void internal_push_log(std::string msg);
+		void script_push_log(std::string msg);
 
 	public:
-		void clear_logs();
-		const std::vector<std::string> &get_logs() const;
 		void clear_callbacks();
 		const callbacks_container &get_callbacks() const;
 

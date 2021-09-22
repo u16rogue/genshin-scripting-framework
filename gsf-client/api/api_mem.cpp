@@ -1,6 +1,7 @@
 #include "api_mem.h"
 #include <mem.h>
 #include <Windows.h>
+#include "../log_manager.h"
 
 bool gsf::api_mem::setup_api(sol::state &slua)
 {
@@ -43,7 +44,7 @@ int gsf::api_mem::_api_patch(std::uintptr_t addr, std::vector<std::uint8_t> byte
 
 	if (!VirtualProtect(addr_void, byte_arr_size, PAGE_EXECUTE_READWRITE, &old_prot))
 	{
-		this->push_log("mem.patch # exception: PROT_CHANGE_XRW_FAILED");
+		gsf::log_manager::push_log("mem.patch # exception: PROT_CHANGE_XRW_FAILED", gsf::log_manager::log_type::GSF);
 		return result_e::PROT_CHANGE_XRW_FAILED;
 	}
 
@@ -51,7 +52,7 @@ int gsf::api_mem::_api_patch(std::uintptr_t addr, std::vector<std::uint8_t> byte
 
 	if (!VirtualProtect(addr_void, byte_arr_size, old_prot, &old_prot))
 	{
-		this->push_log("mem.patch # exception: PROT_CHANGE_RESTORE_FAILED");
+		gsf::log_manager::push_log("mem.patch # exception: PROT_CHANGE_RESTORE_FAILED", gsf::log_manager::log_type::GSF);
 		return result_e::PROT_CHANGE_RESTORE_FAILED;
 	}
 
@@ -62,7 +63,7 @@ std::uint64_t gsf::api_mem::_api_read_uint(std::uintptr_t addr, std::size_t prim
 {
 	if (prim_t_size > 8)
 	{
-		this->push_log("mem.read_uint # parameter prim_t_size is out of bound");
+		gsf::log_manager::push_log("mem.read_uint # parameter prim_t_size is out of bound", gsf::log_manager::log_type::GSF);
 		return -1;
 	}
 
@@ -75,7 +76,7 @@ void gsf::api_mem::_api_write_uint(std::uintptr_t addr, std::size_t prim_t_size,
 {
 	if (prim_t_size > 8)
 	{
-		this->push_log("mem.write_uint # parameter prim_t_size is out of bound");
+		gsf::log_manager::push_log("mem.write_uint # parameter prim_t_size is out of bound", gsf::log_manager::log_type::GSF);
 	}
 
 	std::memcpy(reinterpret_cast<void *>(addr), &value, prim_t_size);
