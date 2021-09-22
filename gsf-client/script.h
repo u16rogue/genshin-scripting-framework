@@ -19,9 +19,6 @@ namespace gsf
 			UNLOADED,
 			LOADING,
 			LOADED,
-
-			LOAD,
-			UNLOAD
 		};
 
 	public:
@@ -33,7 +30,6 @@ namespace gsf
 
 		bool load();
 		bool unload();
-		bool h_thread_loading(script::state state_req);
 
 		bool script_file_exists();
 		operator bool() const;

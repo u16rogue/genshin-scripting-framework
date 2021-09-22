@@ -54,6 +54,28 @@ void callback_import_prompt_ui()
 }
 static helpers::imgui_popup_modal import_prompt = helpers::imgui_popup_modal("Import Script", &callback_import_prompt_ui);
 
+enum class script_state
+{
+    LOAD,
+    UNLOAD
+};
+
+static void helper_nthread_set_script_state(const std::unique_ptr<gsf::script> &script, script_state req_state)
+{
+    std::thread([req_state](gsf::script *script)
+    {
+        switch (req_state)
+        {
+            case script_state::LOAD:
+                script->load();
+                break;
+            case script_state::UNLOAD:
+                script->unload();
+                break;
+        }
+    }, script.get()).detach();
+}
+
 void gsf::menu::tab_scripts::render_tab()
 {
 	if (ImGui::BeginTabItem("Scripts"))
@@ -86,7 +108,7 @@ void gsf::menu::tab_scripts::render_tab()
             for (const auto &script : gsf::script_manager::get_scripts())
             {
                 if (script->_tab_script_selected && script->get_current_state() == gsf::script::state::UNLOADED)
-                    script->h_thread_loading(gsf::script::state::LOAD);
+                    helper_nthread_set_script_state(script, script_state::LOAD);
             }
         }
 
@@ -96,7 +118,7 @@ void gsf::menu::tab_scripts::render_tab()
             for (const auto &script : gsf::script_manager::get_scripts())
             {
                 if (script->_tab_script_selected && script->get_current_state() == gsf::script::state::LOADED)
-                    script->h_thread_loading(gsf::script::state::UNLOAD);
+                    helper_nthread_set_script_state(script, script_state::UNLOAD);
             }
         }
 

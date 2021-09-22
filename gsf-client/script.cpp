@@ -110,27 +110,6 @@ bool gsf::script::unload()
 	return true;
 }
 
-bool gsf::script::h_thread_loading(script::state state_req)
-{
-	if (state_req != script::state::LOAD && state_req != script::state::UNLOAD)
-		return false;
-
-	std::thread([state_req, this]()
-	{
-		switch (state_req)
-		{
-			case gsf::script::state::LOAD:
-				this->load();
-				break;
-			case gsf::script::state::UNLOAD:
-				this->unload();
-				break;
-		}
-	}).detach();
-
-	return true;
-}
-
 bool gsf::script::script_file_exists()
 {
 	return std::filesystem::exists(this->filepath);
