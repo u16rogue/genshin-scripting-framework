@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <vector>
+#include <deque>
 
 namespace gsf::log_manager
 {
@@ -26,6 +26,7 @@ namespace gsf::log_manager
 		log_type_t type;
 	};
 
-	const std::vector<gsf::log_manager::log_cont> &get_logs();
+	const std::deque<gsf::log_manager::log_cont> &get_logs();
 	void push_log(std::string txt, log_type_t type = log_type::UNSPEC);
+	void clear_log();
 }
