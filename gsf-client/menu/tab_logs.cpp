@@ -51,7 +51,7 @@ void gsf::menu::tab_logs::render_tab()
 		ImGui::SameLine();
 		ImGui::Text("Display count");
 		ImGui::SameLine();
-		ImGui::InputInt2("##disc", &logs_display_count);
+		ImGui::InputInt("##disc", &logs_display_count);
 
 		if (!logs_floating)
 			render_logs_contents();
