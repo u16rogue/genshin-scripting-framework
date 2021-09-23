@@ -94,13 +94,20 @@ void gsf::render_imgui()
         if (!callback.active)
             continue;
 
-        const std::lock_guard<std::mutex> lock(callback.mutex);
+        bool should_mutex = script->get_config().imgui_mutex;
+
+        if (should_mutex)
+            callback.mutex.lock();
 
         switch (script->get_current_state())
         {
             case gsf::script::state::UNLOADED:
             case gsf::script::state::UNLOADING:
+            {
+                if (should_mutex)
+                    callback.mutex.unlock();
                 continue;
+            }
         }
 
         callback.callback_function();
@@ -110,6 +117,9 @@ void gsf::render_imgui()
             ImGui::End();
             --script->imgui_active_begin_count;
         }
+
+        if (should_mutex)
+            callback.mutex.unlock();
     }
 
     helpers::imgui_popup_modal::on_imgui_draw();

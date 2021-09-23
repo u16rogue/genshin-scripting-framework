@@ -9,6 +9,13 @@
 
 namespace gsf
 {
+	struct script_config
+	{
+		bool imgui_mutex = true;
+		std::string name;
+		std::string description;
+	};
+
 	class script : public script_apis
 	{
 	public:
@@ -33,10 +40,12 @@ namespace gsf
 
 		bool script_file_exists();
 		operator bool() const;
+		void load_mconfig();
 
 		const std::string_view   get_filepath() const;
 		const std::string_view   get_filename() const;
 		const gsf::script::state get_current_state() const;
+		const gsf::script_config &get_config() const;
 
 		sol::state &get_lua_state() override;
 		void script_push_log(std::string msg) override;
@@ -48,6 +57,7 @@ namespace gsf
 		mutable std::string _tab_script_notice = "None";
 
 	private:
+		gsf::script_config          config;
 		const std::string           filepath;
 		std::string                 filename;
 		std::unique_ptr<sol::state> lua_state     = nullptr;

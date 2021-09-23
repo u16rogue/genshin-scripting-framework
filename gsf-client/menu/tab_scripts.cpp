@@ -91,7 +91,8 @@ void gsf::menu::tab_scripts::render_tab()
             {
                 ImGui::TableNextRow();
                 ImGui::TableNextColumn();
-                ImGui::Selectable(script->get_filename().data(), &script->_tab_script_selected, ImGuiSelectableFlags_::ImGuiSelectableFlags_SpanAllColumns);
+                ImGui::Selectable(script->get_config().name.c_str(), &script->_tab_script_selected, ImGuiSelectableFlags_::ImGuiSelectableFlags_SpanAllColumns);
+                if (ImGui::IsItemHovered() && !script->get_config().description.empty()) ImGui::SetTooltip(script->get_config().description.c_str());
                 ImGui::TableNextColumn();
                 ImGui::Text(script->_tab_script_notice.c_str());
                 ImGui::TableNextColumn();
