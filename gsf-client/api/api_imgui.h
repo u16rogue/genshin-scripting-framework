@@ -1,6 +1,7 @@
 #pragma once
 
 #include "i_api.h"
+#include <unordered_map>
 
 namespace gsf
 {
@@ -12,6 +13,9 @@ namespace gsf
 
 	public:
 		std::int64_t imgui_active_begin_count = 0;
+
+	private:
+		std::unordered_map<const char *, char[256]> imgui_data_ref;
 
 	private:
 		bool _api_begin(const char *text);

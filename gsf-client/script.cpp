@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <macro.h>
 #include "log_manager.h"
+#include "definitions.h"
 
 /// <summary>
 /// RAII implementation of applying script state value
@@ -37,6 +38,7 @@ gsf::script::script(std::string_view filepath_)
 {
 	DEBUG_COUT("\nConstructed gsf::script object # " << this->filepath << " # " << filepath_);
 	this->filename = this->filepath.substr(this->filepath.find_last_of("/\\") + 1);
+	this->load_mconfig();
 }
 
 bool gsf::script::load()
@@ -88,6 +90,9 @@ bool gsf::script::load()
 	DEBUG_COUT("\nLoaded lua: " << this->filepath);
 	gsf::log_manager::push_log("Script Loaded: " + this->filename, gsf::log_manager::log_type::GSF);
 
+	// Load configs
+	this->load_mconfig();
+
 	// Run the script
 	callback_onload();
 	return true;
@@ -99,6 +104,10 @@ bool gsf::script::unload()
 		return false;
 
 	this->current_state = script::state::UNLOADING;
+
+	if (this->callbacks.on_unload.active)
+		this->callbacks.on_unload.callback_function();
+
 	api_gsf::clear_callbacks();
 	this->logs.clear();
 	this->lua_state.reset();
@@ -110,27 +119,6 @@ bool gsf::script::unload()
 	return true;
 }
 
-bool gsf::script::h_thread_loading(script::state state_req)
-{
-	if (state_req != script::state::LOAD && state_req != script::state::UNLOAD)
-		return false;
-
-	std::thread([state_req, this]()
-	{
-		switch (state_req)
-		{
-			case gsf::script::state::LOAD:
-				this->load();
-				break;
-			case gsf::script::state::UNLOAD:
-				this->unload();
-				break;
-		}
-	}).detach();
-
-	return true;
-}
-
 bool gsf::script::script_file_exists()
 {
 	return std::filesystem::exists(this->filepath);
@@ -139,6 +127,26 @@ bool gsf::script::script_file_exists()
 gsf::script::operator bool() const
 {
 	return this->lua_state.operator bool();
+}
+
+void gsf::script::load_mconfig()
+{
+	sol::state temp_state;
+	sol::state *sel_state = this->lua_state.get(); // load the lua state of the instance
+	// check if there's a lua state, if there's not one yet then use a temporary state;
+	if (!this->lua_state)
+	{
+		temp_state.script_file(this->filepath);
+		sel_state = &temp_state;
+	}
+	sol::state &_l = *sel_state;
+
+	#define GSF_LOAD_CONFIG_CTMDEF(name, def_val) this->config. ## name ## = _l[GSF_DEF_METACONFIG_NAME][#name].get_or(def_val)
+	#define GSF_LOAD_CONFIG(name) GSF_LOAD_CONFIG_CTMDEF(name, this->config.##name##)
+
+	GSF_LOAD_CONFIG(imgui_mutex);
+	GSF_LOAD_CONFIG_CTMDEF(name, this->get_filename());
+	GSF_LOAD_CONFIG(description);
 }
 
 const std::string_view gsf::script::get_filepath() const
@@ -154,6 +162,11 @@ const std::string_view gsf::script::get_filename() const
 const gsf::script::state gsf::script::get_current_state() const
 {
 	return this->current_state;
+}
+
+const gsf::script_config &gsf::script::get_config() const
+{
+	return this->config;
 }
 
 sol::state &gsf::script::get_lua_state()

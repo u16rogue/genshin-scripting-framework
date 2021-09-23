@@ -5,7 +5,7 @@
 [![license](https://img.shields.io/github/license/u16rogue/genshin-scripting-framework?style=for-the-badge)](https://github.com/u16rogue/genshin-scripting-framework/blob/master/LICENSE)
 
 
-[About](#About) • [Wiki](https://github.com/u16rogue/genshin-scripting-framework/wiki) • [Getting Started](https://github.com/u16rogue/genshin-scripting-framework/wiki/Getting-Started) • [Usage](https://github.com/u16rogue/genshin-scripting-framework/wiki/Usage) • [Scripting API Documentation](https://github.com/u16rogue/genshin-scripting-framework/wiki/Scripting) • [Libraries](#Libraries) • [License](#License)
+[About](#About) • [Wiki](https://github.com/u16rogue/genshin-scripting-framework/wiki) • [Getting Started](https://github.com/u16rogue/genshin-scripting-framework/wiki/%5B2%5D-Getting-Started) • [Usage](https://github.com/u16rogue/genshin-scripting-framework/wiki/%5B3%5D-Usage) • [Scripting API Documentation](https://github.com/u16rogue/genshin-scripting-framework/wiki/%5B4.0%5D-Scripting) • [Libraries](#Libraries) • [License](#License)
 
 ![](https://raw.githubusercontent.com/wiki/u16rogue/genshin-scripting-framework/client_ss.jpg)
 
