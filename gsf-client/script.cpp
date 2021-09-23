@@ -104,6 +104,10 @@ bool gsf::script::unload()
 		return false;
 
 	this->current_state = script::state::UNLOADING;
+
+	if (this->callbacks.on_unload.active)
+		this->callbacks.on_unload.callback_function();
+
 	api_gsf::clear_callbacks();
 	this->logs.clear();
 	this->lua_state.reset();
