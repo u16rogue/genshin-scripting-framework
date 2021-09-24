@@ -20,7 +20,7 @@ namespace gsf
 	private:
 		bool _api_begin(const char *text);
 		void _api_iend();
-		bool _api_checkbox(const char *label);
-		const char *_api_inputtext(const char *label);
+		bool _api_check_box(const char *label);
+		const char *_api_input_text(const char *label);
 	};
 }
