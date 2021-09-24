@@ -193,10 +193,10 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClInclude Include="menu\tab_scripts.h" />
     <ClInclude Include="script.h" />
     <ClInclude Include="script_manager.h" />
-    <ClInclude Include="sdk\enums.h" />
-    <ClInclude Include="sdk\fn_defs.h" />
+    <ClInclude Include="sdk\il2cpp.h" />
     <ClInclude Include="sdk\sdk.h" />
     <ClInclude Include="sdk\structures.h" />
+    <ClInclude Include="sdk\unity.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

@@ -149,13 +149,7 @@
     <ClInclude Include="menu\menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sdk\fn_defs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="sdk\sdk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="menu\tab_scripts.h">
@@ -171,6 +165,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="menu\tab_misc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\il2cpp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
