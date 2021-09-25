@@ -1,6 +1,8 @@
 #pragma once
 #include <cstdint>
 
+#pragma warning(disable: 4200)
+
 namespace game::sdk
 {
 	constexpr auto IL2CPP_ZERO_LEN_ARRAY = 0;
@@ -19,3 +21,5 @@ namespace game::sdk
 	using il2cpp_string_chars_t  = Il2CppChar    *(*)(Il2CppString *);
 	using il2cpp_string_new_t    = Il2CppString  *(*)(const char *);
 }
+
+#pragma warning(default: 4200)

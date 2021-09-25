@@ -1,14 +1,16 @@
 #include "tab_misc.h"
 #include <imgui.h>
-#include "../features/fps_counter.h"
+#include <Windows.h>
 #include "../menu/menu.h"
+
+static bool toggle_fps_counter = true;
 
 void gsf::menu::tab_misc::render_tab()
 {
 	if (ImGui::BeginTabItem("Misc"))
 	{
 		ImGui::Text("Information window: ");
-		ImGui::Checkbox("Display FPS", &gsf::features::fps_counter::active);
+		ImGui::Checkbox("Display FPS", &toggle_fps_counter);
 
 		ImGui::EndTabItem();
 	}
@@ -16,7 +18,7 @@ void gsf::menu::tab_misc::render_tab()
 
 void gsf::menu::tab_misc::render_window()
 {
-	if (!gsf::features::fps_counter::active)
+	if (!toggle_fps_counter)
 		return;
 
 	ImGuiWindowFlags w_flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoBringToFrontOnFocus;
@@ -26,8 +28,8 @@ void gsf::menu::tab_misc::render_window()
 	ImGui::SetNextWindowPos({ 4.f, 4.f }, ImGuiCond_Once);
 	if (ImGui::Begin("##info_window", nullptr, w_flags))
 	{
-		if (gsf::features::fps_counter::active)
-			ImGui::Text("FPS: %d", gsf::features::fps_counter::get_fps());
+		if (static auto &imgui_io = ImGui::GetIO(); toggle_fps_counter)
+			ImGui::Text("FPS: %.1f", imgui_io.Framerate);
 	}
 	ImGui::End();
 }

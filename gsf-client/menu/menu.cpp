@@ -1,7 +1,6 @@
 #include "menu.h"
 #include "../game.h"
 #include "../git_info.h"
-#include "../features/fps_counter.h"
 #include "../gsf_client.h"
 #include "../script_manager.h"
 #include <imgui.h>

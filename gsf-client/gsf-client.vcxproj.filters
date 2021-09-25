@@ -30,9 +30,6 @@
     <ClCompile Include="gsf_client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="features\fps_counter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="script.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -102,9 +99,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gsf_client.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="features\fps_counter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="script.h">

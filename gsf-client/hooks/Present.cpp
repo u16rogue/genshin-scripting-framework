@@ -9,7 +9,6 @@
 #include <imgui_internal.h>
 #include <macro.h>
 #include "../gsf_client.h"
-#include "../features/fps_counter.h"
 
 ID3D11DeviceContext    *dx_context            = nullptr;
 ID3D11RenderTargetView *dx_render_target_view = nullptr;
@@ -61,8 +60,6 @@ HRESULT __stdcall hk_Present(IDXGISwapChain *thisptr, UINT SyncInterval, UINT Fl
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
     auto result = o_Present(thisptr, SyncInterval, Flags);
-
-    gsf::features::fps_counter::on_present();
 
     return result;
 }
