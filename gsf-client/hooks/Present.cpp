@@ -28,7 +28,7 @@ HRESULT __stdcall hk_Present(IDXGISwapChain *thisptr, UINT SyncInterval, UINT Fl
         if (!DEBUG_CON_C_LOG(L"Get buffer", SUCCEEDED(thisptr->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void **>(&dx_backbuffer)))))
             return false;
 
-        if (!DEBUG_CON_C_LOG(L"Create render target", SUCCEEDED(dx_device->CreateRenderTargetView(dx_backbuffer, nullptr, &dx_render_target_view))))
+        if (!DEBUG_CON_C_LOG(L"Create render target", dx_backbuffer && SUCCEEDED(dx_device->CreateRenderTargetView(dx_backbuffer, nullptr, &dx_render_target_view))))
             return false;
 
         dx_backbuffer->Release();
