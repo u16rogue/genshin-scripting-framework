@@ -4,11 +4,12 @@
 #include <winternal.h>
 #include <mem.h>
 #include <misc_utils.h>
+#include <hash.h>
 
 using entryp_t = utils::ldr_data_table_entry *;
 
 template <typename T>
-static bool w_aob_scan(entryp_t mod, T *&out_result, const char *sig, const char *mask)
+static bool hlp_aob_scan(entryp_t mod, T *&out_result, const char *sig, const char *mask)
 {
 	out_result = reinterpret_cast<T *>(utils::aob_scan(mod->dll_base, mod->size_of_image, sig, mask));
 	if (!out_result)
@@ -18,9 +19,9 @@ static bool w_aob_scan(entryp_t mod, T *&out_result, const char *sig, const char
 	return true;
 }
 
-static bool w_load_module(entryp_t &out_result, const wchar_t *name)
+static bool hlp_load_module(entryp_t &out_result, const utils::fnv1a64_t hashed_name)
 {
-	out_result = utils::ldr_data_table_entry_find(name);
+	out_result = utils::ldr_data_table_entry_find(hashed_name);
 	if (!out_result)
 		return false;
 
@@ -29,7 +30,18 @@ static bool w_load_module(entryp_t &out_result, const wchar_t *name)
 }
 
 template <typename T>
-static bool w_load_gamefn(const char *name, T *&out_result)
+static bool hlp_load_exportfn(entryp_t mod, const utils::fnv1a64_t hashed_name, T *&out_result)
+{
+	out_result = reinterpret_cast<T *>(utils::export_fn_get(mod->dll_base, hashed_name));
+	if (!out_result)
+		return false;
+
+	DEBUG_COUT(" @ 0x" << out_result);
+	return true;
+}
+
+template <typename T>
+static bool hlp_load_gamefn(const char *name, T *&out_result)
 {
 	out_result = reinterpret_cast<T *>(game::get_fn(name));
 	if (!out_result)
@@ -53,26 +65,35 @@ bool game::init()
 
 	// Load modules
 	DEBUG_COUT("\nLOAD MODULES:");
-	if (!DEBUG_CON_C_LOG(L"UnityPlayer.dll",  w_load_module(mod_unity_player,  L"UnityPlayer.dll"))
-	||  !DEBUG_CON_C_LOG(L"UserAssembly.dll", w_load_module(mod_user_assembly, L"UserAssembly.dll"))
+	if (!DEBUG_CON_C_LOG(L"UnityPlayer.dll",  hlp_load_module(mod_unity_player,  utils::hash_fnv1a_cv(L"UnityPlayer.dll")))
+	||  !DEBUG_CON_C_LOG(L"UserAssembly.dll", hlp_load_module(mod_user_assembly, utils::hash_fnv1a_cv(L"UserAssembly.dll")))
+	) {
+		return false;
+	}
+
+	// Load exported functions
+	DEBUG_COUT("\nLOAD EXPORTS:");
+	if (!DEBUG_CON_C_LOG(L"il2cpp_string_chars",  hlp_load_exportfn(mod_user_assembly, utils::hash_fnv1a_cv("il2cpp_string_chars"),  game::il2cpp_string_chars))
+	||  !DEBUG_CON_C_LOG(L"il2cpp_string_length", hlp_load_exportfn(mod_user_assembly, utils::hash_fnv1a_cv("il2cpp_string_length"), game::il2cpp_string_length))
+	||  !DEBUG_CON_C_LOG(L"il2cpp_string_new",    hlp_load_exportfn(mod_user_assembly, utils::hash_fnv1a_cv("il2cpp_string_new"),    game::il2cpp_string_new))
 	) {
 		return false;
 	}
 
 	// Load signatures
 	DEBUG_COUT("\nLOAD SIGNATURES:");
-	if (!DEBUG_CON_C_LOG(L"game::player_map_coords (ref)", w_aob_scan(mod_unity_player,  sig_player_map_coord, "\xF2\x0F\x11\x0D\x00\x00\x00\x00\x48\x83\xC4\x00\x5B\xC3\x48\x8D\x0D", "xxxx????xxx?xxxxx"))
-	||  !DEBUG_CON_C_LOG(L"game::get_fn",                  w_aob_scan(mod_user_assembly, game::get_fn,         "\x48\x8b\xc4\x48\x89\x48\x00\x55\x41\x54",                             "xxxxxx?xxx"))
+	if (!DEBUG_CON_C_LOG(L"game::player_map_coords (ref)", hlp_aob_scan(mod_unity_player,  sig_player_map_coord, "\xF2\x0F\x11\x0D\x00\x00\x00\x00\x48\x83\xC4\x00\x5B\xC3\x48\x8D\x0D", "xxxx????xxx?xxxxx"))
+	||  !DEBUG_CON_C_LOG(L"game::get_fn",                  hlp_aob_scan(mod_user_assembly, game::get_fn,         "\x48\x8b\xc4\x48\x89\x48\x00\x55\x41\x54",                             "xxxxxx?xxx"))
 	) {
 		return false;
 	}
 
 	// Load game functions
 	DEBUG_COUT("\nLOAD GAME FUNCTIONS:");
-	if (!DEBUG_CON_C_LOG(L"UnityEngine.Cursor::set_visible(System.Boolean)",               w_load_gamefn("UnityEngine.Cursor::set_visible(System.Boolean)",               game::engine_cursor_set_visible))
-	||  !DEBUG_CON_C_LOG(L"UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)", w_load_gamefn("UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)", game::engine_cursor_set_lockstate))
-	||  !DEBUG_CON_C_LOG(L"UnityEngine.Cursor::get_visible()",                             w_load_gamefn("UnityEngine.Cursor::get_visible()",                             game::engine_cursor_get_visible))
-	||  !DEBUG_CON_C_LOG(L"UnityEngine.Cursor::get_lockState()",                           w_load_gamefn("UnityEngine.Cursor::get_lockState()",                           game::engine_cursor_get_lockstate))
+	if (!DEBUG_CON_C_LOG(L"UnityEngine.Cursor::set_visible(System.Boolean)",               hlp_load_gamefn("UnityEngine.Cursor::set_visible(System.Boolean)",               game::engine_cursor_set_visible))
+	||  !DEBUG_CON_C_LOG(L"UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)", hlp_load_gamefn("UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)", game::engine_cursor_set_lockstate))
+	||  !DEBUG_CON_C_LOG(L"UnityEngine.Cursor::get_visible()",                             hlp_load_gamefn("UnityEngine.Cursor::get_visible()",                             game::engine_cursor_get_visible))
+	||  !DEBUG_CON_C_LOG(L"UnityEngine.Cursor::get_lockState()",                           hlp_load_gamefn("UnityEngine.Cursor::get_lockState()",                           game::engine_cursor_get_lockstate))
 	) {
 		return false;
 	}
