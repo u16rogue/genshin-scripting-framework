@@ -159,6 +159,7 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClCompile Include="hooks\ShowCursor.cpp" />
     <ClCompile Include="hooks\UnityEngine_Cursor_set_lockState.cpp" />
     <ClCompile Include="hooks\UnityEngine_Cursor_set_visible.cpp" />
+    <ClCompile Include="hooks\UnityEngine_JsonUtility_ToJson.cpp" />
     <ClCompile Include="hooks\WindowProc.cpp" />
     <ClCompile Include="log_manager.cpp" />
     <ClCompile Include="menu\menu.cpp" />
@@ -191,6 +192,7 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClInclude Include="menu\tab_scripts.h" />
     <ClInclude Include="script.h" />
     <ClInclude Include="script_manager.h" />
+    <ClInclude Include="sdk\cs_types.h" />
     <ClInclude Include="sdk\il2cpp.h" />
     <ClInclude Include="sdk\sdk.h" />
     <ClInclude Include="sdk\structures.h" />

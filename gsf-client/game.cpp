@@ -94,6 +94,7 @@ bool game::init()
 	||  !DEBUG_CON_C_LOG(L"UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)", hlp_load_gamefn("UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)", game::engine_cursor_set_lockstate))
 	||  !DEBUG_CON_C_LOG(L"UnityEngine.Cursor::get_visible()",                             hlp_load_gamefn("UnityEngine.Cursor::get_visible()",                             game::engine_cursor_get_visible))
 	||  !DEBUG_CON_C_LOG(L"UnityEngine.Cursor::get_lockState()",                           hlp_load_gamefn("UnityEngine.Cursor::get_lockState()",                           game::engine_cursor_get_lockstate))
+	||  !DEBUG_CON_C_LOG(L"UnityEngine.JsonUtility::ToJson(System.Object,System.Boolean)", hlp_load_gamefn("UnityEngine.JsonUtility::ToJson(System.Object,System.Boolean)", game::engine_jsonutility_tojson))
 	) {
 		return false;
 	}

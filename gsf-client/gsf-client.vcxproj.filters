@@ -90,6 +90,9 @@
     <ClCompile Include="menu\tab_misc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hooks\UnityEngine_JsonUtility_ToJson.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
@@ -165,6 +168,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sdk\unity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\cs_types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

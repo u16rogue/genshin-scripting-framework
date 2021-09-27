@@ -11,6 +11,7 @@ namespace gsf::hooks
 	extern utils::hook_detour  ShowCursor;
 	extern utils::hook_detour  UnityEngine_Cursor_set_lockState;
 	extern utils::hook_detour  UnityEngine_Cursor_set_visible;
+	extern utils::hook_detour  UnityEngine_JsonUtility_ToJson;
 
 	bool install();
 	bool uninstall();
