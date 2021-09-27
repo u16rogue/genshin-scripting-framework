@@ -1,6 +1,7 @@
 #include "api_gsf.h"
 #include <macro.h>
 #include "../log_manager.h"
+#include <filesystem>
 
 void gsf::callback_api::reg(sol::function &function_)
 {
@@ -19,6 +20,7 @@ bool gsf::api_gsf::setup_api(sol::state &slua)
 	auto namespace_gsf = slua["gsf"].get_or_create<sol::table>();
 	namespace_gsf.set_function("log", &api_gsf::_api_log, this);
 	namespace_gsf.set_function("register_callback", &api_gsf::_api_register_callback, this);
+	namespace_gsf.set_function("get_script_dir", &api_gsf::_api_get_script_dir, this);
 
 	return true;
 }
@@ -67,4 +69,10 @@ bool gsf::api_gsf::_api_register_callback(std::string id, sol::function callback
 
 	gsf::log_manager::push_log("Invalid callback ID: " + id, gsf::log_manager::log_type::GSF);
 	return false;
+}
+
+std::string gsf::api_gsf::_api_get_script_dir()
+{
+	auto abs = std::filesystem::canonical(this->get_filepath()).string();
+	return abs.substr(0, abs.find_last_of("/\\") + 1);
 }

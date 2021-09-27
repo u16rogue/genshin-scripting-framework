@@ -1,7 +1,5 @@
 #include "hooks.h"
 #include "../sdk/sdk.h"
-#include <macro.h>
-
 #include "../game.h"
 
 game::sdk::Il2CppString *hk_UnityEngine_JsonUtility_ToJson(game::sdk::CS_Object_t *obj, game::sdk::CS_Boolean_t prettyPrint)

@@ -53,5 +53,6 @@ namespace gsf
 	private:
 		void _api_log(std::string txt);
 		bool _api_register_callback(std::string id, sol::function callback);
+		std::string _api_get_script_dir();
 	};
 }
