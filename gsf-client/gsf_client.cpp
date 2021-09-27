@@ -15,7 +15,6 @@
 #include "helpers/imgui_prompts.h"
 #include "hooks/hooks.h"
 #include "game.h"
-#include "features/fps_counter.h"
 #include "menu/menu.h"
 
 #if __has_include("autoexecdef.h") && !defined( GSF_AUTOEXEC_SCRIPT_PATH )

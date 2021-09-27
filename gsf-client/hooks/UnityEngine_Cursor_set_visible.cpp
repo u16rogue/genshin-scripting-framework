@@ -1,7 +1,8 @@
 #include "hooks.h"
 #include "../menu/menu.h"
+#include "../sdk/cs_types.h"
 
-void hk_UnityEngine_Cursor_set_visible(int visible)
+void hk_UnityEngine_Cursor_set_visible(game::sdk::CS_Boolean_t visible)
 {
 	if (gsf::menu::is_open && !visible)
 		return;

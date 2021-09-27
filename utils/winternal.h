@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <memory>
 #include <intrin.h>
+#include "hash.h"
 
 #define _WINTERNAL_INLINE __forceinline
 
@@ -93,7 +94,7 @@ namespace utils
         return reinterpret_cast<PIMAGE_NT_HEADERS>(reinterpret_cast<std::uintptr_t>(base) + utils::pe_get_dosheaderptr(base)->e_lfanew);
     }
 
-    _WINTERNAL_INLINE utils::ldr_data_table_entry *ldr_data_table_entry_find(const wchar_t *name)
+    _WINTERNAL_INLINE utils::ldr_data_table_entry *ldr_data_table_entry_find(const utils::fnv1a64_t hashed_name)
     {
         utils::ldr_data_table_entry *entry = nullptr;
         while (utils::ldr_data_table_entry_next(entry))
@@ -101,16 +102,21 @@ namespace utils
             if (!entry->dll_base)
                 continue;
 
-            if (wcscmp(entry->base_dll_name, name) == 0)
+            if (utils::hash_fnv1a(entry->base_dll_name) == hashed_name)
                 return entry;
         }
 
         return nullptr;
     }
 
-    _WINTERNAL_INLINE bool ldr_data_table_entry_find(const wchar_t *name, utils::ldr_data_table_entry *&dest)
+    _WINTERNAL_INLINE utils::ldr_data_table_entry *ldr_data_table_entry_find(const wchar_t *name)
     {
-        dest = utils::ldr_data_table_entry_find(name);
+        return utils::ldr_data_table_entry_find(utils::hash_fnv1a(name));
+    }
+
+    _WINTERNAL_INLINE bool ldr_data_table_entry_find(const utils::fnv1a64_t hashed_name, utils::ldr_data_table_entry *&dest)
+    {
+        dest = utils::ldr_data_table_entry_find(hashed_name);
 
         if (!dest)
             return false;
@@ -118,7 +124,12 @@ namespace utils
         return true;
     }
 
-    _WINTERNAL_INLINE void *export_fn_get(void *mod_base, const char *name)
+    _WINTERNAL_INLINE bool ldr_data_table_entry_find(const wchar_t *name, utils::ldr_data_table_entry *&dest)
+    {
+        return utils::ldr_data_table_entry_find(utils::hash_fnv1a(name), dest);
+    }
+
+    _WINTERNAL_INLINE void *export_fn_get(void *mod_base, const utils::fnv1a64_t hashed_name)
     {
         if (!mod_base || !utils::pe_validate_dosheader(mod_base))
             return nullptr;
@@ -135,13 +146,18 @@ namespace utils
 
         for (std::size_t i = 0; i < image_export->NumberOfFunctions; i++)
         {
-            if (strcmp(reinterpret_cast<const char *>(base + names[i]), name) == 0)
+            if (utils::hash_fnv1a(reinterpret_cast<const char *>(base + names[i])) == hashed_name)
                 return base + (address[ordinals[i]]);
         }
         return nullptr;
     }
 
-    _WINTERNAL_INLINE void *export_fn_find(const char *name)
+    _WINTERNAL_INLINE void *export_fn_get(void *mod_base, const char *name)
+    {
+        return utils::export_fn_get(mod_base, utils::hash_fnv1a(name));
+    }
+
+    _WINTERNAL_INLINE void *export_fn_find(const utils::fnv1a64_t hashed_name)
     {
         utils::ldr_data_table_entry *entry = nullptr;
 
@@ -150,11 +166,16 @@ namespace utils
             if (!entry->dll_base)
                 continue;
 
-            if (void *result = utils::export_fn_get(entry->dll_base, name); result)
+            if (void *result = utils::export_fn_get(entry->dll_base, hashed_name); result)
                 return result;
         }
 
         return nullptr;
+    }
+
+    _WINTERNAL_INLINE void *export_fn_find(const char *name)
+    {
+        return utils::export_fn_find(utils::hash_fnv1a(name));
     }
 
     _WINTERNAL_INLINE PIMAGE_BASE_RELOCATION base_relocation_block_forward(PIMAGE_BASE_RELOCATION current_block)

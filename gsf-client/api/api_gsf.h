@@ -32,6 +32,7 @@ namespace gsf
 		_GSF_SCRIPT_DECLARE_CALLBACK(dx_draw)
 		_GSF_SCRIPT_DECLARE_CALLBACK(dx_drawindexed)
 		_GSF_SCRIPT_DECLARE_CALLBACK(on_unload)
+		_GSF_SCRIPT_DECLARE_CALLBACK(menu_imgui_tab)
 
 		#undef _GSF_SCRIPT_DECLARE_CALLBACK
 	};
@@ -52,5 +53,6 @@ namespace gsf
 	private:
 		void _api_log(std::string txt);
 		bool _api_register_callback(std::string id, sol::function callback);
+		std::string _api_get_script_dir();
 	};
 }

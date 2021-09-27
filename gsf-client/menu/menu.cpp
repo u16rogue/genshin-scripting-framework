@@ -1,8 +1,8 @@
 #include "menu.h"
 #include "../game.h"
 #include "../git_info.h"
-#include "../features/fps_counter.h"
 #include "../gsf_client.h"
+#include "../script_manager.h"
 #include <imgui.h>
 
 #include "tab_scripts.h"
@@ -75,8 +75,22 @@ void gsf::menu::render_imgui()
 			tab_scripts::render_tab();
 			tab_misc::render_tab();
 			tab_logs::render_tab();
-			tab_about::render_tab();
 
+			// Render custom script tabs
+			for (const auto &script : gsf::script_manager::get_scripts())
+			{
+				auto &callback = script->get_callbacks().menu_imgui_tab;
+				if (!callback.active)
+					continue;
+
+				if (ImGui::BeginTabItem(script->get_config().name.c_str()))
+				{
+					callback.callback_function();
+					ImGui::EndTabItem();
+				}
+			}
+
+			tab_about::render_tab();
 			ImGui::EndTabBar();
 		}
 	}

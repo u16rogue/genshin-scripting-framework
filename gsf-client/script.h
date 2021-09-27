@@ -42,13 +42,13 @@ namespace gsf
 		operator bool() const;
 		void load_mconfig();
 
-		const std::string_view   get_filepath() const;
 		const std::string_view   get_filename() const;
 		const gsf::script::state get_current_state() const;
 		const gsf::script_config &get_config() const;
 
-		sol::state &get_lua_state() override;
-		void script_push_log(std::string msg) override;
+		const std::string_view   get_filepath() const override;
+		sol::state              &get_lua_state() override;
+		void                     script_push_log(std::string msg) override;
 
 		static const char *state_to_cstr(script::state state_);
 

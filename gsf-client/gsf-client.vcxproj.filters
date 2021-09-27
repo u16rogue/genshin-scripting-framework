@@ -30,9 +30,6 @@
     <ClCompile Include="gsf_client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="features\fps_counter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="script.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -93,6 +90,12 @@
     <ClCompile Include="menu\tab_misc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hooks\UnityEngine_JsonUtility_ToJson.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hooks\UnityEngine_JsonUtility_FromJson.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
@@ -102,9 +105,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gsf_client.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="features\fps_counter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="script.h">
@@ -149,13 +149,7 @@
     <ClInclude Include="menu\menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sdk\fn_defs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="sdk\sdk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="menu\tab_scripts.h">
@@ -171,6 +165,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="menu\tab_misc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\il2cpp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\cs_types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

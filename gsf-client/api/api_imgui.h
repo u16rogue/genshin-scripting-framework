@@ -15,10 +15,12 @@ namespace gsf
 		std::int64_t imgui_active_begin_count = 0;
 
 	private:
-		std::unordered_map<const char *, char[256]> imgui_data_ref;
+		std::unordered_map<const char *, char[128]> imgui_data_ref;
 
 	private:
 		bool _api_begin(const char *text);
 		void _api_iend();
+		bool _api_check_box(const char *label);
+		const char *_api_input_text(const char *label);
 	};
 }

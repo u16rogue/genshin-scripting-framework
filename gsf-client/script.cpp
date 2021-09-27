@@ -54,7 +54,7 @@ bool gsf::script::load()
 	if (!temp_lua_state)
 		return false;
 
-	temp_lua_state->open_libraries(sol::lib::string, sol::lib::math, sol::lib::table, sol::lib::base, sol::lib::bit32, sol::lib::coroutine);
+	temp_lua_state->open_libraries(sol::lib::string, sol::lib::math, sol::lib::table, sol::lib::base, sol::lib::bit32, sol::lib::coroutine, sol::lib::io, sol::lib::os, sol::lib::package);
 
 	if (auto load_res = temp_lua_state->script_file(this->filepath); !load_res.valid())
 	{

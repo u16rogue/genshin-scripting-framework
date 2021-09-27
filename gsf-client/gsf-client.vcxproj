@@ -71,7 +71,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -110,7 +110,7 @@ echo #endif &gt;&gt; git_info.h</Command>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
@@ -149,7 +149,6 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClCompile Include="api\api_mem.cpp" />
     <ClCompile Include="api\api_win.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="features\fps_counter.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gsf_client.cpp" />
     <ClCompile Include="helpers\imgui_prompts.cpp" />
@@ -160,6 +159,8 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClCompile Include="hooks\ShowCursor.cpp" />
     <ClCompile Include="hooks\UnityEngine_Cursor_set_lockState.cpp" />
     <ClCompile Include="hooks\UnityEngine_Cursor_set_visible.cpp" />
+    <ClCompile Include="hooks\UnityEngine_JsonUtility_FromJson.cpp" />
+    <ClCompile Include="hooks\UnityEngine_JsonUtility_ToJson.cpp" />
     <ClCompile Include="hooks\WindowProc.cpp" />
     <ClCompile Include="log_manager.cpp" />
     <ClCompile Include="menu\menu.cpp" />
@@ -179,7 +180,6 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClInclude Include="api\i_api.h" />
     <ClInclude Include="api\script_apis.h" />
     <ClInclude Include="definitions.h" />
-    <ClInclude Include="features\fps_counter.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="gsf_client.h" />
@@ -193,10 +193,11 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClInclude Include="menu\tab_scripts.h" />
     <ClInclude Include="script.h" />
     <ClInclude Include="script_manager.h" />
-    <ClInclude Include="sdk\enums.h" />
-    <ClInclude Include="sdk\fn_defs.h" />
+    <ClInclude Include="sdk\cs_types.h" />
+    <ClInclude Include="sdk\il2cpp.h" />
     <ClInclude Include="sdk\sdk.h" />
     <ClInclude Include="sdk\structures.h" />
+    <ClInclude Include="sdk\unity.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

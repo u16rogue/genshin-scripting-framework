@@ -6,7 +6,7 @@
 namespace utils
 {
 	bool hook_vmt_swap(void **vtable, int index, void *hook_fn, void **out_orig_fn);
-	
+
 	class hook_base
 	{
 	public:
@@ -14,7 +14,7 @@ namespace utils
 		hook_base(void *target_, void *hookfn_);
 
 		virtual ~hook_base();
-		
+
 		virtual bool hook()   { return false; };
 		virtual bool unhook() { return false; };
 
@@ -25,9 +25,9 @@ namespace utils
 		}
 
 	private:
-		
+
 		void internal_on_unhook();
-		
+
 		void *target     = nullptr;
 		void *originalfn = nullptr;
 		void *hookfn     = nullptr;
@@ -49,13 +49,14 @@ namespace utils
 
 		bool hook() override;
 		bool unhook() override;
+		bool inhook(void *target_);
 	};
 
 	class hook_vmt : public hook_base
 	{
 	public:
 		hook_vmt(int index_, void *hook_);
-		
+
 		bool init(void **vtable);
 
 		bool hook() override;
@@ -75,6 +76,7 @@ namespace utils
 
 		bool hook() override;
 		bool unhook() override;
+		bool inhook(void *target_);
 
 	private:
 		void *window_handle = nullptr;
