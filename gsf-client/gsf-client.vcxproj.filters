@@ -93,6 +93,9 @@
     <ClCompile Include="hooks\UnityEngine_JsonUtility_ToJson.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hooks\UnityEngine_JsonUtility_FromJson.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">

@@ -104,6 +104,11 @@ bool utils::hook_wndproc::unhook()
 	return SetWindowLongPtrW(reinterpret_cast<HWND>(this->window_handle), GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(this->originalfn)) != NULL;
 }
 
+bool utils::hook_wndproc::inhook(void *target_)
+{
+	return this->init(target_) && this->hook();
+}
+
 utils::hook_detour::hook_detour(void *hookfn_)
 	: utils::hook_base(nullptr, hookfn_)
 {
@@ -124,4 +129,9 @@ bool utils::hook_detour::unhook()
 {
 	this->internal_on_unhook();
 	return MH_DisableHook(this->target) == MH_OK;
+}
+
+bool utils::hook_detour::inhook(void *target_)
+{
+	return this->init(target_) && this->hook();
 }
