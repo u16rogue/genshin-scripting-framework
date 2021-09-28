@@ -16,17 +16,6 @@ namespace game::sdk
 
 	using get_fn_t                           = void *(*)(const char *);
 
-	using UnityEngine_Cursor_get_visible_t   = CS_Boolean_t(*)(void);
-	using UnityEngine_Cursor_set_visible_t   = void(*)(CS_Boolean_t);
-	using UnityEngine_Cursor_get_lockState_t = game::sdk::CursorLockMode(*)(void);
-	using UnityEngine_Cursor_set_lockState_t = void(*)(CursorLockMode);
-
-	using UnityEngine_JsonUtility_ToJson_t            = Il2CppString *(*)(CS_Object_t *, CS_Boolean_t);
-	using UnityEngine_JsonUtility_FromJson_t          = CS_Object_t *(*)(Il2CppString *, void * /*System.Type*/);
-	using UnityEngine_JsonUtility_FromJsonOverwrite_t = void(*)(Il2CppString *, CS_Object_t *);
-
-	using UnityEngine_Input_GetButton_t = CS_Boolean_t(*)(Il2CppString *);
-
 	class _unity_scripting_api
 	{
 	public:
@@ -38,7 +27,7 @@ namespace game::sdk
 
 		bool load_function()
 		{
-			return DEBUG_CON_C_LOG(this->name, (this->function = this->get_api_by_name(this->name)) );
+			return DEBUG_CON_C_LOG(this->name, (this->function = this->get_api_by_name(this->name)));
 		}
 
 		inline static bool load_function_all()
@@ -72,12 +61,15 @@ namespace game::sdk
 	class unity_scripting_api : public _unity_scripting_api
 	{
 	public:
+
+		using type = fn_t;
+
 		unity_scripting_api(const char *name_)
 			: _unity_scripting_api(name_)
 		{};
 
 		template <typename... args_t>
-		auto call(args_t... args)
+		auto operator()(args_t... args)
 		{
 			return reinterpret_cast<fn_t>(this->function)(args...);
 		}
@@ -88,4 +80,14 @@ namespace game::sdk
 		}
 	};
 
+	using UnityEngine_Cursor_get_visible_t   = unity_scripting_api<CS_Boolean_t(*)(void)>;
+	using UnityEngine_Cursor_set_visible_t   = unity_scripting_api<void(*)(CS_Boolean_t)>;
+	using UnityEngine_Cursor_get_lockState_t = unity_scripting_api<game::sdk::CursorLockMode(*)(void)>;
+	using UnityEngine_Cursor_set_lockState_t = unity_scripting_api<void(*)(CursorLockMode)>;
+
+	using UnityEngine_JsonUtility_ToJson_t            = unity_scripting_api<Il2CppString *(*)(CS_Object_t *, CS_Boolean_t)>;
+	using UnityEngine_JsonUtility_FromJson_t          = unity_scripting_api<CS_Object_t *(*)(Il2CppString *, void * /*System.Type*/)>;
+	using UnityEngine_JsonUtility_FromJsonOverwrite_t = unity_scripting_api<void(*)(Il2CppString *, CS_Object_t *)>;
+
+	using UnityEngine_Input_GetButton_t = unity_scripting_api<CS_Boolean_t(*)(Il2CppString *)>;
 }

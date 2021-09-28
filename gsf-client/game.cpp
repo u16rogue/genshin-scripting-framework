@@ -90,15 +90,8 @@ bool game::init()
 
 	// Load game functions
 	DEBUG_COUT("\nLOAD GAME FUNCTIONS:");
-	if (!DEBUG_CON_C_LOG(L"UnityEngine.Cursor::set_visible(System.Boolean)",                         hlp_load_gamefn("UnityEngine.Cursor::set_visible(System.Boolean)",                          game::engine_cursor_set_visible))
-	||  !DEBUG_CON_C_LOG(L"UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)",           hlp_load_gamefn("UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)",            game::engine_cursor_set_lockstate))
-	||  !DEBUG_CON_C_LOG(L"UnityEngine.Cursor::get_visible()",                                       hlp_load_gamefn("UnityEngine.Cursor::get_visible()",                                        game::engine_cursor_get_visible))
-	||  !DEBUG_CON_C_LOG(L"UnityEngine.Cursor::get_lockState()",                                     hlp_load_gamefn("UnityEngine.Cursor::get_lockState()",                                      game::engine_cursor_get_lockstate))
-	||  !DEBUG_CON_C_LOG(L"UnityEngine.JsonUtility::ToJson(System.Object,System.Boolean)",           hlp_load_gamefn("UnityEngine.JsonUtility::ToJson(System.Object,System.Boolean)",            game::engine_jsonutility_tojson))
-	||  !DEBUG_CON_C_LOG(L"UnityEngine.JsonUtility::FromJson(System.String,System.Type)",            hlp_load_gamefn("UnityEngine.JsonUtility::FromJson(System.String,System.Type)",             game::engine_jsonutility_fromjson))
-	||  !DEBUG_CON_C_LOG(L"UnityEngine.JsonUtility::FromJsonOverwrite(System.String,System.Object)", hlp_load_gamefn("UnityEngine.JsonUtility::FromJsonOverwrite(System.String,System.Object)",  game::engine_jsonutility_fromjsonovr))
-	||  !DEBUG_CON_C_LOG(L"UnityEngine.Input::GetButton(System.String)",                             hlp_load_gamefn("UnityEngine.Input::GetButton(System.String)",                              game::engine_input_get_button))
-	) {
+	if (!game::sdk::unity_scripting_api<>::load_function_all())
+	{
 		return false;
 	}
 

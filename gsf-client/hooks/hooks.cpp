@@ -17,11 +17,11 @@ bool gsf::hooks::install()
 	DEBUG_CON_C_LOG(L"Init WndProc hook...", gsf::hooks::WindowProc.inhook(global::game_window));
     DEBUG_CON_C_LOG(L"Init ShowCursor hook...", gsf::hooks::ShowCursor.inhook(::ShowCursor));
 
-    DEBUG_CON_C_LOG(L"Init UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)...", gsf::hooks::UnityEngine_Cursor_set_lockState.inhook(game::engine_cursor_set_lockstate));
-    DEBUG_CON_C_LOG(L"Init UnityEngine.Cursor::get_visible()...", gsf::hooks::UnityEngine_Cursor_set_visible.inhook(game::engine_cursor_set_visible));
+    DEBUG_CON_C_LOG(L"Init UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)...", gsf::hooks::UnityEngine_Cursor_set_lockState.inhook(game::engine_cursor_set_lockstate.get_ptr()));
+    DEBUG_CON_C_LOG(L"Init UnityEngine.Cursor::get_visible()...", gsf::hooks::UnityEngine_Cursor_set_visible.inhook(game::engine_cursor_set_visible.get_ptr()));
 
-    DEBUG_CON_C_LOG(L"Init UnityEngine.JsonUtility::ToJson(System.Object,System.Boolean)...", gsf::hooks::UnityEngine_JsonUtility_ToJson.inhook(game::engine_jsonutility_tojson));
-    DEBUG_CON_C_LOG(L"Init Utility::FromJson(System.String,System.Type)...", gsf::hooks::UnityEngine_JsonUtility_FromJson.inhook(game::engine_jsonutility_fromjson));
+    DEBUG_CON_C_LOG(L"Init UnityEngine.JsonUtility::ToJson(System.Object,System.Boolean)...", gsf::hooks::UnityEngine_JsonUtility_ToJson.inhook(game::engine_jsonutility_tojson.get_ptr()));
+    DEBUG_CON_C_LOG(L"Init Utility::FromJson(System.String,System.Type)...", gsf::hooks::UnityEngine_JsonUtility_FromJson.inhook(game::engine_jsonutility_fromjson.get_ptr()));
 
 	ID3D11Device   *dummy_device_ptr;
 	IDXGISwapChain *dummy_swapchain_ptr;
