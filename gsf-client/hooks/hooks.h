@@ -13,6 +13,7 @@ namespace gsf::hooks
 	extern utils::hook_detour  UnityEngine_Cursor_set_visible;
 	extern utils::hook_detour  UnityEngine_JsonUtility_ToJson;
 	extern utils::hook_detour  UnityEngine_JsonUtility_FromJson;
+	extern utils::hook_detour  UnityEngine_Input_GetButton;
 
 	bool install();
 	bool uninstall();

@@ -1,6 +1,5 @@
 #include "hooks.h"
 
-#include <macro.h>
 #include <Windows.h>
 #include <d3d11.h>
 #include <imgui.h>
@@ -8,7 +7,9 @@
 #include <imgui_impl_win32.h>
 #include <imgui_internal.h>
 #include <macro.h>
-#include "../gsf_client.h"
+#include "../menu/menu.h"
+#include "../script_manager.h"
+#include "../helpers/imgui_prompts.h"
 
 ID3D11DeviceContext    *dx_context            = nullptr;
 ID3D11RenderTargetView *dx_render_target_view = nullptr;
@@ -52,7 +53,44 @@ HRESULT __stdcall hk_Present(IDXGISwapChain *thisptr, UINT SyncInterval, UINT Fl
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 
-    gsf::render_imgui();
+    gsf::menu::render_imgui();
+
+    for (auto &script : gsf::script_manager::get_scripts())
+    {
+        auto &callback = script->get_callbacks().on_imgui_draw;
+
+        if (!callback.active)
+            continue;
+
+        bool should_mutex = script->get_config().imgui_mutex;
+
+        if (should_mutex)
+            callback.mutex.lock();
+
+        switch (script->get_current_state())
+        {
+            case gsf::script::state::UNLOADED:
+            case gsf::script::state::UNLOADING:
+            {
+                if (should_mutex)
+                    callback.mutex.unlock();
+                continue;
+            }
+        }
+
+        callback.callback_function();
+
+        while (script->imgui_active_begin_count)
+        {
+            ImGui::End();
+            --script->imgui_active_begin_count;
+        }
+
+        if (should_mutex)
+            callback.mutex.unlock();
+    }
+
+    helpers::imgui_popup_modal::on_imgui_draw();
 
     ImGui::Render();
 

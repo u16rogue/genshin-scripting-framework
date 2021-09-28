@@ -8,14 +8,11 @@
 #include <console.h>
 #include <macro.h>
 
-#include "git_info.h"
 #include "definitions.h"
 
 #include "script_manager.h"
-#include "helpers/imgui_prompts.h"
 #include "hooks/hooks.h"
 #include "game.h"
-#include "menu/menu.h"
 
 #if __has_include("autoexecdef.h") && !defined( GSF_AUTOEXEC_SCRIPT_PATH )
     #include "autoexecdef.h"
@@ -71,7 +68,7 @@ bool gsf::shutdown()
         if (con::is_allocated())
             FreeConsole();
 
-        HWND con_wnd = reinterpret_cast<HWND>(con::get_window());
+        HWND con_wnd = con::get_window();
         if (con_wnd)
             PostMessageW(con_wnd, WM_CLOSE, NULL, NULL);
 
@@ -80,46 +77,4 @@ bool gsf::shutdown()
     }, nullptr, NULL, nullptr)) { CloseHandle(exit_thread); }
 
 	return true;
-}
-
-void gsf::render_imgui()
-{
-    gsf::menu::render_imgui();
-
-    for (auto &script : gsf::script_manager::get_scripts())
-    {
-        auto &callback = script->get_callbacks().on_imgui_draw;
-
-        if (!callback.active)
-            continue;
-
-        bool should_mutex = script->get_config().imgui_mutex;
-
-        if (should_mutex)
-            callback.mutex.lock();
-
-        switch (script->get_current_state())
-        {
-            case gsf::script::state::UNLOADED:
-            case gsf::script::state::UNLOADING:
-            {
-                if (should_mutex)
-                    callback.mutex.unlock();
-                continue;
-            }
-        }
-
-        callback.callback_function();
-
-        while (script->imgui_active_begin_count)
-        {
-            ImGui::End();
-            --script->imgui_active_begin_count;
-        }
-
-        if (should_mutex)
-            callback.mutex.unlock();
-    }
-
-    helpers::imgui_popup_modal::on_imgui_draw();
 }

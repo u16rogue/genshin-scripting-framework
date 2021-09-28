@@ -14,7 +14,7 @@ namespace game::sdk
 		Confined
 	};
 
-	using get_fn_t                           = void *(*)(const char *);
+	using get_fn_t = void *(*)(const char *);
 
 	class _unity_scripting_api
 	{
@@ -90,4 +90,6 @@ namespace game::sdk
 	using UnityEngine_JsonUtility_FromJsonOverwrite_t = unity_scripting_api<void(*)(Il2CppString *, CS_Object_t *)>;
 
 	using UnityEngine_Input_GetButton_t = unity_scripting_api<CS_Boolean_t(*)(Il2CppString *)>;
+	using UnityEngine_Input_GetAxis_t   = unity_scripting_api<float(*)(Il2CppString *)>;
+
 }

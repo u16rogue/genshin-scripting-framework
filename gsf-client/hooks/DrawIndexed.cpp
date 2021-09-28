@@ -1,7 +1,5 @@
 #include "hooks.h"
 #include <d3d11.h>
-#include <macro.h>
-
 #include "../script_manager.h"
 
 void hk_DrawIndexed(ID3D11DeviceContext *thisptr, UINT IndexCount, UINT StartIndexLocation, INT BaseVertexLocation)
