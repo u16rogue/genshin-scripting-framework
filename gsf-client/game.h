@@ -14,6 +14,7 @@ namespace game
 	inline game::sdk::UnityEngine_JsonUtility_ToJson_t            engine_jsonutility_tojson      = nullptr;
 	inline game::sdk::UnityEngine_JsonUtility_FromJson_t          engine_jsonutility_fromjson    = nullptr;
 	inline game::sdk::UnityEngine_JsonUtility_FromJsonOverwrite_t engine_jsonutility_fromjsonovr = nullptr;
+	inline game::sdk::UnityEngine_Input_GetButton_t               engine_input_get_button        = nullptr;
 
 	inline game::sdk::il2cpp_string_chars_t  il2cpp_string_chars  = nullptr;
 	inline game::sdk::il2cpp_string_length_t il2cpp_string_length = nullptr;

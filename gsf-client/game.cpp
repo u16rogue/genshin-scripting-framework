@@ -97,6 +97,7 @@ bool game::init()
 	||  !DEBUG_CON_C_LOG(L"UnityEngine.JsonUtility::ToJson(System.Object,System.Boolean)",           hlp_load_gamefn("UnityEngine.JsonUtility::ToJson(System.Object,System.Boolean)",            game::engine_jsonutility_tojson))
 	||  !DEBUG_CON_C_LOG(L"UnityEngine.JsonUtility::FromJson(System.String,System.Type)",            hlp_load_gamefn("UnityEngine.JsonUtility::FromJson(System.String,System.Type)",             game::engine_jsonutility_fromjson))
 	||  !DEBUG_CON_C_LOG(L"UnityEngine.JsonUtility::FromJsonOverwrite(System.String,System.Object)", hlp_load_gamefn("UnityEngine.JsonUtility::FromJsonOverwrite(System.String,System.Object)",  game::engine_jsonutility_fromjsonovr))
+	||  !DEBUG_CON_C_LOG(L"UnityEngine.Input::GetButton(System.String)",                             hlp_load_gamefn("UnityEngine.Input::GetButton(System.String)",                              game::engine_input_get_button))
 	) {
 		return false;
 	}

@@ -22,4 +22,6 @@ namespace game::sdk
 	using UnityEngine_JsonUtility_ToJson_t            = Il2CppString *(*)(CS_Object_t *, CS_Boolean_t);
 	using UnityEngine_JsonUtility_FromJson_t          = CS_Object_t *(*)(Il2CppString *, void * /*System.Type*/);
 	using UnityEngine_JsonUtility_FromJsonOverwrite_t = void(*)(Il2CppString *, CS_Object_t *);
+
+	using UnityEngine_Input_GetButton_t = CS_Boolean_t(*)(Il2CppString *);
 }
