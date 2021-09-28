@@ -16,5 +16,5 @@ namespace utils
 		return reinterpret_cast<T *>(utils::aob_scan(start, size, signature, mask));
 	}
 
-	std::uint8_t *calc_rel_address_32(void *instruction_address, std::size_t instruction_size);
+	std::uint8_t *calc_rel2abs32(void *instruction_address, std::size_t instruction_size);
 }

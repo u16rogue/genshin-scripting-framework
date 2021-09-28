@@ -10,7 +10,7 @@ bool gsf::api_mem::setup_api(sol::state &slua)
 	namespace_mem.set_function("patch", &gsf::api_mem::_api_patch, this);
 	namespace_mem.set_function("read_uint", &gsf::api_mem::_api_read_uint, this);
 	namespace_mem.set_function("write_uint", &gsf::api_mem::_api_write_uint, this);
-	namespace_mem.set_function("calc_rel_address_32", &gsf::api_mem::_api_calc_rel_address_32, this);
+	namespace_mem.set_function("calc_rel2abs32", &gsf::api_mem::_api_calc_rel2abs32, this);
 
 	return true;
 }
@@ -82,7 +82,7 @@ void gsf::api_mem::_api_write_uint(std::uintptr_t addr, std::size_t prim_t_size,
 	std::memcpy(reinterpret_cast<void *>(addr), &value, prim_t_size);
 }
 
-std::uintptr_t gsf::api_mem::_api_calc_rel_address_32(std::uintptr_t inst_addr, std::size_t inst_size)
+std::uintptr_t gsf::api_mem::_api_calc_rel2abs32(std::uintptr_t inst_addr, std::size_t inst_size)
 {
-	return reinterpret_cast<std::uintptr_t>(utils::calc_rel_address_32(reinterpret_cast<void *>(inst_addr), inst_size));
+	return reinterpret_cast<std::uintptr_t>(utils::calc_rel2abs32(reinterpret_cast<void *>(inst_addr), inst_size));
 }

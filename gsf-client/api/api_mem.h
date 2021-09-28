@@ -15,6 +15,6 @@ namespace gsf
 		int _api_patch(std::uintptr_t addr, std::vector<std::uint8_t> byte_array);
 		std::uint64_t _api_read_uint(std::uintptr_t addr, std::size_t prim_t_size);
 		void _api_write_uint(std::uintptr_t addr, std::size_t prim_t_size, std::uint64_t value);
-		std::uintptr_t _api_calc_rel_address_32(std::uintptr_t inst_addr, std::size_t inst_size);
+		std::uintptr_t _api_calc_rel2abs32(std::uintptr_t inst_addr, std::size_t inst_size);
 	};
 }
