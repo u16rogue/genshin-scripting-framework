@@ -43,7 +43,7 @@ static bool hlp_load_exportfn(entryp_t mod, const utils::fnv1a64_t hashed_name, 
 template <typename T>
 static bool hlp_load_gamefn(const char *name, T *&out_result)
 {
-	out_result = reinterpret_cast<T *>(game::get_fn(name));
+	out_result = reinterpret_cast<T *>(game::sdk::unity_scripting_api<>::get_api_by_name(name));
 	if (!out_result)
 		return false;
 
@@ -82,8 +82,8 @@ bool game::init()
 
 	// Load signatures
 	DEBUG_COUT("\nLOAD SIGNATURES:");
-	if (!DEBUG_CON_C_LOG(L"game::player_map_coords (ref)", hlp_aob_scan(mod_unity_player,  sig_player_map_coord, "\xF2\x0F\x11\x0D\x00\x00\x00\x00\x48\x83\xC4\x00\x5B\xC3\x48\x8D\x0D", "xxxx????xxx?xxxxx"))
-	||  !DEBUG_CON_C_LOG(L"game::get_fn",                  hlp_aob_scan(mod_user_assembly, game::get_fn,         "\x48\x8b\xc4\x48\x89\x48\x00\x55\x41\x54",                             "xxxxxx?xxx"))
+	if (!DEBUG_CON_C_LOG(L"game::player_map_coords (ref)", hlp_aob_scan(mod_unity_player,  sig_player_map_coord,                              "\xF2\x0F\x11\x0D\x00\x00\x00\x00\x48\x83\xC4\x00\x5B\xC3\x48\x8D\x0D",  "xxxx????xxx?xxxxx"))
+	||  !DEBUG_CON_C_LOG(L"game::get_fn",                  hlp_aob_scan(mod_user_assembly, game::sdk::unity_scripting_api<>::get_api_by_name, "\x48\x8b\xc4\x48\x89\x48\x00\x55\x41\x54",                              "xxxxxx?xxx"))
 	) {
 		return false;
 	}

@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <iostream>
+#include <Windows.h>
 
 namespace con
 {
@@ -46,7 +47,8 @@ namespace con
 	bool is_focused();
 	bool is_allocated();
 
-	void *get_window();
+	HWND   get_window();
+	HANDLE get_std();
 
 	void print( void );
 	void print( con::color val );
@@ -89,7 +91,19 @@ namespace con
 
 	public:
 
-		log(std::wstring_view text, bool newline = true, const wchar_t def_status[10] = L" WAIT... ");
+		template <typename T>
+		log(const T *text, bool newline = true, const wchar_t def_status[10] = L" WAIT... ")
+		{
+			if (newline)
+				std::cout << '\n';
+
+			CONSOLE_SCREEN_BUFFER_INFO csbi{};
+			GetConsoleScreenBufferInfo(con::get_std(), &csbi);
+			this->status_point.x = csbi.dwCursorPosition.X + 1;
+			this->status_point.y = csbi.dwCursorPosition.Y;
+
+			con::print(con::colors::BWHITE, "[", con::colors::GRAY, def_status, con::colors::BWHITE, "] ", text);
+		}
 
 		void status(const wchar_t text[10], con::colors txtcol = con::colors::WHITE);
 		void success();

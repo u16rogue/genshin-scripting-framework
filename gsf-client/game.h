@@ -5,7 +5,6 @@
 namespace game
 {
 	inline game::sdk::player_map_coords *player_map_coords = nullptr;
-	inline game::sdk::get_fn_t get_fn = nullptr; // TODO: reverse this and then implement hashable version
 
 	inline game::sdk::UnityEngine_Cursor_get_visible_t            engine_cursor_get_visible      = nullptr;
 	inline game::sdk::UnityEngine_Cursor_set_visible_t            engine_cursor_set_visible      = nullptr;

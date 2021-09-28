@@ -1,5 +1,4 @@
-#include <console.h>
-#include <Windows.h>
+#include "console.h"
 
 static HANDLE stdout_handle  = nullptr;
 static HWND   window_handle  = nullptr;
@@ -34,7 +33,7 @@ bool con::init()
 		con::print();
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -48,9 +47,14 @@ bool con::is_allocated()
 	return flag_allocated;
 }
 
-void *con::get_window()
+HWND con::get_window()
 {
 	return window_handle;
+}
+
+HANDLE con::get_std()
+{
+	return stdout_handle;
 }
 
 void con::print( void )
@@ -66,19 +70,6 @@ void con::print( con::color val )
 void con::print( con::colors val )
 {
 	con::print( con::color( val ) );
-}
-
-con::log::log(std::wstring_view text, bool newline, const wchar_t def_status[10])
-{
-	if (newline)
-		std::cout << '\n';
-
-	CONSOLE_SCREEN_BUFFER_INFO csbi{};
-	GetConsoleScreenBufferInfo(stdout_handle, &csbi);
-	this->status_point.x = csbi.dwCursorPosition.X + 1;
-	this->status_point.y = csbi.dwCursorPosition.Y;
-
-	con::print(con::colors::BWHITE, "[", con::colors::GRAY, def_status, con::colors::BWHITE, "] ", text);
 }
 
 void con::log::status(const wchar_t text[10], con::colors txtcol)
