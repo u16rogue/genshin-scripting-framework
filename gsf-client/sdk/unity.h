@@ -111,5 +111,5 @@ namespace game::sdk
 
 	using UnityEngine_Component_get_transform_t = unity_scripting_api<U_Transform_t *(*)(U_Component_t *)>;
 
-	using UnityEngine_Transform_get_position_t = unity_scripting_api<void(*)(U_Transform_t *, U_Vector3_t *)>;
+	using UnityEngine_Transform_INTERNAL_get_position_t = unity_scripting_api<void(*)(U_Transform_t *, U_Vector3_t *)>;
 }

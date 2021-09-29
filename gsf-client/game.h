@@ -19,7 +19,8 @@ namespace game
 	inline game::sdk::UnityEngine_Object_ToString_t               UnityEngine_Object_ToString               ("UnityEngine.Object::ToString()");
 	inline game::sdk::UnityEngine_Camera_get_main_t               UnityEngine_Camera_get_main               ("UnityEngine.Camera::get_main()");
 	inline game::sdk::UnityEngine_Component_get_transform_t       UnityEngine_Component_get_transform       ("UnityEngine.Component::get_transform()");
-	inline game::sdk::UnityEngine_Transform_get_position_t        UnityEngine_Transform_get_position        ("UnityEngine.Transform::INTERNAL_get_position(UnityEngine.Vector3&)");
+
+	inline game::sdk::UnityEngine_Transform_INTERNAL_get_position_t UnityEngine_Transform_INTERNAL_get_position ("UnityEngine.Transform::INTERNAL_get_position(UnityEngine.Vector3&)");
 
 	inline game::sdk::il2cpp_string_chars_t  il2cpp_string_chars  = nullptr;
 	inline game::sdk::il2cpp_string_length_t il2cpp_string_length = nullptr;
