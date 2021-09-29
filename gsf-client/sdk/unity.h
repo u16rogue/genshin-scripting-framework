@@ -89,7 +89,6 @@ namespace game::sdk
 	using UnityEngine_JsonUtility_FromJson_t          = unity_scripting_api<CS_Object_t *(*)(Il2CppString *, void * /*System.Type*/)>;
 	using UnityEngine_JsonUtility_FromJsonOverwrite_t = unity_scripting_api<void(*)(Il2CppString *, CS_Object_t *)>;
 
-	using UnityEngine_Input_GetButton_t = unity_scripting_api<CS_Boolean_t(*)(Il2CppString *)>;
+	using UnityEngine_Input_GetButton_t    = unity_scripting_api<CS_Boolean_t(*)(Il2CppString *)>;
 	using UnityEngine_Input_GetAxisRaw_t   = unity_scripting_api<float(*)(Il2CppString *)>;
-
 }

@@ -16,12 +16,12 @@ bool gsf::hooks::install()
 
 	DEBUG_CON_C_LOG(L"WindowProcedure Callback",                                      gsf::hooks::WindowProc.inhook(global::game_window));
     DEBUG_CON_C_LOG(L"ShowCursor",                                                    gsf::hooks::ShowCursor.inhook(::ShowCursor));
-    DEBUG_CON_C_LOG(L"UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)", gsf::hooks::UnityEngine_Cursor_set_lockState.inhook(game::engine_cursor_set_lockstate.get_ptr()));
-    DEBUG_CON_C_LOG(L"UnityEngine.Cursor::get_visible()",                             gsf::hooks::UnityEngine_Cursor_set_visible.inhook(game::engine_cursor_set_visible.get_ptr()));
-    DEBUG_CON_C_LOG(L"UnityEngine.JsonUtility::ToJson(System.Object,System.Boolean)", gsf::hooks::UnityEngine_JsonUtility_ToJson.inhook(game::engine_jsonutility_tojson.get_ptr()));
-    DEBUG_CON_C_LOG(L"UnityEngine.Utility::FromJson(System.String,System.Type)",      gsf::hooks::UnityEngine_JsonUtility_FromJson.inhook(game::engine_jsonutility_fromjson.get_ptr()));
-    DEBUG_CON_C_LOG(L"UnityEngine.Input::GetButton(System.String)",                   gsf::hooks::UnityEngine_Input_GetButton.inhook(game::engine_input_get_button.get_ptr()));
-    DEBUG_CON_C_LOG(L"UnityEngine.Input::GetAxisRaw(System.String)",                  gsf::hooks::UnityEngine_Input_GetAxisRaw.inhook(game::engine_input_get_axis_raw.get_ptr()));
+    DEBUG_CON_C_LOG(L"UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)", gsf::hooks::UnityEngine_Cursor_set_lockState.inhook(game::UnityEngine_Cursor_set_lockState.get_ptr()));
+    DEBUG_CON_C_LOG(L"UnityEngine.Cursor::get_visible()",                             gsf::hooks::UnityEngine_Cursor_set_visible.inhook(game::UnityEngine_Cursor_set_visible.get_ptr()));
+    DEBUG_CON_C_LOG(L"UnityEngine.JsonUtility::ToJson(System.Object,System.Boolean)", gsf::hooks::UnityEngine_JsonUtility_ToJson.inhook(game::UnityEngine_JsonUtility_ToJson.get_ptr()));
+    DEBUG_CON_C_LOG(L"UnityEngine.Utility::FromJson(System.String,System.Type)",      gsf::hooks::UnityEngine_JsonUtility_FromJson.inhook(game::UnityEngine_JsonUtility_FromJson.get_ptr()));
+    DEBUG_CON_C_LOG(L"UnityEngine.Input::GetButton(System.String)",                   gsf::hooks::UnityEngine_Input_GetButton.inhook(game::UnityEngine_Input_GetButton.get_ptr()));
+    DEBUG_CON_C_LOG(L"UnityEngine.Input::GetAxisRaw(System.String)",                  gsf::hooks::UnityEngine_Input_GetAxisRaw.inhook(game::UnityEngine_Input_GetAxisRaw.get_ptr()));
 
 	ID3D11Device   *dummy_device_ptr;
 	IDXGISwapChain *dummy_swapchain_ptr;
