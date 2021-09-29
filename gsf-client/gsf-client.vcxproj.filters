@@ -102,9 +102,6 @@
     <ClCompile Include="hooks\UnityEngine_Input_GetAxisRaw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hooks\UnityEngine_Input_GetKeyString.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">

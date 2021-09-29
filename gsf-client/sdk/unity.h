@@ -7,13 +7,6 @@
 
 namespace game::sdk
 {
-	enum class CursorLockMode : int
-	{
-		None,
-		Locked,
-		Confined
-	};
-
 	using get_fn_t = void *(*)(const char *);
 
 	class _unity_scripting_api
@@ -80,15 +73,43 @@ namespace game::sdk
 		}
 	};
 
+	enum class CursorLockMode : int
+	{
+		None,
+		Locked,
+		Confined
+	};
+
+	struct U_Vector3_t
+	{
+		float x, y, z;
+	};
+
+	using CS_Type_t = void;
+	using U_Component_t = void;
+	using U_Transform_t = void;
+	using U_Camera_t = void;
+
+	// TODO: proper types
+
 	using UnityEngine_Cursor_get_visible_t   = unity_scripting_api<CS_Boolean_t(*)(void)>;
 	using UnityEngine_Cursor_set_visible_t   = unity_scripting_api<void(*)(CS_Boolean_t)>;
 	using UnityEngine_Cursor_get_lockState_t = unity_scripting_api<game::sdk::CursorLockMode(*)(void)>;
 	using UnityEngine_Cursor_set_lockState_t = unity_scripting_api<void(*)(CursorLockMode)>;
 
 	using UnityEngine_JsonUtility_ToJson_t            = unity_scripting_api<Il2CppString *(*)(CS_Object_t *, CS_Boolean_t)>;
-	using UnityEngine_JsonUtility_FromJson_t          = unity_scripting_api<CS_Object_t *(*)(Il2CppString *, void * /*System.Type*/)>;
+	using UnityEngine_JsonUtility_FromJson_t          = unity_scripting_api<CS_Object_t *(*)(Il2CppString *, CS_Type_t *)>;
 	using UnityEngine_JsonUtility_FromJsonOverwrite_t = unity_scripting_api<void(*)(Il2CppString *, CS_Object_t *)>;
 
-	using UnityEngine_Input_GetButton_t    = unity_scripting_api<CS_Boolean_t(*)(Il2CppString *)>;
-	using UnityEngine_Input_GetAxisRaw_t   = unity_scripting_api<float(*)(Il2CppString *)>;
+	using UnityEngine_Input_GetButton_t  = unity_scripting_api<CS_Boolean_t(*)(Il2CppString *)>;
+	using UnityEngine_Input_GetAxisRaw_t = unity_scripting_api<float(*)(Il2CppString *)>;
+
+	using UnityEngine_Object_get_name_t = unity_scripting_api<Il2CppString *(*)(CS_Object_t *)>;
+	using UnityEngine_Object_ToString_t = unity_scripting_api<Il2CppString *(*)(CS_Object_t *)>;
+
+	using UnityEngine_Camera_get_main_t = unity_scripting_api<U_Camera_t *(*)(void)>;
+
+	using UnityEngine_Component_get_transform_t = unity_scripting_api<U_Transform_t *(*)(U_Component_t *)>;
+
+	using UnityEngine_Transform_get_position_t = unity_scripting_api<void(*)(U_Transform_t *, U_Vector3_t *)>;
 }

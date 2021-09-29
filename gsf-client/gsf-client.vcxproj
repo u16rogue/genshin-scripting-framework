@@ -161,7 +161,6 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClCompile Include="hooks\UnityEngine_Cursor_set_visible.cpp" />
     <ClCompile Include="hooks\UnityEngine_Input_GetAxisRaw.cpp" />
     <ClCompile Include="hooks\UnityEngine_Input_GetButton.cpp" />
-    <ClCompile Include="hooks\UnityEngine_Input_GetKeyString.cpp" />
     <ClCompile Include="hooks\UnityEngine_JsonUtility_FromJson.cpp" />
     <ClCompile Include="hooks\UnityEngine_JsonUtility_ToJson.cpp" />
     <ClCompile Include="hooks\WindowProc.cpp" />
