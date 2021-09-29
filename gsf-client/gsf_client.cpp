@@ -51,10 +51,10 @@ bool gsf::init()
         global::cursor_is_visible = ci.flags == CURSOR_SHOWING;
 
     ImGui::CreateContext();
+    ImGui::GetIO().IniFilename = nullptr;
+
     if (!DEBUG_CON_C_LOG(L"Loading game window handle", get_game_window_handle(global::game_window)) || !game::init() || !gsf::hooks::install())
         return false;
-
-    ImGui::GetIO().IniFilename = nullptr;
 
 	return true;
 }

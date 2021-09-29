@@ -63,9 +63,9 @@ bool gsf::hooks::install()
     ID3D11DeviceContext *dummy_device_context_ptr = nullptr;
     dummy_device_ptr->GetImmediateContext(&dummy_device_context_ptr);
 
-	DEBUG_CON_C_LOG(L"IDXGISwapChain::Present",          gsf::hooks::Present.inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_swapchain_ptr, 0, gsf::def::vtidx::IDXGISwapChain::Present)));                   // IDXGISwapChain::Present
     DEBUG_CON_C_LOG(L"ID3D11DeviceContext::Draw",        gsf::hooks::Draw.inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_device_context_ptr, 0, gsf::def::vtidx::ID3D11DeviceContext::Draw)));               // ID3D11DeviceContext::Draw
     DEBUG_CON_C_LOG(L"ID3D11DeviceContext::DrawIndexed", gsf::hooks::DrawIndexed.inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_device_context_ptr, 0, gsf::def::vtidx::ID3D11DeviceContext::DrawIndexed))); // ID3D11DeviceContext::DrawIndexed
+    DEBUG_CON_C_LOG(L"IDXGISwapChain::Present",          gsf::hooks::Present.inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_swapchain_ptr, 0, gsf::def::vtidx::IDXGISwapChain::Present)));                   // IDXGISwapChain::Present
 
     dummy_device_context_ptr->Release();
 	dummy_swapchain_ptr->Release();
