@@ -21,6 +21,7 @@ bool gsf::hooks::install()
     DEBUG_CON_C_LOG(L"UnityEngine.JsonUtility::ToJson(System.Object,System.Boolean)", gsf::hooks::UnityEngine_JsonUtility_ToJson.inhook(game::engine_jsonutility_tojson.get_ptr()));
     DEBUG_CON_C_LOG(L"UnityEngine.Utility::FromJson(System.String,System.Type)",      gsf::hooks::UnityEngine_JsonUtility_FromJson.inhook(game::engine_jsonutility_fromjson.get_ptr()));
     DEBUG_CON_C_LOG(L"UnityEngine.Input::GetButton(System.String)",                   gsf::hooks::UnityEngine_Input_GetButton.inhook(game::engine_input_get_button.get_ptr()));
+    DEBUG_CON_C_LOG(L"UnityEngine.Input::GetAxisRaw(System.String)",                  gsf::hooks::UnityEngine_Input_GetAxisRaw.inhook(game::engine_input_get_axis_raw.get_ptr()));
 
 	ID3D11Device   *dummy_device_ptr;
 	IDXGISwapChain *dummy_swapchain_ptr;
