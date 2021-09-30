@@ -84,12 +84,9 @@ namespace game::sdk
 		float x, y, z;
 	};
 
-	using CS_Type_t = void;
 	using U_Component_t = void;
 	using U_Transform_t = void;
 	using U_Camera_t = void;
-
-	// TODO: proper types
 
 	using UnityEngine_Cursor_get_visible_t   = unity_scripting_api<CS_Boolean_t>;
 	using UnityEngine_Cursor_set_visible_t   = unity_scripting_api<void, CS_Boolean_t>;
