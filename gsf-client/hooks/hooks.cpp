@@ -9,28 +9,11 @@
 
 #pragma warning (disable: 26812)
 
-bool gsf::hooks::install()
+// TODO: maybe implement dx init fallback incase finding the games dx fails
+/*
+static bool dx_init_fallback()
 {
-    DEBUG_CON_PRINT("\nInstalling hooks...");
-
-	if (!DEBUG_CON_C_LOG(L"Initializing MinHook...", MH_Initialize() == MH_STATUS::MH_OK))
-		return 0;
-
-	DEBUG_CON_C_LOG(L"WindowProcedure Callback", gsf::hooks::WindowProc.inhook(global::game_window));
-    DEBUG_CON_C_LOG(L"ShowCursor",               gsf::hooks::ShowCursor.inhook(::ShowCursor));
-
-    #define _INHOOK_UNITYENGINE(msg, api) DEBUG_CON_C_LOG(msg, gsf::hooks:: ## api ## .inhook(game:: ## api ## .get_ptr()))
-    {
-        _INHOOK_UNITYENGINE(L"UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)", UnityEngine_Cursor_set_lockState);
-        _INHOOK_UNITYENGINE(L"UnityEngine.Cursor::get_visible()",                             UnityEngine_Cursor_set_visible);
-        _INHOOK_UNITYENGINE(L"UnityEngine.JsonUtility::ToJson(System.Object,System.Boolean)", UnityEngine_JsonUtility_ToJson);
-        _INHOOK_UNITYENGINE(L"UnityEngine.Utility::FromJson(System.String,System.Type)",      UnityEngine_JsonUtility_FromJson);
-        _INHOOK_UNITYENGINE(L"UnityEngine.Input::GetButton(System.String)",                   UnityEngine_Input_GetButton);
-        _INHOOK_UNITYENGINE(L"UnityEngine.Input::GetAxisRaw(System.String)",                  UnityEngine_Input_GetAxisRaw);
-    }
-    #undef _INHOOK_UNITYENGINE
-
-	ID3D11Device   *dummy_device_ptr;
+    ID3D11Device   *dummy_device_ptr;
 	IDXGISwapChain *dummy_swapchain_ptr;
 
 	D3D_FEATURE_LEVEL fl;
@@ -60,8 +43,6 @@ bool gsf::hooks::install()
         .Flags        = 0
     };
 
-
-
     if (!DEBUG_CON_C_LOG(L"Setup dummy @ D3D11CreateDeviceAndSwapChain...", SUCCEEDED(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_REFERENCE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &scd, &dummy_swapchain_ptr, &dummy_device_ptr, &fl, nullptr))) || !dummy_swapchain_ptr)
     {
         return false;
@@ -70,26 +51,36 @@ bool gsf::hooks::install()
     ID3D11DeviceContext *dummy_device_context_ptr = nullptr;
     dummy_device_ptr->GetImmediateContext(&dummy_device_context_ptr);
 
-    DEBUG_CON_C_LOG(L"ID3D11DeviceContext::Draw",        gsf::hooks::Draw.inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_device_context_ptr, 0, gsf::def::vtidx::ID3D11DeviceContext::Draw)));               // ID3D11DeviceContext::Draw
-    DEBUG_CON_C_LOG(L"ID3D11DeviceContext::DrawIndexed", gsf::hooks::DrawIndexed.inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(dummy_device_context_ptr, 0, gsf::def::vtidx::ID3D11DeviceContext::DrawIndexed))); // ID3D11DeviceContext::DrawIndexed
-    DEBUG_CON_C_LOG(L"IDXGISwapChain::Present",          gsf::hooks::Present.inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(game::get_dx_swapchain(), 0, gsf::def::vtidx::IDXGISwapChain::Present)));              // IDXGISwapChain::Present
-
     dummy_device_context_ptr->Release();
-	dummy_swapchain_ptr->Release();
-	dummy_device_ptr->Release();
+    dummy_swapchain_ptr->Release();
+    dummy_device_ptr->Release();
+}
+*/
 
-    /*
-	// Hook all initialized hook instances
-    for (auto &hook_instance : utils::hook_base::instances)
+bool gsf::hooks::install()
+{
+    DEBUG_CON_PRINT("\nInstalling hooks...");
+
+	if (!DEBUG_CON_C_LOG(L"Initializing MinHook...", MH_Initialize() == MH_STATUS::MH_OK))
+		return 0;
+
+	DEBUG_CON_C_LOG(L"WindowProcedure Callback", gsf::hooks::WindowProc.inhook(global::game_window));
+    DEBUG_CON_C_LOG(L"ShowCursor",               gsf::hooks::ShowCursor.inhook(::ShowCursor));
+
+    #define _INHOOK_UNITYENGINE(msg, api) DEBUG_CON_C_LOG(msg, gsf::hooks:: ## api ## .inhook(game:: ## api ## .get_ptr()))
     {
-        if (!hook_instance->hook())
-        {
-            DEBUG_COUT("\nEnabling all hooks... failed!");
-            return false;
-        }
+        _INHOOK_UNITYENGINE(L"UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)", UnityEngine_Cursor_set_lockState);
+        _INHOOK_UNITYENGINE(L"UnityEngine.Cursor::get_visible()",                             UnityEngine_Cursor_set_visible);
+        _INHOOK_UNITYENGINE(L"UnityEngine.JsonUtility::ToJson(System.Object,System.Boolean)", UnityEngine_JsonUtility_ToJson);
+        _INHOOK_UNITYENGINE(L"UnityEngine.Utility::FromJson(System.String,System.Type)",      UnityEngine_JsonUtility_FromJson);
+        _INHOOK_UNITYENGINE(L"UnityEngine.Input::GetButton(System.String)",                   UnityEngine_Input_GetButton);
+        _INHOOK_UNITYENGINE(L"UnityEngine.Input::GetAxisRaw(System.String)",                  UnityEngine_Input_GetAxisRaw);
     }
-    DEBUG_COUT("\nEnabling all hooks... ok!");
-    */
+    #undef _INHOOK_UNITYENGINE
+
+    DEBUG_CON_C_LOG(L"ID3D11DeviceContext::Draw",        gsf::hooks::Draw.inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(global::dx_context, 0, gsf::def::vtidx::ID3D11DeviceContext::Draw)));               // ID3D11DeviceContext::Draw
+    DEBUG_CON_C_LOG(L"ID3D11DeviceContext::DrawIndexed", gsf::hooks::DrawIndexed.inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(global::dx_context, 0, gsf::def::vtidx::ID3D11DeviceContext::DrawIndexed))); // ID3D11DeviceContext::DrawIndexed
+    DEBUG_CON_C_LOG(L"IDXGISwapChain::Present",          gsf::hooks::Present.inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(global::dx_swapchain, 0, gsf::def::vtidx::IDXGISwapChain::Present)));              // IDXGISwapChain::Present
 
     return true;
 }
