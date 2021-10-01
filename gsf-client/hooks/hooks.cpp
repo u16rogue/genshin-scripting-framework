@@ -7,21 +7,28 @@
 #include "../definitions.h"
 #include "../game.h"
 
+#pragma warning (disable: 26812)
+
 bool gsf::hooks::install()
 {
     DEBUG_CON_PRINT("\nInstalling hooks...");
 
-	if (!DEBUG_CON_C_LOG(L"Initializing MinHook...", MH_Initialize() == MH_OK))
+	if (!DEBUG_CON_C_LOG(L"Initializing MinHook...", MH_Initialize() == MH_STATUS::MH_OK))
 		return 0;
 
-	DEBUG_CON_C_LOG(L"WindowProcedure Callback",                                      gsf::hooks::WindowProc.inhook(global::game_window));
-    DEBUG_CON_C_LOG(L"ShowCursor",                                                    gsf::hooks::ShowCursor.inhook(::ShowCursor));
-    DEBUG_CON_C_LOG(L"UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)", gsf::hooks::UnityEngine_Cursor_set_lockState.inhook(game::UnityEngine_Cursor_set_lockState.get_ptr()));
-    DEBUG_CON_C_LOG(L"UnityEngine.Cursor::get_visible()",                             gsf::hooks::UnityEngine_Cursor_set_visible.inhook(game::UnityEngine_Cursor_set_visible.get_ptr()));
-    DEBUG_CON_C_LOG(L"UnityEngine.JsonUtility::ToJson(System.Object,System.Boolean)", gsf::hooks::UnityEngine_JsonUtility_ToJson.inhook(game::UnityEngine_JsonUtility_ToJson.get_ptr()));
-    DEBUG_CON_C_LOG(L"UnityEngine.Utility::FromJson(System.String,System.Type)",      gsf::hooks::UnityEngine_JsonUtility_FromJson.inhook(game::UnityEngine_JsonUtility_FromJson.get_ptr()));
-    DEBUG_CON_C_LOG(L"UnityEngine.Input::GetButton(System.String)",                   gsf::hooks::UnityEngine_Input_GetButton.inhook(game::UnityEngine_Input_GetButton.get_ptr()));
-    DEBUG_CON_C_LOG(L"UnityEngine.Input::GetAxisRaw(System.String)",                  gsf::hooks::UnityEngine_Input_GetAxisRaw.inhook(game::UnityEngine_Input_GetAxisRaw.get_ptr()));
+	DEBUG_CON_C_LOG(L"WindowProcedure Callback", gsf::hooks::WindowProc.inhook(global::game_window));
+    DEBUG_CON_C_LOG(L"ShowCursor",               gsf::hooks::ShowCursor.inhook(::ShowCursor));
+
+    #define _INHOOK_UNITYENGINE(msg, api) DEBUG_CON_C_LOG(msg, gsf::hooks:: ## api ## .inhook(game:: ## api ## .get_ptr()))
+    {
+        _INHOOK_UNITYENGINE(L"UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)", UnityEngine_Cursor_set_lockState);
+        _INHOOK_UNITYENGINE(L"UnityEngine.Cursor::get_visible()",                             UnityEngine_Cursor_set_visible);
+        _INHOOK_UNITYENGINE(L"UnityEngine.JsonUtility::ToJson(System.Object,System.Boolean)", UnityEngine_JsonUtility_ToJson);
+        _INHOOK_UNITYENGINE(L"UnityEngine.Utility::FromJson(System.String,System.Type)",      UnityEngine_JsonUtility_FromJson);
+        _INHOOK_UNITYENGINE(L"UnityEngine.Input::GetButton(System.String)",                   UnityEngine_Input_GetButton);
+        _INHOOK_UNITYENGINE(L"UnityEngine.Input::GetAxisRaw(System.String)",                  UnityEngine_Input_GetAxisRaw);
+    }
+    #undef _INHOOK_UNITYENGINE
 
 	ID3D11Device   *dummy_device_ptr;
 	IDXGISwapChain *dummy_swapchain_ptr;
@@ -100,3 +107,5 @@ bool gsf::hooks::uninstall()
 
 	return true;
 }
+
+#pragma warning (default: 26812)
