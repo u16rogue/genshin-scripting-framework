@@ -40,17 +40,6 @@ static bool hlp_load_exportfn(entryp_t mod, const utils::fnv1a64_t hashed_name, 
 	return true;
 }
 
-template <typename T>
-static bool hlp_load_gamefn(const char *name, T *&out_result)
-{
-	out_result = reinterpret_cast<T *>(game::get_fn(name));
-	if (!out_result)
-		return false;
-
-	DEBUG_COUT(" @ 0x" << reinterpret_cast<void *>(out_result));
-	return true;
-}
-
 bool game::init()
 {
 	#pragma warning(disable: 6011)
@@ -82,26 +71,22 @@ bool game::init()
 
 	// Load signatures
 	DEBUG_COUT("\nLOAD SIGNATURES:");
-	if (!DEBUG_CON_C_LOG(L"game::player_map_coords (ref)", hlp_aob_scan(mod_unity_player,  sig_player_map_coord, "\xF2\x0F\x11\x0D\x00\x00\x00\x00\x48\x83\xC4\x00\x5B\xC3\x48\x8D\x0D", "xxxx????xxx?xxxxx"))
-	||  !DEBUG_CON_C_LOG(L"game::get_fn",                  hlp_aob_scan(mod_user_assembly, game::get_fn,         "\x48\x8b\xc4\x48\x89\x48\x00\x55\x41\x54",                             "xxxxxx?xxx"))
+	if (!DEBUG_CON_C_LOG(L"game::player_map_coords (ref)",                     hlp_aob_scan(mod_unity_player,  sig_player_map_coord,                              "\xF2\x0F\x11\x0D\x00\x00\x00\x00\x48\x83\xC4\x00\x5B\xC3\x48\x8D\x0D",                     "xxxx????xxx?xxxxx"))
+	||  !DEBUG_CON_C_LOG(L"game::sdk::unity_scripting_api<>::get_api_by_name", hlp_aob_scan(mod_user_assembly, game::sdk::unity_scripting_api<>::get_api_by_name, "\x48\x8b\xc4\x48\x89\x48\x00\x55\x41\x54",                                                 "xxxxxx?xxx"))
+	||  !DEBUG_CON_C_LOG(L"game::get_dx_swapchain (ref)",                      hlp_aob_scan(mod_unity_player,  game::get_dx_swapchain,                            "\xe8\x00\x00\x00\x00\x4c\x8b\xf0\x48\x85\xc0\x74\x00\x48\x89\x5c\x24\x00\x48\x89\x6c\x24", "x????xxxxxxx?xxxx?xxxx"))
 	) {
 		return false;
 	}
 
 	// Load game functions
 	DEBUG_COUT("\nLOAD GAME FUNCTIONS:");
-	if (!DEBUG_CON_C_LOG(L"UnityEngine.Cursor::set_visible(System.Boolean)",                         hlp_load_gamefn("UnityEngine.Cursor::set_visible(System.Boolean)",                          game::engine_cursor_set_visible))
-	||  !DEBUG_CON_C_LOG(L"UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)",           hlp_load_gamefn("UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)",            game::engine_cursor_set_lockstate))
-	||  !DEBUG_CON_C_LOG(L"UnityEngine.Cursor::get_visible()",                                       hlp_load_gamefn("UnityEngine.Cursor::get_visible()",                                        game::engine_cursor_get_visible))
-	||  !DEBUG_CON_C_LOG(L"UnityEngine.Cursor::get_lockState()",                                     hlp_load_gamefn("UnityEngine.Cursor::get_lockState()",                                      game::engine_cursor_get_lockstate))
-	||  !DEBUG_CON_C_LOG(L"UnityEngine.JsonUtility::ToJson(System.Object,System.Boolean)",           hlp_load_gamefn("UnityEngine.JsonUtility::ToJson(System.Object,System.Boolean)",            game::engine_jsonutility_tojson))
-	||  !DEBUG_CON_C_LOG(L"UnityEngine.JsonUtility::FromJson(System.String,System.Type)",            hlp_load_gamefn("UnityEngine.JsonUtility::FromJson(System.String,System.Type)",             game::engine_jsonutility_fromjson))
-	||  !DEBUG_CON_C_LOG(L"UnityEngine.JsonUtility::FromJsonOverwrite(System.String,System.Object)", hlp_load_gamefn("UnityEngine.JsonUtility::FromJsonOverwrite(System.String,System.Object)",  game::engine_jsonutility_fromjsonovr))
-	) {
+	if (!game::sdk::unity_scripting_api<>::load_function_all())
+	{
 		return false;
 	}
 
-	game::player_map_coords = reinterpret_cast<game::sdk::player_map_coords *>(utils::calc_rel_address_32(sig_player_map_coord, 0x8));
+	game::get_dx_swapchain = reinterpret_cast<decltype(game::get_dx_swapchain)>(utils::calc_rel2abs32(game::get_dx_swapchain, 0x5));
+	game::player_map_coords = reinterpret_cast<decltype(game::player_map_coords)>(utils::calc_rel2abs32(sig_player_map_coord, 0x8));
 
 	return true;
 	#pragma warning(default: 6011)

@@ -5,6 +5,7 @@
 namespace gsf::hooks
 {
 	extern utils::hook_detour  Present;
+	extern utils::hook_detour  ResizeBuffers;
 	extern utils::hook_wndproc WindowProc;
 	extern utils::hook_detour  Draw;
 	extern utils::hook_detour  DrawIndexed;
@@ -13,6 +14,8 @@ namespace gsf::hooks
 	extern utils::hook_detour  UnityEngine_Cursor_set_visible;
 	extern utils::hook_detour  UnityEngine_JsonUtility_ToJson;
 	extern utils::hook_detour  UnityEngine_JsonUtility_FromJson;
+	extern utils::hook_detour  UnityEngine_Input_GetButton;
+	extern utils::hook_detour  UnityEngine_Input_GetAxisRaw;
 
 	bool install();
 	bool uninstall();

@@ -105,7 +105,7 @@ std::uint8_t *utils::ida_scan(void *start, std::size_t size, const char *signatu
 	return utils::aob_scan(start, size, reinterpret_cast<const char *>(aob.data()), mask.c_str());
 }
 
-std::uint8_t *utils::calc_rel_address_32(void *instruction_address, std::size_t instruction_size)
+std::uint8_t *utils::calc_rel2abs32(void *instruction_address, std::size_t instruction_size)
 {
 	auto next_inst = reinterpret_cast<std::uintptr_t>(instruction_address) + instruction_size;
 	return reinterpret_cast<std::uint8_t *>(next_inst + *reinterpret_cast<std::int32_t *>((next_inst - sizeof(std::uint32_t))));

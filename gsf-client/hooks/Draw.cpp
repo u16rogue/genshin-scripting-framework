@@ -1,8 +1,6 @@
 #include "hooks.h"
 
 #include <d3d11.h>
-#include <macro.h>
-
 #include "../script_manager.h"
 
 void __stdcall hk_Draw(ID3D11DeviceContext *thisptr, UINT VertexCount, UINT StartVertexLocation)

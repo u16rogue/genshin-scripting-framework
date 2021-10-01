@@ -1,7 +1,5 @@
 #include "hooks.h"
 #include "../sdk/sdk.h"
-#include "../game.h"
-#include <macro.h>
 
 game::sdk::CS_Object_t *hk_UnityEngine_JsonUtility_FromJson(game::sdk::Il2CppString *json, void *type)
 {

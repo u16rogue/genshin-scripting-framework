@@ -1,11 +1,9 @@
 #include "hooks.h"
 #include <Windows.h>
-#include <d3d11.h>
 #include <imgui.h>
 #include <imgui_impl_win32.h>
 #include <imgui_internal.h>
 #include "../gsf_client.h"
-#include "../global.h"
 #include "../menu/menu.h"
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
