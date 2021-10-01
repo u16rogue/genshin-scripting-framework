@@ -10,6 +10,7 @@ namespace gsf::def::vtidx
 	enum class IDXGISwapChain
 	{
 		Present = 8,
+		ResizeBuffers = 13
 	};
 
 	enum class ID3D11DeviceContext

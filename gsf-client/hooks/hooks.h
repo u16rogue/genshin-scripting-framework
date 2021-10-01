@@ -5,6 +5,7 @@
 namespace gsf::hooks
 {
 	extern utils::hook_detour  Present;
+	extern utils::hook_detour  ResizeBuffers;
 	extern utils::hook_wndproc WindowProc;
 	extern utils::hook_detour  Draw;
 	extern utils::hook_detour  DrawIndexed;
