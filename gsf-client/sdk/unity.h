@@ -4,10 +4,12 @@
 #include "il2cpp.h"
 #include <vector>
 #include <macro.h>
+#include <d3d11.h>
 
 namespace game::sdk
 {
 	using get_fn_t = void *(*)(const char *);
+	using get_dx_swapchain_t = IDXGISwapChain *(*)(void);
 
 	class _unity_scripting_api
 	{
