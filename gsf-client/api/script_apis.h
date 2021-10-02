@@ -5,6 +5,7 @@
 #include "api_imgui.h"
 #include "api_mem.h"
 #include "api_win.h"
+#include "api_controls.h"
 
 namespace gsf
 {
@@ -25,6 +26,7 @@ namespace gsf
 		api_game,
 		api_imgui,
 		api_mem,
-		api_win
+		api_win,
+		api_controls
 	>;
 }

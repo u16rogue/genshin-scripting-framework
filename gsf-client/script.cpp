@@ -109,7 +109,6 @@ bool gsf::script::unload()
 		this->callbacks.on_unload.callback_function();
 
 	api_gsf::clear_callbacks();
-	this->logs.clear();
 	this->lua_state.reset();
 	this->current_state = gsf::script::state::UNLOADED;
 	--gsf::script::count_loaded_scripts;

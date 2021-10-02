@@ -97,7 +97,8 @@ bool gsf::shutdown()
 {
     if (HANDLE exit_thread = nullptr; exit_thread = CreateThread(nullptr, NULL, [](LPVOID arg0) -> DWORD
     {
-        hooks::uninstall();
+        gsf::hooks::uninstall();
+        gsf::script_manager::unload_all_scripts();
 
         if (con::is_allocated())
             FreeConsole();

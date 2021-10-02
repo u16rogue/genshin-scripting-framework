@@ -54,3 +54,9 @@ bool gsf::script_manager::script_import(std::string_view file_path, gsf::script 
 
     return true;
 }
+
+void gsf::script_manager::unload_all_scripts()
+{
+    for (auto &script : script_instances)
+        script->unload();
+}
