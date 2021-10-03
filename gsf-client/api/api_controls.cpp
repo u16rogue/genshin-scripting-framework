@@ -18,11 +18,11 @@ bool gsf::api_controls::setup_api(sol::state &slua)
 	);
 	#undef _ENUM_ENTRY_api_controls
 
-	namespace_controls.set_function("mouse_down", &gsf::api_controls::mouse_down);
+	namespace_controls.set_function("key_down", &gsf::api_controls::key_down);
 	return true;
 }
 
-void gsf::api_controls::mouse_down(api_controls::keys key, int ticks)
+void gsf::api_controls::key_down(api_controls::keys key, int ticks)
 {
 	int *selected_key = nullptr;
 
@@ -60,4 +60,9 @@ void gsf::api_controls::mouse_down(api_controls::keys key, int ticks)
 	{
 		*selected_key = ticks;
 	}
+}
+
+void gsf::api_controls::look(api_controls::direction direction, float amount)
+{
+
 }
