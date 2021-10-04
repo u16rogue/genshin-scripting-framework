@@ -15,11 +15,11 @@ HRESULT hk_ResizeBuffers(IDXGISwapChain *thisptr, UINT BufferCount, UINT Width, 
 	auto result = o_fn(thisptr, BufferCount, Width, Height, NewFormat, SwapChainFlags);
 
 	// Create
-	ID3D11Texture2D *dx_backbuffer = nullptr;
-	global::dx_swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void **>(&dx_backbuffer));
-	if (dx_backbuffer)
+	if (ID3D11Texture2D *dx_backbuffer = nullptr; SUCCEEDED(global::dx_swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void **>(&dx_backbuffer))))
+	{
 		global::dx_device->CreateRenderTargetView(dx_backbuffer, nullptr, &global::dx_render_target_view);
-	dx_backbuffer->Release();
+		dx_backbuffer->Release();
+	}
 
 	return result;
 }

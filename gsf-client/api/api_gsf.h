@@ -42,7 +42,6 @@ namespace gsf
 	protected:
 		api_gsf() {}
 		bool setup_api(sol::state &slua);
-		std::vector<std::string> logs;
 		callbacks_container callbacks;
 		void script_push_log(std::string msg);
 

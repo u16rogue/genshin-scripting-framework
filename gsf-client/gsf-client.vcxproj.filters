@@ -105,6 +105,9 @@
     <ClCompile Include="hooks\ResizeBuffers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="api\api_controls.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
@@ -183,6 +186,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sdk\cs_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="api\api_controls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
