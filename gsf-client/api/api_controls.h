@@ -1,13 +1,25 @@
 #pragma once
 
 #include "i_api.h"
-
-// TODO: refactor so we dont have to hardcode each case
+#include <hash.h>
 
 namespace gsf
 {
 	class api_controls : public i_api
 	{
+		template <typename enum_t, typename value_t>
+		struct control_bridge_info
+		{
+			utils::fnv1a64_t game_identifier; // used for comparing from hooked unity engine scripting api
+			enum_t           enum_tag; // used for comparing within GSF's api
+
+			union
+			{
+				value_t amount;
+				value_t ticks;
+			};
+		};
+
 		enum class keys : int
 		{
 			LMOUSE = 0,
@@ -21,12 +33,15 @@ namespace gsf
 			RESET_CAMERA    = MMOUSE,
 		};
 
-		enum class direction : int
+		enum class directions : int
 		{
-			UP,
-			DOWN,
-			LEFT,
-			RIGHT
+			UP    = 0b0001,
+			DOWN  = 0b0011,
+			RIGHT = 0b0100,
+			LEFT  = 0b1100,
+
+			X_AXIS = LEFT | RIGHT,
+			Y_AXIS = UP   | DOWN,
 		};
 
 	protected:
@@ -35,14 +50,21 @@ namespace gsf
 
 	private:
 		static void key_down(api_controls::keys key, int ticks);
-		static void look(api_controls::direction direction, float amount);
+		static void look(api_controls::directions direction, float amount);
 
 	public:
-		inline static int flag_mouse_left_down   = 0;
-		inline static int flag_mouse_right_down  = 0;
-		inline static int flag_mouse_middle_down = 0;
 
-		inline static float flag_axis_x = 0.f;
-		inline static float flag_axis_y = 0.f;
+		inline static api_controls::control_bridge_info<api_controls::keys, int> flags_mouse[] =
+		{
+			{ utils::hash_fnv1a_cv("MouseButton0"), api_controls::keys::LMOUSE, 0 },
+			{ utils::hash_fnv1a_cv("MouseButton1"), api_controls::keys::RMOUSE, 0 },
+			{ utils::hash_fnv1a_cv("MouseButton2"), api_controls::keys::MMOUSE, 0 },
+		};
+
+		inline static api_controls::control_bridge_info<api_controls::directions, float> flags_look[] =
+		{
+			{ utils::hash_fnv1a_cv("MouseAxis1"), api_controls::directions::X_AXIS, 0.f },
+			{ utils::hash_fnv1a_cv("MouseAxis2"), api_controls::directions::Y_AXIS, 0.f },
+		};
 	};
 }

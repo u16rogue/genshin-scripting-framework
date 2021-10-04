@@ -4,54 +4,27 @@
 #include "../api/api_controls.h"
 #include <hash.h>
 
-#include <macro.h>
-
 // MouseButton0 - l
 // MouseButton2 - m
 // MouseButton1 - r
 // MouseButton3 - m4
 // MouseButton4 - m5
 
-
 game::sdk::CS_Boolean_t hk_UnityEngine_Input_GetButton(game::sdk::Il2CppString *buttonName)
 {
-	switch (utils::hash_fnv1a(game::il2cpp_string_chars(buttonName)))
+	auto hashed_btn_name = utils::hash_fnv1a(game::il2cpp_string_chars(buttonName));
+	for (auto &force_key : gsf::api_controls::flags_mouse)
 	{
-		case utils::hash_fnv1a(L"MouseButton0"):
-		{
-			if (gsf::api_controls::flag_mouse_left_down)
-			{
-				if (gsf::api_controls::flag_mouse_left_down > 0)
-					--gsf::api_controls::flag_mouse_left_down;
+		if (force_key.game_identifier != hashed_btn_name)
+			continue;
 
-				return true;
-			}
+		if (force_key.ticks == 0)
 			break;
-		}
 
-		case utils::hash_fnv1a(L"MouseButton1"):
-		{
-			if (gsf::api_controls::flag_mouse_right_down)
-			{
-				if (gsf::api_controls::flag_mouse_right_down > 0)
-					--gsf::api_controls::flag_mouse_right_down;
+		if (force_key.ticks > 0)
+			--force_key.ticks;
 
-				return true;
-			}
-			break;
-		}
-
-		case utils::hash_fnv1a(L"MouseButton2"):
-		{
-			if (gsf::api_controls::flag_mouse_middle_down)
-			{
-				if (gsf::api_controls::flag_mouse_middle_down > 0)
-					--gsf::api_controls::flag_mouse_middle_down;
-
-				return true;
-			}
-			break;
-		}
+		return true;
 	}
 
 	static auto o_fn = gsf::hooks::UnityEngine_Input_GetButton.get_original<decltype(hk_UnityEngine_Input_GetButton)>();
