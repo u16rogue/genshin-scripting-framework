@@ -46,14 +46,8 @@ void gsf::api_controls::key_down(api_controls::keys key, int ticks)
 		// this is for future proofing incase a refactoring would take place
 		constexpr decltype(ticks) TICKS_HOLD_KEY    = -1;
 		constexpr decltype(ticks) TICKS_RELEASE_KEY =  0;
-		if (ticks == TICKS_RELEASE_KEY || ticks == TICKS_HOLD_KEY)
-		{
+		if (ticks == TICKS_RELEASE_KEY || ticks == TICKS_HOLD_KEY || ticks > flag_key.ticks /* only accept new n ticks if its higher than the current tick count for the key */ )
 			flag_key.ticks = ticks;
-		}
-		else if (ticks > flag_key.ticks) // only accept new n ticks if its higher than the current tick count for the key
-		{
-			flag_key.ticks = ticks;
-		}
 
 		return;
 	}

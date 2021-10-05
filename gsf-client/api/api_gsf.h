@@ -33,6 +33,7 @@ namespace gsf
 		_GSF_SCRIPT_DECLARE_CALLBACK(dx_drawindexed)
 		_GSF_SCRIPT_DECLARE_CALLBACK(on_unload)
 		_GSF_SCRIPT_DECLARE_CALLBACK(menu_imgui_tab)
+		_GSF_SCRIPT_DECLARE_CALLBACK(on_key)
 
 		#undef _GSF_SCRIPT_DECLARE_CALLBACK
 	};

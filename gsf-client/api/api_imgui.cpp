@@ -17,6 +17,28 @@ bool gsf::api_imgui::setup_api(sol::state &slua)
 	namespace_imgui.set_function("push_id", static_cast<void(*)(int)>(&ImGui::PushID));
 	namespace_imgui.set_function("pop_id", &ImGui::PopID);
 
+	namespace_imgui.set_function("draw_text", [](const char *text, float x, float y, float r, float g, float b, float a)
+	{
+		ImGui::GetBackgroundDrawList()->AddText(ImVec2(x, y), ImColor(r, g, b, a), text);
+	});
+
+	namespace_imgui.set_function("draw_line", [](float x1, float y1, float x2, float y2, float thickness, float r, float g, float b, float a)
+	{
+		ImGui::GetBackgroundDrawList()->AddLine(ImVec2(x1, y1), ImVec2(x2, y2), ImColor(r, g, b, a), thickness);
+	});
+
+	namespace_imgui.set_function("draw_rect", [](float x1, float y1, float x2, float y2, bool filled, float thickness, float r, float g, float b, float a)
+	{
+		if (filled)
+		{
+			ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x1, y1), ImVec2(x2, y2), ImColor(r, g, b, a));
+		}
+		else
+		{
+			ImGui::GetBackgroundDrawList()->AddRect(ImVec2(x1, y1), ImVec2(x2, y2), ImColor(r, g, b, a), 0.f, 15, thickness);
+		}
+	});
+
 	return true;
 }
 

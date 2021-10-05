@@ -1,9 +1,8 @@
 # Genshin Impact Scripting Framework
 
-[![release](https://img.shields.io/github/release/u16rogue/genshin-scripting-framework?style=for-the-badge)](https://github.com/u16rogue/genshin-scripting-framework/releases)
+[![genshin](https://img.shields.io/badge/Genshin%20Impact-2.1-blue?style=for-the-badge)](https://genshin.mihoyo.com/)
 [![issues](https://img.shields.io/github/issues/u16rogue/genshin-scripting-framework?style=for-the-badge)](https://github.com/u16rogue/genshin-scripting-framework/issues)
 [![license](https://img.shields.io/github/license/u16rogue/genshin-scripting-framework?style=for-the-badge)](https://github.com/u16rogue/genshin-scripting-framework/blob/master/LICENSE)
-
 
 [About](#About) • [Wiki](https://github.com/u16rogue/genshin-scripting-framework/wiki) • [Getting Started](https://github.com/u16rogue/genshin-scripting-framework/wiki/%5B2%5D-Getting-Started) • [Usage](https://github.com/u16rogue/genshin-scripting-framework/wiki/%5B3%5D-Usage) • [Scripting API Documentation](https://github.com/u16rogue/genshin-scripting-framework/wiki/%5B4.0%5D-Scripting) • [Libraries](#Libraries) • [License](#License)
 
