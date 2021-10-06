@@ -1,11 +1,13 @@
 #include "api_win.h"
 #include <winternal.h>
+#include <Windows.h>
 
 bool gsf::api_win::setup_api(sol::state &slua)
 {
 	auto namespace_win = slua["win"].get_or_create<sol::table>();
 	namespace_win.set_function("find_module", &gsf::api_win::_api_find_module, this);
 	namespace_win.set_function("get_all_modules", &gsf::api_win::_api_get_all_modules, this);
+	namespace_win.set_function("sleep", ::Sleep);
 
 	return true;
 }
