@@ -21,6 +21,7 @@ bool gsf::api_gsf::setup_api(sol::state &slua)
 	namespace_gsf.set_function("log", &api_gsf::_api_log, this);
 	namespace_gsf.set_function("register_callback", &api_gsf::_api_register_callback, this);
 	namespace_gsf.set_function("get_script_dir", &api_gsf::_api_get_script_dir, this);
+	namespace_gsf.set_function("create_detached_thread", &api_gsf::_api_create_detached_thread, this);
 
 	return true;
 }
@@ -75,4 +76,14 @@ std::string gsf::api_gsf::_api_get_script_dir()
 {
 	auto abs = std::filesystem::canonical(this->get_filepath()).string();
 	return abs.substr(0, abs.find_last_of("/\\") + 1);
+}
+
+static sol::function lol = sol::nil;
+
+void gsf::api_gsf::_api_create_detached_thread(sol::function fn)
+{
+	return std::thread([](sol::function fn)
+	{
+		fn();
+	}, std::move(fn)).detach();
 }
