@@ -6,9 +6,9 @@
 #include <cstdint>
 #include <macro.h>
 
-static std::vector<std::unique_ptr<gsf::script>> script_instances;
+static std::vector<gsf::script> script_instances;
 
-const std::vector<std::unique_ptr<gsf::script>> &gsf::script_manager::get_scripts()
+const std::vector<gsf::script> &gsf::script_manager::get_scripts()
 {
     return script_instances;
 }
@@ -45,12 +45,12 @@ bool gsf::script_manager::script_import(std::string_view file_path, gsf::script 
         return false;
 
     for (auto &script : script_instances)
-        if (script->get_filepath() == file_path)
+        if (script.get_filepath() == file_path)
             return false;
 
-    auto &loaded_script = script_instances.emplace_back(std::make_unique<gsf::script>(file_path));
+    auto &loaded_script = script_instances.emplace_back(file_path);
     if (script_instance_out)
-        *script_instance_out = loaded_script.get();
+        *script_instance_out = &loaded_script;
 
     return true;
 }
@@ -58,5 +58,5 @@ bool gsf::script_manager::script_import(std::string_view file_path, gsf::script 
 void gsf::script_manager::unload_all_scripts()
 {
     for (auto &script : script_instances)
-        script->unload();
+        script.unload();
 }

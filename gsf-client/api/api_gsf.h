@@ -4,7 +4,6 @@
 
 #include <vector>
 #include <string>
-#include <mutex>
 #include <hash.h>
 
 namespace gsf
