@@ -22,9 +22,10 @@
 
 static bool init_dx()
 {
-    DEBUG_COUT("\nInitialize DirectX11...");
+    DEBUG_COUT("\nInitialize DirectX11..."
+               "\nWaiting for the game to create a swapchain and device context...");
 
-    while (!(global::dx_swapchain = game::get_dx_swapchain()))
+    while (!(global::dx_swapchain = game::get_dx_swapchain()) && !game::get_dx_devicectx())
         Sleep(800);
 
     if (!DEBUG_CON_C_LOG(L"Get device", SUCCEEDED(global::dx_swapchain->GetDevice(__uuidof(ID3D11Device), reinterpret_cast<void **>(&global::dx_device)))))

@@ -11,7 +11,6 @@ namespace gsf
 {
 	struct script_config
 	{
-		bool imgui_mutex = true;
 		std::string name;
 		std::string description;
 	};
@@ -33,7 +32,6 @@ namespace gsf
 
 	public:
 		script(std::string_view filepath_);
-		script(const script &) = default;
 
 		bool load();
 		bool unload();

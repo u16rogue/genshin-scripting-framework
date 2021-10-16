@@ -108,6 +108,9 @@
     <ClCompile Include="api\api_controls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="callback_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
@@ -189,6 +192,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="api\api_controls.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="callback_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

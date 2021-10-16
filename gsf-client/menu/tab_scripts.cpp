@@ -4,6 +4,7 @@
 #include "../script_manager.h"
 #include "../helpers/imgui_prompts.h"
 #include <misc_utils.h>
+#include <thread>
 
 static const char         *import_prompt_error_message         = "No error message provided.";
 static bool                import_prompt_error_message_visible = false;
@@ -60,7 +61,7 @@ enum class script_state
     UNLOAD
 };
 
-static void helper_nthread_set_script_state(const std::unique_ptr<gsf::script> &script, script_state req_state)
+static void helper_nthread_set_script_state(const gsf::script &script, script_state req_state)
 {
     std::thread([req_state](gsf::script *script)
     {
@@ -73,7 +74,7 @@ static void helper_nthread_set_script_state(const std::unique_ptr<gsf::script> &
                 script->unload();
                 break;
         }
-    }, script.get()).detach();
+    }, const_cast<gsf::script *>(&script)).detach();
 }
 
 void gsf::menu::tab_scripts::render_tab()
@@ -89,15 +90,15 @@ void gsf::menu::tab_scripts::render_tab()
 
             for (const auto &script : gsf::script_manager::get_scripts())
             {
-                const auto &config = script->get_config();
+                const auto &config = script.get_config();
                 ImGui::TableNextRow();
                 ImGui::TableNextColumn();
-                ImGui::Selectable(config.name.c_str(), &script->_tab_script_selected, ImGuiSelectableFlags_::ImGuiSelectableFlags_SpanAllColumns);
+                ImGui::Selectable(config.name.c_str(), &script._tab_script_selected, ImGuiSelectableFlags_::ImGuiSelectableFlags_SpanAllColumns);
                 if (ImGui::IsItemHovered() && !config.description.empty()) ImGui::SetTooltip(config.description.c_str());
                 ImGui::TableNextColumn();
-                ImGui::Text(script->_tab_script_notice.c_str());
+                ImGui::Text(script._tab_script_notice.c_str());
                 ImGui::TableNextColumn();
-                ImGui::Text(gsf::script::state_to_cstr(script->get_current_state()));
+                ImGui::Text(gsf::script::state_to_cstr(script.get_current_state()));
             }
 
 			ImGui::EndTable();
@@ -109,7 +110,7 @@ void gsf::menu::tab_scripts::render_tab()
         {
             for (const auto &script : gsf::script_manager::get_scripts())
             {
-                if (script->_tab_script_selected && script->get_current_state() == gsf::script::state::UNLOADED)
+                if (script._tab_script_selected && script.get_current_state() == gsf::script::state::UNLOADED)
                     helper_nthread_set_script_state(script, script_state::LOAD);
             }
         }
@@ -119,7 +120,7 @@ void gsf::menu::tab_scripts::render_tab()
         {
             for (const auto &script : gsf::script_manager::get_scripts())
             {
-                if (script->_tab_script_selected && script->get_current_state() == gsf::script::state::LOADED)
+                if (script._tab_script_selected && script.get_current_state() == gsf::script::state::LOADED)
                     helper_nthread_set_script_state(script, script_state::UNLOAD);
             }
         }
@@ -128,7 +129,7 @@ void gsf::menu::tab_scripts::render_tab()
         if (ImGui::Button("Deselect All"))
         {
             for (const auto &script : gsf::script_manager::get_scripts())
-                script->_tab_script_selected = false;
+                script._tab_script_selected = false;
         }
 
         ImGui::SameLine();

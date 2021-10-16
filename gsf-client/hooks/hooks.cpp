@@ -78,8 +78,9 @@ bool gsf::hooks::install()
     }
     #undef _INHOOK_UNITYENGINE
 
-    DEBUG_CON_C_LOG(L"ID3D11DeviceContext::Draw",        gsf::hooks::Draw.inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(global::dx_context, 0, gsf::def::vtidx::ID3D11DeviceContext::Draw)));
-    DEBUG_CON_C_LOG(L"ID3D11DeviceContext::DrawIndexed", gsf::hooks::DrawIndexed.inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(global::dx_context, 0, gsf::def::vtidx::ID3D11DeviceContext::DrawIndexed)));
+    ID3D11DeviceContext *game_devicectx = game::get_dx_devicectx();
+    DEBUG_CON_C_LOG(L"ID3D11DeviceContext::Draw", gsf::hooks::Draw.inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(game_devicectx, 0, gsf::def::vtidx::ID3D11DeviceContext::Draw)));
+    DEBUG_CON_C_LOG(L"ID3D11DeviceContext::DrawIndexed", gsf::hooks::DrawIndexed.inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(game_devicectx, 0, gsf::def::vtidx::ID3D11DeviceContext::DrawIndexed)));
     DEBUG_CON_C_LOG(L"IDXGISwapChain::ResizeBuffers",    gsf::hooks::ResizeBuffers.inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(global::dx_swapchain, 0, gsf::def::vtidx::IDXGISwapChain::ResizeBuffers)));
     DEBUG_CON_C_LOG(L"IDXGISwapChain::Present",          gsf::hooks::Present.inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(global::dx_swapchain, 0, gsf::def::vtidx::IDXGISwapChain::Present)));
 

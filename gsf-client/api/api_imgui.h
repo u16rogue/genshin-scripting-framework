@@ -12,7 +12,7 @@ namespace gsf
 		bool setup_api(sol::state &slua);
 
 	public:
-		std::int64_t imgui_active_begin_count = 0;
+		inline static std::int64_t imgui_active_begin_count = 0;
 
 	private:
 		std::unordered_map<const char *, char[128]> imgui_data_ref;
