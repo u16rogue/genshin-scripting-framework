@@ -11,7 +11,6 @@ namespace gsf
 {
 	struct script_config
 	{
-		bool imgui_mutex = true;
 		std::string name;
 		std::string description;
 	};

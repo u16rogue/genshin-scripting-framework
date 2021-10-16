@@ -3,6 +3,7 @@
 #include "../git_info.h"
 #include "../gsf_client.h"
 #include "../script_manager.h"
+#include "../callback_manager.h"
 #include <imgui.h>
 
 #include "tab_scripts.h"
@@ -77,15 +78,14 @@ void gsf::menu::render_imgui()
 			tab_logs::render_tab();
 
 			// Render custom script tabs
-			for (const auto &script : gsf::script_manager::get_scripts())
+			for (const auto &cbs : gsf::callback_manager::get_callbacks().menu_imgui_tab.lua_callbacks)
 			{
-				auto &callback = script->get_callbacks().menu_imgui_tab;
-				if (!callback.active)
+				if (!cbs.active)
 					continue;
 
-				if (ImGui::BeginTabItem(script->get_config().name.c_str()))
+				if (ImGui::BeginTabItem(cbs.parent->get_config().name.c_str()))
 				{
-					callback.callback_function();
+					cbs.lua_func();
 					ImGui::EndTabItem();
 				}
 			}

@@ -4,6 +4,7 @@
 #include <sol.hpp>
 #include <vector>
 #include "script.h"
+#include <mutex>
 
 // For performance and lazy reasons
 // it would be better to just keep the registered callbacks in the vector
@@ -55,6 +56,21 @@ namespace gsf::callback_manager
 		}
 
 		template <typename... vargs_t>
+		void dispatch_filtered(gsf::script *parent, vargs_t... args) const
+		{
+			if (!this->active_callbacks_count)
+				return;
+
+			for (auto &cb : this->lua_callbacks)
+			{
+				if (cb.parent != parent || !cb.active)
+					continue;
+
+				cb.lua_func(args...);
+			}
+		}
+
+		template <typename... vargs_t>
 		bool dispatch_cancellable(vargs_t... args) const
 		{
 			if (!this->active_callbacks_count)
@@ -66,7 +82,7 @@ namespace gsf::callback_manager
 				if (!cb.active)
 					continue;
 
-				if (cb.lua_func(args...))
+				if (sol::protected_function_result cb_res = cb.lua_func(args...); cb_res.valid() && static_cast<bool>(cb_res))
 					return true;
 
 				if (++total_dispatched == this->active_callbacks_count)
@@ -89,7 +105,10 @@ namespace gsf::callback_manager
 	};
 	#undef _GSF_DECLARE_API_CALLBACK
 
-	bool register_luafn(utils::fnv1a64_t hashed_name, gsf::script *parent, sol::function fn);
+	bool register_luafn(utils::fnv1a64_t hashed_name, void *parent, sol::function fn);
 	void disable_api_callbacks_for_script(gsf::script *parent);
 	const _api_callback_container &get_callbacks();
+
+	inline bool       use_mut_on_imgui_draw = true;
+	inline std::mutex mut_on_imgui_draw;
 }

@@ -10,6 +10,7 @@ namespace game::sdk
 {
 	using get_fn_t = void *(*)(const char *);
 	using get_dx_swapchain_t = IDXGISwapChain *(*)(void);
+	using get_dx_devicectx_t = ID3D11DeviceContext *(*)(void);
 
 	class _unity_scripting_api
 	{

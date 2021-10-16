@@ -44,13 +44,13 @@ bool gsf::api_imgui::setup_api(sol::state &slua)
 
 bool gsf::api_imgui::_api_begin(const char *text)
 {
-	++this->imgui_active_begin_count;
+	++api_imgui::imgui_active_begin_count;
 	return ImGui::Begin(text, nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 }
 
 void gsf::api_imgui::_api_iend()
 {
-	--this->imgui_active_begin_count;
+	--api_imgui::imgui_active_begin_count;
 	return ImGui::End();
 }
 

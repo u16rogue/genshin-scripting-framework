@@ -5,6 +5,7 @@
 namespace game
 {
 	inline game::sdk::get_dx_swapchain_t get_dx_swapchain = nullptr;
+	inline game::sdk::get_dx_devicectx_t get_dx_devicectx = nullptr;
 
 	inline game::sdk::player_map_coords *player_map_coords = nullptr;
 

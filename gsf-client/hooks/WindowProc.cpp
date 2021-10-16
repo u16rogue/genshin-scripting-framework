@@ -6,6 +6,7 @@
 #include "../gsf_client.h"
 #include "../menu/menu.h"
 #include "../script_manager.h"
+#include "../callback_manager.h"
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -17,23 +18,8 @@ LRESULT CALLBACK hk_WindowProc(_In_ HWND hwnd, _In_ UINT uMsg, _In_ WPARAM wPara
     if (ImGui_ImplWin32_WndProcHandler(hwnd, uMsg, wParam, lParam))
         return TRUE;
 
-    switch (uMsg)
-    {
-        case WM_KEYDOWN:
-        case WM_KEYUP:
-        {
-            for (auto &script : gsf::script_manager::get_scripts())
-            {
-                auto &callback = script->get_callbacks().on_key;
-
-                if (!callback.active)
-                    continue;
-
-                if (callback.callback_function(uMsg == WM_KEYDOWN, wParam))
-                    return TRUE;
-            }
-        }
-    }
+    if ((uMsg == WM_KEYDOWN || uMsg == WM_KEYUP) && gsf::callback_manager::get_callbacks().on_key.dispatch_cancellable(uMsg == WM_KEYDOWN, wParam))
+        return TRUE;
 
     if (gsf::menu::windowproc(uMsg, wParam, lParam))
         return TRUE;

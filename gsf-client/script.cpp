@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <macro.h>
 #include "log_manager.h"
+#include "callback_manager.h"
 #include "definitions.h"
 
 /// <summary>
@@ -105,10 +106,9 @@ bool gsf::script::unload()
 
 	this->current_state = script::state::UNLOADING;
 
-	if (this->callbacks.on_unload.active)
-		this->callbacks.on_unload.callback_function();
+	gsf::callback_manager::get_callbacks().on_unload.dispatch_filtered(this); // this is inefficient ik
+	gsf::callback_manager::disable_api_callbacks_for_script(this);
 
-	api_gsf::clear_callbacks();
 	this->lua_state.reset();
 	this->current_state = gsf::script::state::UNLOADED;
 	--gsf::script::count_loaded_scripts;
@@ -143,7 +143,6 @@ void gsf::script::load_mconfig()
 	#define GSF_LOAD_CONFIG_CTMDEF(name, def_val) this->config. ## name ## = _l[GSF_DEF_METACONFIG_NAME][#name].get_or(def_val)
 	#define GSF_LOAD_CONFIG(name) GSF_LOAD_CONFIG_CTMDEF(name, this->config.##name##)
 
-	GSF_LOAD_CONFIG(imgui_mutex);
 	GSF_LOAD_CONFIG_CTMDEF(name, this->get_filename());
 	GSF_LOAD_CONFIG(description);
 }

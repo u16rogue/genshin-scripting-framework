@@ -2,6 +2,7 @@
 #include <imgui.h>
 #include <Windows.h>
 #include "../menu/menu.h"
+#include "../callback_manager.h"
 
 static bool toggle_fps_counter = true;
 
@@ -9,6 +10,10 @@ void gsf::menu::tab_misc::render_tab()
 {
 	if (ImGui::BeginTabItem("Misc"))
 	{
+		ImGui::Checkbox("Lock on_imgui_draw callback thread with mutex", &gsf::callback_manager::use_mut_on_imgui_draw);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Disabling this might make things faster but might cause instability.");
+
 		ImGui::Text("Information window: ");
 		ImGui::Checkbox("Display FPS", &toggle_fps_counter);
 

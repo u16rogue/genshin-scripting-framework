@@ -2,7 +2,7 @@
 #include <d3d11.h>
 #include "../global.h"
 
-HRESULT hk_ResizeBuffers(IDXGISwapChain *thisptr, UINT BufferCount, UINT Width, UINT Height, DXGI_FORMAT NewFormat, UINT SwapChainFlags)
+HRESULT __stdcall hk_ResizeBuffers(IDXGISwapChain *thisptr, UINT BufferCount, UINT Width, UINT Height, DXGI_FORMAT NewFormat, UINT SwapChainFlags)
 {
 	// Cleanup
 	if (global::dx_render_target_view)

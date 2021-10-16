@@ -1,5 +1,4 @@
 #include "callback_manager.h"
-#include <mutex>
 
 static std::mutex mut_active_cb_count_update;
 static gsf::callback_manager::_api_callback_container api_callbacks;
@@ -11,7 +10,7 @@ const gsf::callback_manager::_api_callback_container &gsf::callback_manager::get
 	return api_callbacks;
 }
 
-bool gsf::callback_manager::register_luafn(utils::fnv1a64_t hashed_name, gsf::script *parent, sol::function fn)
+bool gsf::callback_manager::register_luafn(utils::fnv1a64_t hashed_name, void *parent, sol::function fn)
 {
 
 	for (int i = 0; i < n_api_callbacks; i++)
@@ -38,7 +37,7 @@ bool gsf::callback_manager::register_luafn(utils::fnv1a64_t hashed_name, gsf::sc
 		}
 
 		// for newly registered callbacks
-		cb_api.lua_callbacks.emplace_back(parent, true, std::move(fn));
+		cb_api.lua_callbacks.emplace_back(reinterpret_cast<gsf::script *>(parent), true, std::move(fn));
 
 		const std::lock_guard lg(mut_active_cb_count_update);
 		++cb_api.active_callbacks_count;

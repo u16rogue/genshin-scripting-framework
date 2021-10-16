@@ -9,6 +9,7 @@
 #include <macro.h>
 #include "../menu/menu.h"
 #include "../script_manager.h"
+#include "../callback_manager.h"
 #include "../helpers/imgui_prompts.h"
 
 HRESULT __stdcall hk_Present(IDXGISwapChain *thisptr, UINT SyncInterval, UINT Flags)
@@ -19,39 +20,21 @@ HRESULT __stdcall hk_Present(IDXGISwapChain *thisptr, UINT SyncInterval, UINT Fl
 
     gsf::menu::render_imgui();
 
-    for (auto &script : gsf::script_manager::get_scripts())
+    if (gsf::callback_manager::use_mut_on_imgui_draw)
     {
-        auto &callback = script->get_callbacks().on_imgui_draw;
+        const std::lock_guard lg(gsf::callback_manager::mut_on_imgui_draw);
+        gsf::callback_manager::get_callbacks().on_imgui_draw.dispatch();
+    }
+    else
+    {
+        gsf::callback_manager::get_callbacks().on_imgui_draw.dispatch();
+    }
 
-        if (!callback.active)
-            continue;
-
-        bool should_mutex = script->get_config().imgui_mutex;
-
-        if (should_mutex)
-            callback.mutex.lock();
-
-        switch (script->get_current_state())
-        {
-            case gsf::script::state::UNLOADED:
-            case gsf::script::state::UNLOADING:
-            {
-                if (should_mutex)
-                    callback.mutex.unlock();
-                continue;
-            }
-        }
-
-        callback.callback_function();
-
-        while (script->imgui_active_begin_count)
-        {
-            ImGui::End();
-            --script->imgui_active_begin_count;
-        }
-
-        if (should_mutex)
-            callback.mutex.unlock();
+    // unwind begin calls
+    while (gsf::api_imgui::imgui_active_begin_count)
+    {
+        ImGui::End();
+        --gsf::api_imgui::imgui_active_begin_count;
     }
 
     helpers::imgui_popup_modal::on_imgui_draw();
