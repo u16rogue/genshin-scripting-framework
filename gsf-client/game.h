@@ -23,6 +23,7 @@ namespace game
 	inline game::sdk::unity_scripting_api<game::sdk::U_Camera_t *>                                                      UnityEngine_Camera_get_main                 ("UnityEngine.Camera::get_main()");
 	inline game::sdk::unity_scripting_api<game::sdk::U_Transform_t *, game::sdk::U_Component_t *>                       UnityEngine_Component_get_transform         ("UnityEngine.Component::get_transform()");
 	inline game::sdk::unity_scripting_api<void, game::sdk::U_Transform_t *, game::sdk::U_Vector3_t *>                   UnityEngine_Transform_INTERNAL_get_position ("UnityEngine.Transform::INTERNAL_get_position(UnityEngine.Vector3&)");
+	inline game::sdk::unity_scripting_api<float, game::sdk::U_Animator_t *>                                             UnityEngine_Animator_get_speed              ("UnityEngine.Animator::get_speed()");
 
 	inline game::sdk::il2cpp_string_chars_t  il2cpp_string_chars  = nullptr;
 	inline game::sdk::il2cpp_string_length_t il2cpp_string_length = nullptr;

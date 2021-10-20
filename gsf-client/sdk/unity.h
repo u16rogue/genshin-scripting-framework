@@ -89,5 +89,6 @@ namespace game::sdk
 
 	using U_Component_t = void;
 	using U_Transform_t = void;
-	using U_Camera_t = void;
+	using U_Camera_t    = void;
+	using U_Animator_t  = void;
 }

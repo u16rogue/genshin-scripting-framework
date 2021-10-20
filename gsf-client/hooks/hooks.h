@@ -16,6 +16,7 @@ namespace gsf::hooks
 	extern utils::hook_detour  UnityEngine_JsonUtility_FromJson;
 	extern utils::hook_detour  UnityEngine_Input_GetButton;
 	extern utils::hook_detour  UnityEngine_Input_GetAxisRaw;
+	extern utils::hook_detour  UnityEngine_Animator_get_speed;
 
 	bool install();
 	bool uninstall();

@@ -71,7 +71,7 @@ namespace gsf::callback_manager
 		}
 
 		template <typename... vargs_t>
-		bool dispatch_cancellable(vargs_t... args) const
+		bool dispatch_cancelable(vargs_t... args) const
 		{
 			if (!this->active_callbacks_count)
 				return false;

@@ -18,7 +18,7 @@ LRESULT CALLBACK hk_WindowProc(_In_ HWND hwnd, _In_ UINT uMsg, _In_ WPARAM wPara
     if (ImGui_ImplWin32_WndProcHandler(hwnd, uMsg, wParam, lParam))
         return TRUE;
 
-    if ((uMsg == WM_KEYDOWN || uMsg == WM_KEYUP) && gsf::callback_manager::get_callbacks().on_key.dispatch_cancellable(uMsg == WM_KEYDOWN, wParam))
+    if ((uMsg == WM_KEYDOWN || uMsg == WM_KEYUP) && gsf::callback_manager::get_callbacks().on_key.dispatch_cancelable(uMsg == WM_KEYDOWN, wParam))
         return TRUE;
 
     if (gsf::menu::windowproc(uMsg, wParam, lParam))

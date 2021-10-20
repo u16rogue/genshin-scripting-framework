@@ -6,7 +6,7 @@
 
 void __stdcall hk_Draw(ID3D11DeviceContext *thisptr, UINT VertexCount, UINT StartVertexLocation)
 {
-	if (gsf::callback_manager::get_callbacks().dx_draw.dispatch_cancellable(VertexCount, StartVertexLocation))
+	if (gsf::callback_manager::get_callbacks().dx_draw.dispatch_cancelable(VertexCount, StartVertexLocation))
 		return;
 
 	static auto o_Draw = gsf::hooks::Draw.get_original<decltype(hk_Draw)>();

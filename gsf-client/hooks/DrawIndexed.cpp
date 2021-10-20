@@ -5,7 +5,7 @@
 
 void __stdcall hk_DrawIndexed(ID3D11DeviceContext *thisptr, UINT IndexCount, UINT StartIndexLocation, INT BaseVertexLocation)
 {
-	if (gsf::callback_manager::get_callbacks().dx_drawindexed.dispatch_cancellable(IndexCount, StartIndexLocation, BaseVertexLocation))
+	if (gsf::callback_manager::get_callbacks().dx_drawindexed.dispatch_cancelable(IndexCount, StartIndexLocation, BaseVertexLocation))
 		return;
 
 	static auto o_DrawIndexed = gsf::hooks::DrawIndexed.get_original<decltype(hk_DrawIndexed)>();

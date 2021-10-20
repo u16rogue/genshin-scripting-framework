@@ -9,7 +9,7 @@
 
 #pragma warning (disable: 26812)
 
-// TODO: maybe implement dx init fallback incase finding the games dx fails
+// TODO: maybe implement dx init fallback incase finding the game's dx fails
 /*
 static bool dx_init_fallback()
 {
@@ -75,6 +75,7 @@ bool gsf::hooks::install()
         _INHOOK_UNITYENGINE(L"UnityEngine.Utility::FromJson(System.String,System.Type)",      UnityEngine_JsonUtility_FromJson);
         _INHOOK_UNITYENGINE(L"UnityEngine.Input::GetButton(System.String)",                   UnityEngine_Input_GetButton);
         _INHOOK_UNITYENGINE(L"UnityEngine.Input::GetAxisRaw(System.String)",                  UnityEngine_Input_GetAxisRaw);
+        _INHOOK_UNITYENGINE(L"UnityEngine.Animator::get_speed()",                             UnityEngine_Animator_get_speed);
     }
     #undef _INHOOK_UNITYENGINE
 
