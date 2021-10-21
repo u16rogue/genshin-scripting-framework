@@ -16,6 +16,8 @@
 #include "hooks/hooks.h"
 #include "game.h"
 
+#include <MinHook.h>
+
 #if __has_include("autoexecdef.h") && !defined( GSF_AUTOEXEC_SCRIPT_PATH )
     #include "autoexecdef.h"
 #endif

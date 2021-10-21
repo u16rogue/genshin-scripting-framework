@@ -6,6 +6,7 @@
 #include <macro.h>
 #include "../definitions.h"
 #include "../game.h"
+#include <intrin.h>
 
 #pragma warning (disable: 26812)
 
@@ -62,7 +63,9 @@ bool gsf::hooks::install()
     DEBUG_CON_PRINT("\nInstalling hooks...");
 
 	if (!DEBUG_CON_C_LOG(L"Initializing MinHook...", MH_Initialize() == MH_STATUS::MH_OK))
-		return 0;
+		return false;
+
+    // TODO: cause unload when a hook fails
 
 	DEBUG_CON_C_LOG(L"WindowProcedure Callback", gsf::hooks::WindowProc.inhook(global::game_window));
     DEBUG_CON_C_LOG(L"ShowCursor",               gsf::hooks::ShowCursor.inhook(::ShowCursor));

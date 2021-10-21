@@ -47,6 +47,7 @@ namespace game::sdk
 		const char *name;
 
 	public:
+		// TODO: move this back to game.h
 		inline static get_fn_t get_api_by_name = nullptr; // TODO: reverse this and then implement hashable version
 
 	private:
@@ -87,6 +88,7 @@ namespace game::sdk
 		float x, y, z;
 	};
 
+	// TODO: properly implement these as classes
 	using U_Component_t = void;
 	using U_Transform_t = void;
 	using U_Camera_t    = void;
