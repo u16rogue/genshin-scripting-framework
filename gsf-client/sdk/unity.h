@@ -8,7 +8,7 @@
 
 namespace game::sdk
 {
-	using get_fn_t = void *(*)(const char *);
+	using get_unity_api_t    = void *(*)(const char *);
 	using get_dx_swapchain_t = IDXGISwapChain *(*)(void);
 	using get_dx_devicectx_t = ID3D11DeviceContext *(*)(void);
 
@@ -47,8 +47,7 @@ namespace game::sdk
 		const char *name;
 
 	public:
-		// TODO: move this back to game.h
-		inline static get_fn_t get_api_by_name = nullptr; // TODO: reverse this and then implement hashable version
+		inline static get_unity_api_t get_api_by_name = nullptr; // TODO: reverse this and then implement hashable version
 
 	private:
 		inline static std::vector<_unity_scripting_api *> _instances;

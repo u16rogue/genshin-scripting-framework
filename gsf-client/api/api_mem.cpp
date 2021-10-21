@@ -27,6 +27,7 @@ sol::object gsf::api_mem::_api_ida_scan(std::uintptr_t start_adr, std::size_t si
 
 int gsf::api_mem::_api_patch(std::uintptr_t addr, std::vector<std::uint8_t> byte_array)
 {
+	// TODO: lua enum this
 	enum result_e
 	{
 		SUCCESSFUL = 0,
@@ -43,42 +44,24 @@ int gsf::api_mem::_api_patch(std::uintptr_t addr, std::vector<std::uint8_t> byte
 	DWORD old_prot = 0;
 
 	if (!VirtualProtect(addr_void, byte_arr_size, PAGE_EXECUTE_READWRITE, &old_prot))
-	{
-		gsf::log_manager::push_log("mem.patch # exception: PROT_CHANGE_XRW_FAILED", gsf::log_manager::log_type::GSF);
 		return result_e::PROT_CHANGE_XRW_FAILED;
-	}
 
 	std::memcpy(addr_void, byte_array.data(), byte_arr_size);
 
 	if (!VirtualProtect(addr_void, byte_arr_size, old_prot, &old_prot))
-	{
-		gsf::log_manager::push_log("mem.patch # exception: PROT_CHANGE_RESTORE_FAILED", gsf::log_manager::log_type::GSF);
 		return result_e::PROT_CHANGE_RESTORE_FAILED;
-	}
 
 	return result_e::SUCCESSFUL;
 }
 
 std::uint64_t gsf::api_mem::_api_read_uint(std::uintptr_t addr, std::size_t prim_t_size)
 {
-	if (prim_t_size > 8)
-	{
-		gsf::log_manager::push_log("mem.read_uint # parameter prim_t_size is out of bound", gsf::log_manager::log_type::GSF);
-		return -1;
-	}
-
-	std::uint64_t result = 0;
-	std::memcpy(&result, reinterpret_cast<void *>(addr), prim_t_size);
-	return result;
+	std::memcpy(&prim_t_size, reinterpret_cast<void *>(addr), prim_t_size); // optimization!
+	return prim_t_size;
 }
 
 void gsf::api_mem::_api_write_uint(std::uintptr_t addr, std::size_t prim_t_size, std::uint64_t value)
 {
-	if (prim_t_size > 8)
-	{
-		gsf::log_manager::push_log("mem.write_uint # parameter prim_t_size is out of bound", gsf::log_manager::log_type::GSF);
-	}
-
 	std::memcpy(reinterpret_cast<void *>(addr), &value, prim_t_size);
 }
 
