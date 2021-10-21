@@ -21,7 +21,11 @@ static bool hlp_aob_scan(entryp_t mod, T *&out_result, const char *sig, const ch
 
 static bool hlp_load_module(entryp_t &out_result, const utils::fnv1a64_t hashed_name)
 {
-	out_result = utils::ldr_data_table_entry_find(hashed_name);
+	int timeout = 10;
+
+	while (!(out_result = utils::ldr_data_table_entry_find(hashed_name)) && --timeout)
+		Sleep(1000);
+
 	if (!out_result)
 		return false;
 
@@ -72,6 +76,7 @@ bool game::init()
 	||  !DEBUG_CON_C_LOG(L"game::sdk::unity_scripting_api<>::get_api_by_name", hlp_aob_scan(mod_user_assembly, game::sdk::unity_scripting_api<>::get_api_by_name, "\x48\x8b\xc4\x48\x89\x48\x00\x55\x41\x54",                                                 "xxxxxx?xxx"))
 	||  !DEBUG_CON_C_LOG(L"game::get_dx_swapchain (ref)",                      hlp_aob_scan(mod_unity_player,  game::get_dx_swapchain,                            "\xe8\x00\x00\x00\x00\x4c\x8b\xf0\x48\x85\xc0\x74\x00\x48\x89\x5c\x24\x00\x48\x89\x6c\x24", "x????xxxxxxx?xxxx?xxxx"))
 	||  !DEBUG_CON_C_LOG(L"game::get_dx_devicectx (ref)",                      hlp_aob_scan(mod_unity_player,  game::get_dx_devicectx,                            "\xe8\x00\x00\x00\x00\x44\x8b\x8c\x24\x00\x00\x00\x00\x48\x8d\x8b",                         "x????xxxx????xxx"))
+	// ||  !DEBUG_CON_C_LOG(L"game::window_handle_ptr (ref)",                     hlp_aob_scan(mod_unity_player,  game::window_handle_ptr,                           "\x48\x89\x05\x00\x00\x00\x00\x48\x85\xc0\x0f\x84\x00\x00\x00\x00\xe8",                     "x????????xxx"))
 	) {
 		return false;
 	}
@@ -86,6 +91,9 @@ bool game::init()
 	game::get_dx_swapchain  = reinterpret_cast<decltype(game::get_dx_swapchain)>(utils::calc_rel2abs32(game::get_dx_swapchain, 0x5));
 	game::get_dx_devicectx  = reinterpret_cast<decltype(game::get_dx_devicectx)>(utils::calc_rel2abs32(game::get_dx_devicectx, 0x5));
 	game::player_map_coords = reinterpret_cast<decltype(game::player_map_coords)>(utils::calc_rel2abs32(game::player_map_coords, 0x8));
+
+	// TODO: dynamically resolve window handle pointer
+	game::window_handle_ptr = reinterpret_cast<decltype(game::window_handle_ptr)>(mod_unity_player->dll_base + 0x1AB7BA8);// reinterpret_cast<decltype(game::window_handle_ptr)>(utils::calc_rel2abs32(game::window_handle_ptr, 0x7));
 
 	return true;
 	#pragma warning(default: 6011)

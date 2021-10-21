@@ -128,9 +128,6 @@
     <ClInclude Include="script.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="definitions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="script_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>

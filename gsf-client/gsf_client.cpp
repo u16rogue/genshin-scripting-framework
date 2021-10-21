@@ -10,8 +10,6 @@
 #include <console.h>
 #include <macro.h>
 
-#include "definitions.h"
-
 #include "script_manager.h"
 #include "hooks/hooks.h"
 #include "game.h"
@@ -55,19 +53,6 @@ static bool init_dx()
     return true;
 }
 
-static bool get_game_window_handle(void *&handle_out)
-{
-    // int timeout = 30;
-
-    while (handle_out == nullptr /* && --timeout > 0 */)
-    {
-        handle_out = FindWindowW(UTILS_A2W_MDEF(GSF_DEF_GAME_WND_CLASS), UTILS_A2W_MDEF(GSF_DEF_GAME_WND_TITLE));
-        Sleep(1000);
-    }
-
-    return handle_out != nullptr;
-}
-
 bool gsf::init()
 {
     #ifdef _DEBUG
@@ -90,7 +75,7 @@ bool gsf::init()
     ImGui::CreateContext();
     ImGui::GetIO().IniFilename = nullptr;
 
-    if (!DEBUG_CON_C_LOG(L"Loading game window handle", get_game_window_handle(global::game_window)) || !game::init() || !init_dx() || !gsf::hooks::install())
+    if (!game::init() || !init_dx() || !gsf::hooks::install())
         return false;
 
 	return true;

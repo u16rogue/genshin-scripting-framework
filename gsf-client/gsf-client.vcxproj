@@ -187,7 +187,6 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClInclude Include="api\i_api.h" />
     <ClInclude Include="api\script_apis.h" />
     <ClInclude Include="callback_manager.h" />
-    <ClInclude Include="definitions.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="gsf_client.h" />

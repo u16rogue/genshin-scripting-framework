@@ -4,7 +4,6 @@
 #include <macro.h>
 #include "log_manager.h"
 #include "callback_manager.h"
-#include "definitions.h"
 
 /// <summary>
 /// RAII implementation of applying script state value
@@ -140,7 +139,7 @@ void gsf::script::load_mconfig()
 	}
 	sol::state &_l = *sel_state;
 
-	#define GSF_LOAD_CONFIG_CTMDEF(name, def_val) this->config. ## name ## = _l[GSF_DEF_METACONFIG_NAME][#name].get_or(def_val)
+	#define GSF_LOAD_CONFIG_CTMDEF(name, def_val) this->config. ## name ## = _l["_mconfig"][#name].get_or(def_val)
 	#define GSF_LOAD_CONFIG(name) GSF_LOAD_CONFIG_CTMDEF(name, this->config.##name##)
 
 	GSF_LOAD_CONFIG_CTMDEF(name, this->get_filename());

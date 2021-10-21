@@ -7,6 +7,7 @@ namespace game
 	inline game::sdk::get_dx_swapchain_t get_dx_swapchain = nullptr;
 	inline game::sdk::get_dx_devicectx_t get_dx_devicectx = nullptr;
 
+	inline HWND                         *window_handle_ptr = nullptr;
 	inline game::sdk::player_map_coords *player_map_coords = nullptr;
 
 	inline game::sdk::unity_scripting_api<game::sdk::CS_Boolean_t>                                                      UnityEngine_Cursor_get_visible              ("UnityEngine.Cursor::get_visible()");
