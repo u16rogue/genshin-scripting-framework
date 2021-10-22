@@ -4,8 +4,8 @@
 
 namespace game
 {
-	inline game::sdk::get_dx_swapchain_t get_dx_swapchain = nullptr;
-	inline game::sdk::get_dx_devicectx_t get_dx_devicectx = nullptr;
+	inline game::sdk::get_dx_swapchain_t get_dx_swapchain = nullptr; // TODO: grab the pointer manually instead of calling
+	inline game::sdk::get_dx_devicectx_t get_dx_devicectx = nullptr; // TODO: grab the pointer manually instead of calling
 
 	inline HWND                         *window_handle_ptr = nullptr;
 	inline game::sdk::player_map_coords *player_map_coords = nullptr;

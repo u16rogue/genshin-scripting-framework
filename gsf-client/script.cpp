@@ -139,11 +139,14 @@ void gsf::script::load_mconfig()
 	}
 	sol::state &_l = *sel_state;
 
-	#define GSF_LOAD_CONFIG_CTMDEF(name, def_val) this->config. ## name ## = _l["_mconfig"][#name].get_or(def_val)
-	#define GSF_LOAD_CONFIG(name) GSF_LOAD_CONFIG_CTMDEF(name, this->config.##name##)
+	#define _GSF_LOAD_CONFIG_CTMDEF(name, def_val) this->config. ## name ## = _l["_mconfig"][#name].get_or(def_val)
+	#define _GSF_LOAD_CONFIG(name) _GSF_LOAD_CONFIG_CTMDEF(name, this->config.##name##)
 
-	GSF_LOAD_CONFIG_CTMDEF(name, this->get_filename());
-	GSF_LOAD_CONFIG(description);
+	_GSF_LOAD_CONFIG_CTMDEF(name, this->get_filename());
+	_GSF_LOAD_CONFIG(description);
+
+	#undef _GSF_LOAD_CONFIG
+	#undef _GSF_LOAD_CONFIG_CTMDEF
 }
 
 const std::string_view gsf::script::get_filepath() const
@@ -176,16 +179,17 @@ void gsf::script::script_push_log(std::string msg)
 	api_gsf::script_push_log(std::move(msg));
 }
 
-#define CASE_STATE_TO_RET_STR(state_) case gsf::script::state:: ## state_ ## : return #state_
+#define _CASE_STATE_TO_RET_STR(state_) case gsf::script::state:: ## state_ ## : return #state_
 const char *gsf::script::state_to_cstr(script::state state_)
 {
 	switch (state_)
 	{
-		CASE_STATE_TO_RET_STR(UNLOADING);
-		CASE_STATE_TO_RET_STR(UNLOADED);
-		CASE_STATE_TO_RET_STR(LOADING);
-		CASE_STATE_TO_RET_STR(LOADED);
+		_CASE_STATE_TO_RET_STR(UNLOADING);
+		_CASE_STATE_TO_RET_STR(UNLOADED);
+		_CASE_STATE_TO_RET_STR(LOADING);
+		_CASE_STATE_TO_RET_STR(LOADED);
 	}
 
 	return nullptr;
 }
+#undef _CASE_STATE_TO_RET_STR
