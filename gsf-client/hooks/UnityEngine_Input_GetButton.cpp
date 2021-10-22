@@ -10,7 +10,7 @@
 // MouseButton3 - m4
 // MouseButton4 - m5
 
-game::sdk::CS_Boolean_t hk_UnityEngine_Input_GetButton(game::sdk::Il2CppString *buttonName)
+game::sdk::Boolean hk_UnityEngine_Input_GetButton(game::sdk::Il2CppString *buttonName)
 {
 	auto hashed_btn_name = utils::hash_fnv1a(game::il2cpp_string_chars(buttonName));
 	for (auto &force_key : gsf::api_controls::flags_mouse)

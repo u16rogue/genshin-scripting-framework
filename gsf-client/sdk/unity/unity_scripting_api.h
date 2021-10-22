@@ -1,29 +1,25 @@
 #pragma once
 
-#include "cs_types.h"
-#include "il2cpp.h"
-#include <vector>
 #include <macro.h>
-#include <d3d11.h>
+#include <vector>
+#include "../il2cpp/il2cpp.h"
 
 namespace game::sdk
 {
-	using get_unity_api_t    = void *(*)(const char *);
-	using get_dx_swapchain_t = IDXGISwapChain *(*)(void);
-	using get_dx_devicectx_t = ID3D11DeviceContext *(*)(void);
-
 	class _unity_scripting_api
 	{
+		using get_unity_api_t = void *(*)(const char *);
+
 	public:
 		_unity_scripting_api(const char *name_)
 			: name(name_)
 		{
 			this->_instances.emplace_back(this);
-		};
+		}
 
 		bool load_function()
 		{
-			return DEBUG_CON_C_LOG(this->name, (this->function = this->get_api_by_name(this->name)));
+			return DEBUG_CON_C_LOG(this->name, (this->function = this->get_unity_api(this->name)));
 		}
 
 		inline static bool load_function_all()
@@ -47,7 +43,7 @@ namespace game::sdk
 		const char *name;
 
 	public:
-		inline static get_unity_api_t get_api_by_name = nullptr; // TODO: reverse this and then implement hashable version
+		inline static get_unity_api_t get_unity_api = nullptr; // TODO: reverse this and then implement hashable version
 
 	private:
 		inline static std::vector<_unity_scripting_api *> _instances;
@@ -74,22 +70,4 @@ namespace game::sdk
 			return this->function;
 		}
 	};
-
-	enum class CursorLockMode : int
-	{
-		None,
-		Locked,
-		Confined
-	};
-
-	struct U_Vector3_t
-	{
-		float x, y, z;
-	};
-
-	// TODO: properly implement these as classes
-	using U_Component_t = void;
-	using U_Transform_t = void;
-	using U_Camera_t    = void;
-	using U_Animator_t  = void;
 }

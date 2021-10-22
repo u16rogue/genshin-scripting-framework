@@ -31,20 +31,19 @@ bool gsf::hooks::install()
     ID3D11DeviceContext *game_devicectx = game::get_dx_devicectx();
     #define _INHOOK_UNITYENGINE(msg, api) DEBUG_CON_C_LOG(msg, gsf::hooks:: ## api ## .inhook(game:: ## api ## .get_ptr()))
 
-    if (!DEBUG_CON_C_LOG(L"WindowProcedure Callback",         gsf::hooks::WindowProc.   inhook(*game::window_handle_ptr))
-    ||  !DEBUG_CON_C_LOG(L"ShowCursor",                       gsf::hooks::ShowCursor.   inhook(::ShowCursor))
-    ||  !DEBUG_CON_C_LOG(L"ID3D11DeviceContext::Draw",        gsf::hooks::Draw.         inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(game_devicectx,       0, Indexes_ID3D11DeviceContext::Draw)))
-    ||  !DEBUG_CON_C_LOG(L"ID3D11DeviceContext::DrawIndexed", gsf::hooks::DrawIndexed.  inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(game_devicectx,       0, Indexes_ID3D11DeviceContext::DrawIndexed)))
-    ||  !DEBUG_CON_C_LOG(L"IDXGISwapChain::ResizeBuffers",    gsf::hooks::ResizeBuffers.inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(global::dx_swapchain, 0, Indexes_IDXGISwapChain::ResizeBuffers)))
-    ||  !DEBUG_CON_C_LOG(L"IDXGISwapChain::Present",          gsf::hooks::Present.      inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(global::dx_swapchain, 0, Indexes_IDXGISwapChain::Present)))
-
-    ||  !_INHOOK_UNITYENGINE(L"UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)", UnityEngine_Cursor_set_lockState)
-    ||  !_INHOOK_UNITYENGINE(L"UnityEngine.Cursor::get_visible()", UnityEngine_Cursor_set_visible)
-    ||  !_INHOOK_UNITYENGINE(L"UnityEngine.JsonUtility::ToJson(System.Object,System.Boolean)", UnityEngine_JsonUtility_ToJson)
-    ||  !_INHOOK_UNITYENGINE(L"UnityEngine.Utility::FromJson(System.String,System.Type)", UnityEngine_JsonUtility_FromJson)
-    ||  !_INHOOK_UNITYENGINE(L"UnityEngine.Input::GetButton(System.String)", UnityEngine_Input_GetButton)
-    ||  !_INHOOK_UNITYENGINE(L"UnityEngine.Input::GetAxisRaw(System.String)", UnityEngine_Input_GetAxisRaw)
-    ||  !_INHOOK_UNITYENGINE(L"UnityEngine.Animator::get_speed()", UnityEngine_Animator_get_speed)
+    if (!DEBUG_CON_C_LOG(L"WindowProcedure Callback",         gsf::hooks::WindowProc                        .inhook(*game::window_handle_ptr))
+    ||  !DEBUG_CON_C_LOG(L"ShowCursor",                       gsf::hooks::ShowCursor                        .inhook(::ShowCursor))
+    ||  !DEBUG_CON_C_LOG(L"ID3D11DeviceContext::Draw",        gsf::hooks::Draw                              .inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(game_devicectx,       0, Indexes_ID3D11DeviceContext::Draw)))
+    ||  !DEBUG_CON_C_LOG(L"ID3D11DeviceContext::DrawIndexed", gsf::hooks::DrawIndexed                       .inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(game_devicectx,       0, Indexes_ID3D11DeviceContext::DrawIndexed)))
+    ||  !DEBUG_CON_C_LOG(L"IDXGISwapChain::ResizeBuffers",    gsf::hooks::ResizeBuffers                     .inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(global::dx_swapchain, 0, Indexes_IDXGISwapChain::ResizeBuffers)))
+    ||  !DEBUG_CON_C_LOG(L"IDXGISwapChain::Present",          gsf::hooks::Present                           .inhook(GET_VFUNC_FROM_VCLASS_BY_IDX(global::dx_swapchain, 0, Indexes_IDXGISwapChain::Present)))
+    ||  !DEBUG_CON_C_LOG(L"UnityEngine_Cursor_set_lockState", gsf::hooks::UnityEngine_Cursor_set_lockState  .inhook(game::UnityEngine_Cursor_set_lockState.get_ptr()))
+    ||  !DEBUG_CON_C_LOG(L"UnityEngine_Cursor_set_visible",   gsf::hooks::UnityEngine_Cursor_set_visible    .inhook(game::UnityEngine_Cursor_set_visible.get_ptr()))
+    ||  !DEBUG_CON_C_LOG(L"UnityEngine_JsonUtility_ToJson",   gsf::hooks::UnityEngine_JsonUtility_ToJson    .inhook(game::UnityEngine_JsonUtility_ToJson.get_ptr()))
+    ||  !DEBUG_CON_C_LOG(L"UnityEngine_JsonUtility_FromJson", gsf::hooks::UnityEngine_JsonUtility_FromJson  .inhook(game::UnityEngine_JsonUtility_FromJson.get_ptr()))
+    ||  !DEBUG_CON_C_LOG(L"UnityEngine_Input_GetButton",      gsf::hooks::UnityEngine_Input_GetButton       .inhook(game::UnityEngine_Input_GetButton.get_ptr()))
+    ||  !DEBUG_CON_C_LOG(L"UnityEngine_Input_GetAxisRaw",     gsf::hooks::UnityEngine_Input_GetAxisRaw      .inhook(game::UnityEngine_Input_GetAxisRaw.get_ptr()))
+    ||  !DEBUG_CON_C_LOG(L"UnityEngine_Animator_get_speed",   gsf::hooks::UnityEngine_Animator_get_speed    .inhook(game::sdk::Animator::_get_speed.get_ptr()))
     ) {
         return false;
     }

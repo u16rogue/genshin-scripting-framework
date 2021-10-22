@@ -73,7 +73,7 @@ bool game::init()
 	// Load signatures
 	DEBUG_COUT("\nLOAD SIGNATURES:");
 	if (!DEBUG_CON_C_LOG(L"game::player_map_coords (ref)",                     hlp_aob_scan(mod_unity_player,  game::player_map_coords,                           "\xF2\x0F\x11\x0D\x00\x00\x00\x00\x48\x83\xC4\x00\x5B\xC3\x48\x8D\x0D",                     "xxxx????xxx?xxxxx"))
-	||  !DEBUG_CON_C_LOG(L"game::sdk::unity_scripting_api<>::get_api_by_name", hlp_aob_scan(mod_user_assembly, game::sdk::unity_scripting_api<>::get_api_by_name, "\x48\x8b\xc4\x48\x89\x48\x00\x55\x41\x54",                                                 "xxxxxx?xxx"))
+	||  !DEBUG_CON_C_LOG(L"game::sdk::unity_scripting_api<>::get_unity_api", hlp_aob_scan(mod_user_assembly, game::sdk::unity_scripting_api<>::get_unity_api, "\x48\x8b\xc4\x48\x89\x48\x00\x55\x41\x54",                                                 "xxxxxx?xxx"))
 	||  !DEBUG_CON_C_LOG(L"game::get_dx_swapchain (ref)",                      hlp_aob_scan(mod_unity_player,  game::get_dx_swapchain,                            "\xe8\x00\x00\x00\x00\x4c\x8b\xf0\x48\x85\xc0\x74\x00\x48\x89\x5c\x24\x00\x48\x89\x6c\x24", "x????xxxxxxx?xxxx?xxxx"))
 	||  !DEBUG_CON_C_LOG(L"game::get_dx_devicectx (ref)",                      hlp_aob_scan(mod_unity_player,  game::get_dx_devicectx,                            "\xe8\x00\x00\x00\x00\x44\x8b\x8c\x24\x00\x00\x00\x00\x48\x8d\x8b",                         "x????xxxx????xxx"))
 	// ||  !DEBUG_CON_C_LOG(L"game::window_handle_ptr (ref)",                     hlp_aob_scan(mod_unity_player,  game::window_handle_ptr,                           "\x48\x89\x05\x00\x00\x00\x00\x48\x85\xc0\x0f\x84\x00\x00\x00\x00\xe8",                     "x????????xxx"))

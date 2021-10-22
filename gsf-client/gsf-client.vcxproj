@@ -200,11 +200,18 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClInclude Include="menu\tab_scripts.h" />
     <ClInclude Include="script.h" />
     <ClInclude Include="script_manager.h" />
-    <ClInclude Include="sdk\cs_types.h" />
-    <ClInclude Include="sdk\il2cpp.h" />
+    <ClInclude Include="sdk\il2cpp\il2cpp.h" />
     <ClInclude Include="sdk\sdk.h" />
     <ClInclude Include="sdk\structures.h" />
-    <ClInclude Include="sdk\unity.h" />
+    <ClInclude Include="sdk\unity\enums.h" />
+    <ClInclude Include="sdk\unity\unity.h" />
+    <ClInclude Include="sdk\unity\unity_animator.h" />
+    <ClInclude Include="sdk\unity\unity_camera.h" />
+    <ClInclude Include="sdk\unity\unity_component.h" />
+    <ClInclude Include="sdk\unity\unity_object.h" />
+    <ClInclude Include="sdk\unity\unity_scripting_api.h" />
+    <ClInclude Include="sdk\unity\unity_transform.h" />
+    <ClInclude Include="sdk\unity\unity_vector3.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

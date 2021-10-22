@@ -1,6 +1,5 @@
 #pragma once
 
-#include "unity.h"
+#include "unity/unity.h"
 #include "structures.h"
-#include "il2cpp.h"
-#include "cs_types.h"
+#include "il2cpp/il2cpp.h"

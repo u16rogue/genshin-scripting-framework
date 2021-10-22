@@ -182,19 +182,40 @@
     <ClInclude Include="menu\tab_misc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sdk\il2cpp.h">
+    <ClInclude Include="sdk\il2cpp\il2cpp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sdk\unity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\cs_types.h">
+    <ClInclude Include="sdk\unity\unity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="api\api_controls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="callback_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_scripting_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_vector3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_animator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
