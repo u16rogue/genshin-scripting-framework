@@ -20,12 +20,14 @@
     #include "autoexecdef.h"
 #endif
 
+// TODO: better logging by logging to file
+
 static bool init_dx()
 {
     DEBUG_COUT("\nInitialize DirectX11..."
                "\nWaiting for the game to create a swapchain and device context...");
 
-    while (!(global::dx_swapchain = game::get_dx_swapchain()) && !game::get_dx_devicectx())
+    while (!(global::dx_swapchain = *game::dx_swapchain_ptr) && !*game::dx_devicectx_ptr)
         Sleep(800);
 
     if (!DEBUG_CON_C_LOG(L"Get device", SUCCEEDED(global::dx_swapchain->GetDevice(__uuidof(ID3D11Device), reinterpret_cast<void **>(&global::dx_device)))))

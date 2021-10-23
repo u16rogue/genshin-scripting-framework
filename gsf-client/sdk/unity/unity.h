@@ -17,9 +17,6 @@
 
 namespace game::sdk
 {
-	using get_dx_swapchain_t = IDXGISwapChain *(*)(void);
-	using get_dx_devicectx_t = ID3D11DeviceContext *(*)(void);
-
 	using Boolean = int;
 	using Type    = void;
 }

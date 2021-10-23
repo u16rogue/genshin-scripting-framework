@@ -19,7 +19,18 @@ namespace game::sdk
 
 		bool load_function()
 		{
-			return DEBUG_CON_C_LOG(this->name, (this->function = this->get_unity_api(this->name)));
+			bool result = DEBUG_CON_C_LOG(this->name, (this->function = this->get_unity_api(this->name)));
+
+			#ifdef _DEBUG
+			{
+				if (result)
+				{
+					DEBUG_COUT(" @ 0x" << this->function);
+				}
+			}
+			#endif
+
+			return result;
 		}
 
 		inline static bool load_function_all()

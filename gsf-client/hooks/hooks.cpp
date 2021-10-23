@@ -28,7 +28,7 @@ bool gsf::hooks::install()
 	if (!DEBUG_CON_C_LOG(L"Initializing MinHook...", MH_Initialize() == MH_STATUS::MH_OK))
 		return false;
 
-    ID3D11DeviceContext *game_devicectx = game::get_dx_devicectx();
+    ID3D11DeviceContext *game_devicectx = *game::dx_devicectx_ptr;
     #define _INHOOK_UNITYENGINE(msg, api) DEBUG_CON_C_LOG(msg, gsf::hooks:: ## api ## .inhook(game:: ## api ## .get_ptr()))
 
     if (!DEBUG_CON_C_LOG(L"WindowProcedure Callback",         gsf::hooks::WindowProc                        .inhook(*game::window_handle_ptr))
