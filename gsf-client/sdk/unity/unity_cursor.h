@@ -8,9 +8,7 @@ namespace game::sdk
 	class Cursor
 	{
 	public:
-		inline static game::sdk::unity_scripting_api<game::sdk::Boolean>              get_visible   = ("UnityEngine.Cursor::get_visible()");
-		inline static game::sdk::unity_scripting_api<void, game::sdk::Boolean>        set_visible   = ("UnityEngine.Cursor::set_visible(System.Boolean)");
-		inline static game::sdk::unity_scripting_api<game::sdk::CursorLockMode>       get_lockState = ("UnityEngine.Cursor::get_lockState()");
-		inline static game::sdk::unity_scripting_api<void, game::sdk::CursorLockMode> set_lockState = ("UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)");
+		inline static auto visible   = game::sdk::unity_setter_getter_static<game::sdk::Boolean>("UnityEngine.Cursor::get_visible()", "UnityEngine.Cursor::set_visible(System.Boolean)");
+		inline static auto lockState = game::sdk::unity_setter_getter_static<game::sdk::CursorLockMode>("UnityEngine.Cursor::get_lockState()", "UnityEngine.Cursor::set_lockState(UnityEngine.CursorLockMode)");
 	};
 }

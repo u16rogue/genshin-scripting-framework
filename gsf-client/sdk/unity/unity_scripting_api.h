@@ -76,9 +76,63 @@ namespace game::sdk
 			return reinterpret_cast<type>(this->function)(args...);
 		}
 
-		void *get_ptr()
+		void *api_ptr() const
 		{
 			return this->function;
 		}
 	};
+
+	template <typename ParentType, typename UnityType>
+	class unity_setter_getter
+	{
+		unity_setter_getter(unity_setter_getter &) = delete;
+		unity_setter_getter(const unity_setter_getter &) = delete;
+		unity_setter_getter(unity_setter_getter &&) = delete;
+	public:
+
+		unity_setter_getter(ParentType *parent_, const char *getter_api_name, const char *setter_api_name)
+			: parent(parent_), getter(getter_api_name), setter(setter_api_name) {}
+
+		void operator=(UnityType &rhs) noexcept
+		{
+			this->setter(this->parent, rhs);
+		}
+
+		operator UnityType() noexcept
+		{
+			return this->getter(this->parent);
+		}
+
+	public:
+		const ParentType *parent;
+		unity_scripting_api<UnityType, ParentType *> getter;
+		unity_scripting_api<void, ParentType *, UnityType> setter;
+	};
+
+	template <typename UnityType>
+	class unity_setter_getter_static
+	{
+		unity_setter_getter_static(unity_setter_getter_static &) = delete;
+		unity_setter_getter_static(const unity_setter_getter_static &) = delete;
+		unity_setter_getter_static(unity_setter_getter_static &&) = delete;
+	public:
+
+		unity_setter_getter_static(const char *getter_api_name, const char *setter_api_name)
+			: getter(getter_api_name), setter(setter_api_name) {}
+
+		void operator=(UnityType rhs) noexcept
+		{
+			this->setter(rhs);
+		}
+
+		operator UnityType() noexcept
+		{
+			return this->getter();
+		}
+
+	public:
+		unity_scripting_api<UnityType> getter;
+		unity_scripting_api<void, UnityType> setter;
+	};
+
 }
