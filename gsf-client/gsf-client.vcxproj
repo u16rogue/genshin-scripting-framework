@@ -208,7 +208,11 @@ echo #endif &gt;&gt; git_info.h</Command>
     <ClInclude Include="sdk\unity\unity_animator.h" />
     <ClInclude Include="sdk\unity\unity_camera.h" />
     <ClInclude Include="sdk\unity\unity_component.h" />
+    <ClInclude Include="sdk\unity\unity_cursor.h" />
+    <ClInclude Include="sdk\unity\unity_input.h" />
+    <ClInclude Include="sdk\unity\unity_jsonutility.h" />
     <ClInclude Include="sdk\unity\unity_object.h" />
+    <ClInclude Include="sdk\unity\unity_primitive_types.h" />
     <ClInclude Include="sdk\unity\unity_scripting_api.h" />
     <ClInclude Include="sdk\unity\unity_transform.h" />
     <ClInclude Include="sdk\unity\unity_vector3.h" />

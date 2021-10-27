@@ -218,6 +218,18 @@
     <ClInclude Include="sdk\unity\unity_animator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\unity\unity_cursor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_primitive_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_jsonutility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
