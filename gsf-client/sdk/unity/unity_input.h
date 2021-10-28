@@ -12,3 +12,5 @@ namespace game::sdk
 		inline static game::sdk::unity_scripting_api<float, game::sdk::Il2CppString *>              GetAxisRaw = ("UnityEngine.Input::GetAxisRaw(System.String)");
 	};
 }
+
+GSF_UNITY_SDK_ENSURE_NO_NONSTATIC(game::sdk::Input);

@@ -85,34 +85,17 @@ namespace game::sdk
 		}
 	};
 
-	template <typename ParentType, typename UnityType>
-	class unity_setter_getter
+	#if 0
+	template <typename parent_type, typename getter_api_t, typename setter_api_t>
+	class unity_setter_getter_bridge
 	{
-		unity_setter_getter(unity_setter_getter &) = delete;
-		unity_setter_getter(const unity_setter_getter &) = delete;
-		unity_setter_getter(unity_setter_getter &&) = delete;
 	public:
-
-		unity_setter_getter(ParentType *parent_, const char *getter_api_name, const char *setter_api_name)
-			: parent(parent_), getter(getter_api_name), setter(setter_api_name) {}
-
-		void operator=(UnityType &rhs) noexcept
-		{
-			this->setter(this->parent, rhs);
-		}
-
-		operator UnityType() noexcept
-		{
-			return this->getter(this->parent);
-		}
-
-	public:
-		const ParentType *parent;
-		unity_scripting_api<UnityType, ParentType *> getter;
-		unity_scripting_api<void, ParentType *, UnityType> setter;
+		unity_setter_getter_bridge()
+			: {}
 	};
+	#endif
 
-	template <typename UnityType>
+	template <typename unity_type>
 	class unity_setter_getter_static
 	{
 		unity_setter_getter_static(unity_setter_getter_static &) = delete;
@@ -123,19 +106,25 @@ namespace game::sdk
 		unity_setter_getter_static(const char *getter_api_name, const char *setter_api_name)
 			: getter(getter_api_name), setter(setter_api_name) {}
 
-		void operator=(UnityType rhs) noexcept
+		void operator=(unity_type rhs) noexcept
 		{
 			this->setter(rhs);
 		}
 
-		operator UnityType() noexcept
+		operator unity_type() noexcept
+		{
+			return this->getter();
+		}
+
+		unity_type operator->() noexcept
 		{
 			return this->getter();
 		}
 
 	public:
-		unity_scripting_api<UnityType> getter;
-		unity_scripting_api<void, UnityType> setter;
+		unity_scripting_api<unity_type> getter;
+		unity_scripting_api<void, unity_type> setter;
 	};
-
 }
+
+#define GSF_UNITY_SDK_ENSURE_NO_NONSTATIC(class_interface) static_assert(sizeof(class_interface) <= 1, "[ " #class_interface " ] WARNING: Unity class interface in GSF's unity sdk might have member values! Classes made for interfacing with unity must be pure static and must not contain non static member variables!")

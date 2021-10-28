@@ -22,3 +22,5 @@ namespace game::sdk
 		inline static game::sdk::unity_scripting_api<game::sdk::Il2CppString *, game::sdk::Object *> _ToString = ("UnityEngine.Object::ToString()");
 	};
 }
+
+GSF_UNITY_SDK_ENSURE_NO_NONSTATIC(game::sdk::Object);

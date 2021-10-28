@@ -17,3 +17,5 @@ namespace game::sdk
 		inline static game::sdk::unity_scripting_api<game::sdk::Transform *, game::sdk::Component *> _get_transform = ("UnityEngine.Component::get_transform()");
 	};
 }
+
+GSF_UNITY_SDK_ENSURE_NO_NONSTATIC(game::sdk::Component);

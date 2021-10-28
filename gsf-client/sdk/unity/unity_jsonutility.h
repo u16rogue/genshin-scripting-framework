@@ -14,3 +14,5 @@ namespace game::sdk
 		inline static game::sdk::unity_scripting_api<void, game::sdk::Il2CppString *, game::sdk::Object *>               FromJsonOverwrite = ("UnityEngine.JsonUtility::FromJsonOverwrite(System.String,System.Object)");
 	};
 }
+
+GSF_UNITY_SDK_ENSURE_NO_NONSTATIC(game::sdk::JsonUtility);

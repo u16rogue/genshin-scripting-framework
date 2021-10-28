@@ -16,3 +16,5 @@ namespace game::sdk
 		inline static game::sdk::unity_scripting_api<float, game::sdk::Animator *> _get_speed = ("UnityEngine.Animator::get_speed()");
 	};
 }
+
+GSF_UNITY_SDK_ENSURE_NO_NONSTATIC(game::sdk::Animator);

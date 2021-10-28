@@ -17,3 +17,5 @@ namespace game::sdk
 		inline static game::sdk::unity_scripting_api<void, game::sdk::Transform *, game::sdk::Vector3 *> _INTERNAL_get_position = ("UnityEngine.Transform::INTERNAL_get_position(UnityEngine.Vector3&)");
 	};
 }
+
+GSF_UNITY_SDK_ENSURE_NO_NONSTATIC(game::sdk::Transform);
