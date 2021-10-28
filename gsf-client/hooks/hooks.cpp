@@ -28,6 +28,7 @@ bool gsf::hooks::install()
 	if (!DEBUG_CON_C_LOG(L"Initializing MinHook...", MH_Initialize() == MH_STATUS::MH_OK))
 		return false;
 
+    // TODO: devicectx broken when loading too early
     ID3D11DeviceContext *game_devicectx = *game::dx_devicectx_ptr;
 
     if (!DEBUG_CON_C_LOG(L"WindowProcedure Callback",         gsf::hooks::WindowProc                        .inhook(*game::window_handle_ptr))

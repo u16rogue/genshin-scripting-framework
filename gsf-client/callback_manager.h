@@ -82,6 +82,7 @@ namespace gsf::callback_manager
 				if (!cb.active)
 					continue;
 
+				// TODO: fix optional return causing crash due to sol2 validation
 				if (sol::protected_function_result cb_res = cb.lua_func(args...); cb_res.valid() && static_cast<bool>(cb_res))
 					return true;
 
@@ -110,6 +111,32 @@ namespace gsf::callback_manager
 				if (++total_dispatched == this->active_callbacks_count)
 					return false;
 			}
+		}
+
+		template <typename return_t, typename... vargs_t>
+		bool dispatch_returnable(return_t &out_return, vargs_t... args) const
+		{
+			if (!this->active_callbacks_count)
+				return false;
+
+			int total_dispatched = 0;
+			for (auto &cb : this->lua_callbacks)
+			{
+				if (!cb.active)
+					continue;
+
+				// TODO: fix optional return causing crash due to sol2 validation
+				if (sol::protected_function_result cb_res = cb.lua_func(args...); cb_res.valid())
+				{
+					out_return = cb_res;
+					return true;
+				}
+
+				if (++total_dispatched == this->active_callbacks_count)
+					return false;
+			}
+
+			return false;
 		}
 	};
 

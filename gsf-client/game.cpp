@@ -86,6 +86,8 @@ bool game::init()
 		return false;
 	}
 
+	// TODO: revalidate all directx pointers to prevent crashing and using invalid interfaces when loading too early
+
 	// Swapchain pointer
 	auto get_dx_swapchain_prologue = utils::calc_rel2abs32(game::dx_swapchain_ptr, 0x5);
 	std::uint8_t *swapchain_base  = nullptr;
