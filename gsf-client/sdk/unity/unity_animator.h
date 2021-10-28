@@ -1,10 +1,10 @@
 #pragma once
 
-#include "unity_object.h"
+#include "unity_component.h"
 
 namespace game::sdk
 {
-	class Animator : public game::sdk::Object
+	class Animator : public game::sdk::Component
 	{
 	public:
 		float get_speed()

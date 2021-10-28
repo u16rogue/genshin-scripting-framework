@@ -1,10 +1,10 @@
 #pragma once
 
-#include "unity_object.h"
+#include "unity_component.h"
 
 namespace game::sdk
 {
-	class Camera : public game::sdk::Object
+	class Camera : public game::sdk::Component
 	{
 	public:
 		// pointless but...
