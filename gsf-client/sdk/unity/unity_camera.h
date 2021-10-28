@@ -7,7 +7,7 @@ namespace game::sdk
 	class Camera : public game::sdk::Component
 	{
 	public:
-		inline static game::sdk::unity_scripting_api<game::sdk::Camera *> get_main = ("UnityEngine.Camera::get_main()");
+		inline static auto get_main = game::sdk::unity_setter_getter_static<game::sdk::Camera *>("UnityEngine.Camera::get_main()", nullptr);
 	};
 }
 
