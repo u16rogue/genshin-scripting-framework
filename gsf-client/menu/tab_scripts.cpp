@@ -5,6 +5,7 @@
 #include "../helpers/imgui_prompts.h"
 #include <misc_utils.h>
 #include <thread>
+#include <mutex>
 
 static const char         *import_prompt_error_message         = "No error message provided.";
 static bool                import_prompt_error_message_visible = false;
@@ -61,10 +62,12 @@ enum class script_state
     UNLOAD
 };
 
+static std::mutex loading_mutex;
 static void helper_nthread_set_script_state(const gsf::script &script, script_state req_state)
 {
     std::thread([req_state](gsf::script *script)
     {
+        const std::lock_guard lg(loading_mutex);
         switch (req_state)
         {
             case script_state::LOAD:

@@ -14,6 +14,9 @@ namespace game::sdk
 		_unity_scripting_api(const char *name_)
 			: name(name_)
 		{
+			if (!name_)
+				return;
+
 			this->_instances.emplace_back(this);
 		}
 
