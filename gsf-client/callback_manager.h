@@ -91,6 +91,26 @@ namespace gsf::callback_manager
 
 			return false;
 		}
+
+		using delegate_t = bool(*)(const gsf::script &, const sol::function &);
+		bool dispatch_delegate(delegate_t delegate) const
+		{
+			if (!this->active_callbacks_count)
+				return false;
+
+			int total_dispatched = 0;
+			for (auto &cb : this->lua_callbacks)
+			{
+				if (!cb.active)
+					continue;
+
+				if (delegate(*cb.parent, cb.lua_func))
+					return true;
+
+				if (++total_dispatched == this->active_callbacks_count)
+					return false;
+			}
+		}
 	};
 
 	#define _GSF_DECLARE_API_CALLBACK(name) api_callback name = api_callback(utils::hash_fnv1a(#name));
@@ -102,6 +122,7 @@ namespace gsf::callback_manager
 		_GSF_DECLARE_API_CALLBACK(on_unload)
 		_GSF_DECLARE_API_CALLBACK(menu_imgui_tab)
 		_GSF_DECLARE_API_CALLBACK(on_key)
+		_GSF_DECLARE_API_CALLBACK(on_animator_get_speed)
 	};
 	#undef _GSF_DECLARE_API_CALLBACK
 
