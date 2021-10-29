@@ -90,13 +90,19 @@ bool game::init()
 
 	// Swapchain pointer
 	auto get_dx_swapchain_prologue = utils::calc_rel2abs32(game::dx_swapchain_ptr, 0x5);
-	std::uint8_t *swapchain_base  = nullptr;
-	DEBUG_COUT("\nWaiting for swapchain_base pointer...");
 	auto swapchain_base_ptr = utils::calc_rel2abs32(get_dx_swapchain_prologue, 0x7);
+
+	DEBUG_COUT("\nWaiting for swapchain_base pointer...");
+	std::uint8_t *swapchain_base = nullptr;
 	while ((swapchain_base = *reinterpret_cast<std::uint8_t **>(swapchain_base_ptr)) == nullptr)
 		Sleep(800);
+
 	std::int32_t swapchain_offset = *reinterpret_cast<std::int32_t *>(reinterpret_cast<std::uintptr_t>(get_dx_swapchain_prologue) + 0xA);
 	game::dx_swapchain_ptr = reinterpret_cast<decltype(game::dx_swapchain_ptr)>(swapchain_base + swapchain_offset);
+
+	DEBUG_COUT("\nWaiting for swapchain and swapchain vtable...");
+	while (*game::dx_swapchain_ptr == nullptr && *reinterpret_cast<void **>(*game::dx_swapchain_ptr) == nullptr)
+		Sleep(800);
 
 	// device context
 	game::dx_devicectx_ptr  = reinterpret_cast<decltype(game::dx_devicectx_ptr)>(utils::calc_rel2abs32(utils::calc_rel2abs32(game::dx_devicectx_ptr, 0x5), 0x7));

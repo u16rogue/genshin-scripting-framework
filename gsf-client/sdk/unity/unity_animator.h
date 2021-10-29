@@ -4,8 +4,21 @@
 
 namespace game::sdk
 {
+	struct Animator_Unknown0
+	{
+	private:
+		char pad0[0x314];
+	public:
+		float speed;
+	};
+
 	class Animator : public game::sdk::Component
 	{
+	private:
+		char pad0[0x10];
+	public:
+		Animator_Unknown0 *unk0;
+
 	public:
 		float get_speed()
 		{
@@ -17,4 +30,5 @@ namespace game::sdk
 	};
 }
 
-GSF_UNITY_SDK_ENSURE_NO_NONSTATIC(game::sdk::Animator);
+static_assert(offsetof(game::sdk::Animator, unk0) == 0x10, "Offset mismatch for Animator::unk0!");
+static_assert(offsetof(game::sdk::Animator_Unknown0, speed) == 0x314, "Offset mismatch for Animator_Unknown0::speed");
