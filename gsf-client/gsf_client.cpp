@@ -33,20 +33,25 @@ static bool init_dx()
     if (!DEBUG_CON_C_LOG(L"Get device", SUCCEEDED(global::dx_swapchain->GetDevice(__uuidof(ID3D11Device), reinterpret_cast<void **>(&global::dx_device)))))
         return false;
 
+    DEBUG_COUT(" @ 0x" << global::dx_device);
+
     global::dx_device->GetImmediateContext(&global::dx_context);
     DEBUG_CON_C_LOG(L"Get context", global::dx_context != nullptr);
+    DEBUG_COUT(" @ 0x" << global::dx_context);
 
     ID3D11Texture2D *dx_backbuffer = nullptr;
     if (!DEBUG_CON_C_LOG(L"Get buffer", SUCCEEDED(global::dx_swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void **>(&dx_backbuffer)))))
         return false;
+    DEBUG_COUT(" @ 0x" << dx_backbuffer);
 
     if (!DEBUG_CON_C_LOG(L"Create render target", dx_backbuffer && SUCCEEDED(global::dx_device->CreateRenderTargetView(dx_backbuffer, nullptr, &global::dx_render_target_view))))
         return false;
+    DEBUG_COUT(" @ 0x" << global::dx_render_target_view);
 
     dx_backbuffer->Release();
 
     DXGI_SWAP_CHAIN_DESC scd;
-    if (!DEBUG_CON_C_LOG(L"Get swap chain description", SUCCEEDED(global::dx_swapchain->GetDesc(&scd))))
+    if (!DEBUG_CON_C_LOG(L"Get swapchain description", SUCCEEDED(global::dx_swapchain->GetDesc(&scd))))
         return false;
 
     if (!DEBUG_CON_C_LOG(L"Initialize ImGui implementation", ImGui_ImplWin32_Init(scd.OutputWindow) && ImGui_ImplDX11_Init(global::dx_device, global::dx_context)))

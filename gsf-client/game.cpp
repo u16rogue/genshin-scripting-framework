@@ -68,13 +68,16 @@ bool game::init()
 		return false;
 	}
 
+	// Signatures
+
 	// Load signatures
+	// TODO: switch to consteval ida signatures
 	DEBUG_COUT("\nLOAD SIGNATURES:");
-	if (!DEBUG_CON_C_LOG(L"game::player_map_coords (ref)",                   hlp_aob_scan(mod_unity_player,  game::player_map_coords,                         "\xF2\x0F\x11\x0D\x00\x00\x00\x00\x48\x83\xC4\x00\x5B\xC3\x48\x8D\x0D",                     "xxxx????xxx?xxxxx"))
-	||  !DEBUG_CON_C_LOG(L"game::sdk::unity_scripting_api<>::get_unity_api", hlp_aob_scan(mod_user_assembly, game::sdk::unity_scripting_api<>::get_unity_api, "\x48\x8b\xc4\x48\x89\x48\x00\x55\x41\x54",                                                 "xxxxxx?xxx"))
-	||  !DEBUG_CON_C_LOG(L"game::dx_swapchain_ptr (ref)",                    hlp_aob_scan(mod_unity_player,  game::dx_swapchain_ptr,                          "\xe8\x00\x00\x00\x00\x4c\x8b\xf0\x48\x85\xc0\x74\x00\x48\x89\x5c\x24\x00\x48\x89\x6c\x24", "x????xxxxxxx?xxxx?xxxx"))
-	||  !DEBUG_CON_C_LOG(L"game::dx_devicectx_ptr (ref)",                    hlp_aob_scan(mod_unity_player,  game::dx_devicectx_ptr,                          "\xe8\x00\x00\x00\x00\x44\x8b\x8c\x24\x00\x00\x00\x00\x48\x8d\x8b",                         "x????xxxx????xxx"))
-	// ||  !DEBUG_CON_C_LOG(L"game::window_handle_ptr (ref)",                     hlp_aob_scan(mod_unity_player,  game::window_handle_ptr,                    "\x48\x89\x05\x00\x00\x00\x00\x48\x85\xc0\x0f\x84\x00\x00\x00\x00\xe8",                     "x????????xxx"))
+	if (!DEBUG_CON_C_LOG(L"game::player_map_coords (ref)",                   hlp_aob_scan(mod_unity_player,  game::player_map_coords,                         "\xF2\x0F\x11\x0D\x00\x00\x00\x00\x48\x83\xC4\x00\x5B\xC3\x48\x8D\x0D",         "xxxx????xxx?xxxxx"))
+	||  !DEBUG_CON_C_LOG(L"game::sdk::unity_scripting_api<>::get_unity_api", hlp_aob_scan(mod_user_assembly, game::sdk::unity_scripting_api<>::get_unity_api, "\x48\x8b\xc4\x48\x89\x48\x00\x55\x41\x54",                                     "xxxxxx?xxx"))
+	||  !DEBUG_CON_C_LOG(L"game::dx_swapchain_ptr (ref)",                    hlp_aob_scan(mod_unity_player,  game::dx_swapchain_ptr,                          "\x48\x8B\x1D\x00\x00\x00\x00\x48\x8B\x8B\x00\x00\x00\x00\x48\x85\xC9\x74\x3A", "xxx????xxx????xxxxx"))
+	||  !DEBUG_CON_C_LOG(L"game::dx_devicectx_ptr (ref)",                    hlp_aob_scan(mod_unity_player,  game::dx_devicectx_ptr,                          "\x4C\x8B\x3D\x00\x00\x00\x00\x4C\x8D",                                         "xxx????xx"))
+	||  !DEBUG_CON_C_LOG(L"game::window_handle_ptr (ref)",                   hlp_aob_scan(mod_unity_player,  game::window_handle_ptr,                         "\x48\x89\x05\x00\x00\x00\x00\x48\x85\xC0\x0F\x84\x00\x00\x00\x00\xE8",         "xxx????xxxxx????x"))
 	) {
 		return false;
 	}
@@ -86,31 +89,60 @@ bool game::init()
 		return false;
 	}
 
-	// TODO: revalidate all directx pointers to prevent crashing and using invalid interfaces when loading too early
-
 	// Swapchain pointer
-	auto get_dx_swapchain_prologue = utils::calc_rel2abs32(game::dx_swapchain_ptr, 0x5);
-	auto swapchain_base_ptr = utils::calc_rel2abs32(get_dx_swapchain_prologue, 0x7);
+	struct
+	{
+		char pad0[0x3D0];
+		union
+		{
+			void          **swapchain_vtable;
+			IDXGISwapChain *swapchain_ptr;
+		};
+	} **_unk0 = reinterpret_cast<decltype(_unk0)>(utils::calc_rel2abs32(game::dx_swapchain_ptr, 0x7));
 
-	DEBUG_COUT("\nWaiting for swapchain_base pointer...");
-	std::uint8_t *swapchain_base = nullptr;
-	while ((swapchain_base = *reinterpret_cast<std::uint8_t **>(swapchain_base_ptr)) == nullptr)
-		Sleep(800);
+	while (!*_unk0 || !(*_unk0)->swapchain_ptr /* || !*(*_unk0)->swapchain_vtable */ )
+		Sleep(1000);
+	game::dx_swapchain_ptr = &(*_unk0)->swapchain_ptr;
 
-	std::int32_t swapchain_offset = *reinterpret_cast<std::int32_t *>(reinterpret_cast<std::uintptr_t>(get_dx_swapchain_prologue) + 0xA);
-	game::dx_swapchain_ptr = reinterpret_cast<decltype(game::dx_swapchain_ptr)>(swapchain_base + swapchain_offset);
+	// Device context pointer
+	game::dx_devicectx_ptr = reinterpret_cast<decltype(game::dx_devicectx_ptr)>(utils::calc_rel2abs32(game::dx_devicectx_ptr, 0x7));
+	while (!*game::dx_devicectx_ptr)
+		Sleep(1000);
 
-	DEBUG_COUT("\nWaiting for swapchain and swapchain vtable...");
-	while (*game::dx_swapchain_ptr == nullptr && *reinterpret_cast<void **>(*game::dx_swapchain_ptr) == nullptr)
-		Sleep(800);
-
-	// device context
-	game::dx_devicectx_ptr  = reinterpret_cast<decltype(game::dx_devicectx_ptr)>(utils::calc_rel2abs32(utils::calc_rel2abs32(game::dx_devicectx_ptr, 0x5), 0x7));
-
+	// player map coordinates
 	game::player_map_coords = reinterpret_cast<decltype(game::player_map_coords)>(utils::calc_rel2abs32(game::player_map_coords, 0x8));
 
-	// TODO: dynamically resolve window handle pointer
-	game::window_handle_ptr = reinterpret_cast<decltype(game::window_handle_ptr)>(mod_unity_player->dll_base + 0x1AB7BA8);// reinterpret_cast<decltype(game::window_handle_ptr)>(utils::calc_rel2abs32(game::window_handle_ptr, 0x7));
+	// game window handle pointer
+	game::window_handle_ptr = reinterpret_cast<decltype(game::window_handle_ptr)>(utils::calc_rel2abs32(game::window_handle_ptr, 0x7));
+
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	#if 1 // toggle
+
+	// this is a band aid fix due to an issue when loading game values too early (especially when using gsf-launcher), the vfunc for the devicectx vtable does not have
+	// the "right" pointers. the device and vtable address are the same regardless, its only the vfunc that differs and is causing the hooks to silently fail due to hooking
+	// the wrong functions.
+	// TODO: implement a better fix for invalid vfunc pointers in device context when loading too early...
+
+	entryp_t mod_d3d11;
+	void *Invalid_D3D_DrawIndexed = nullptr;
+	void *Invalid_D3D_Draw = nullptr;
+
+	DEBUG_COUT("\nAppliying band-aid fix for invalid d3dctx vfuncs (see code for more details)...");
+	if (!DEBUG_CON_C_LOG(L"d3d11.dll",                     hlp_load_module(mod_d3d11, utils::hash_fnv1a_cv(L"d3d11.dll")))
+	||  !DEBUG_CON_C_LOG(L"Invalid_D3D_DrawIndexed (ref)", hlp_aob_scan(mod_d3d11, Invalid_D3D_DrawIndexed, "\xE8\x00\x00\x00\x00\xEB\x3F\xE8", "x????xxx"))
+	||  ![&]() { Invalid_D3D_DrawIndexed = reinterpret_cast<decltype(Invalid_D3D_DrawIndexed)>(utils::calc_rel2abs32(Invalid_D3D_DrawIndexed, 0x5)); DEBUG_COUT(" -> 0x" << Invalid_D3D_DrawIndexed); return Invalid_D3D_DrawIndexed; } ()
+	||  !DEBUG_CON_C_LOG(L"Invalid_D3D_Draw (ref)",        hlp_aob_scan(mod_d3d11, Invalid_D3D_Draw,        "\xE8\x00\x00\x00\x00\xEB\x3C\xE8", "x????xxx"))
+	||  ![&]() { Invalid_D3D_Draw = reinterpret_cast<decltype(Invalid_D3D_Draw)>(utils::calc_rel2abs32(Invalid_D3D_Draw, 0x5)); DEBUG_COUT(" -> 0x" << Invalid_D3D_Draw); return Invalid_D3D_Draw; } ()
+	) {
+		return false;
+	}
+
+	void **devicectx_vtable = *reinterpret_cast<void ***>(*game::dx_devicectx_ptr);
+	while (devicectx_vtable[12] == Invalid_D3D_DrawIndexed || devicectx_vtable[13] == Invalid_D3D_Draw)
+		Sleep(1000);
+
+	#endif
 
 	return true;
 	#pragma warning(default: 6011)
