@@ -4,20 +4,31 @@
 
 namespace game::sdk
 {
-	struct Animator_Unknown0
+	class Animator;
+
+	union AnimatorStateInfo_MAYBE
 	{
-	private:
-		char pad0[0x314];
-	public:
-		float speed;
+		struct
+		{
+			char _pad0[0x28];
+			Animator *parent;
+		};
+
+		struct
+		{
+			char _pad1[0x314];
+			float speed;
+		};
 	};
 
+
+	// NOTE: this is probably the boxed AnimatorStateInfo__Boxed that is being passed into animator get speed and the actual animator is Animator_Unkown0
 	class Animator : public game::sdk::Component
 	{
 	private:
 		char pad0[0x10];
 	public:
-		Animator_Unknown0 *unk0;
+		AnimatorStateInfo_MAYBE *state_info;
 
 	public:
 		float get_speed()
@@ -30,5 +41,6 @@ namespace game::sdk
 	};
 }
 
-static_assert(offsetof(game::sdk::Animator, unk0) == 0x10, "Offset mismatch for Animator::unk0!");
-static_assert(offsetof(game::sdk::Animator_Unknown0, speed) == 0x314, "Offset mismatch for Animator_Unknown0::speed");
+static_assert(offsetof(game::sdk::Animator, state_info) == 0x10, "Offset mismatch for Animator::state_info!");
+static_assert(offsetof(game::sdk::AnimatorStateInfo_MAYBE, speed) == 0x314, "Offset mismatch for AnimatorStateInfo_MAYBE::speed");
+static_assert(offsetof(game::sdk::AnimatorStateInfo_MAYBE, parent) == 0x28, "Offset mismatch for AnimatorStateInfo_MAYBE::parent");

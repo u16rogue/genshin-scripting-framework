@@ -2,6 +2,8 @@
 
 #include <hooking.h>
 
+// TODO: decide whether to merge to one file?
+
 namespace gsf::hooks
 {
 	extern utils::hook_detour  Present;
