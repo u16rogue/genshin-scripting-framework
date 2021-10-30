@@ -18,7 +18,7 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hooks\hooks.cpp">
+    <ClCompile Include="hooks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gsf_client.cpp">
@@ -80,7 +80,7 @@
     <ClInclude Include="global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hooks\hooks.h">
+    <ClInclude Include="hooks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gsf_client.h">

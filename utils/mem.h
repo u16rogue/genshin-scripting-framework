@@ -17,4 +17,5 @@ namespace utils
 	}
 
 	std::uint8_t *calc_rel2abs32(void *instruction_address, std::size_t instruction_size);
+	std::int32_t calc_abs2rel32(void *instruction_address, std::size_t instruction_size, void *absolute_target);
 }

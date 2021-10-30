@@ -16,6 +16,8 @@
 #include "menu/menu.h"
 #include "helpers/imgui_prompts.h"
 #include "gsf_client.h"
+#include <mem.h>
+#include <winapi_helper.h>
 
 #pragma warning (disable: 26812)
 
@@ -159,26 +161,31 @@ utils::hook_detour gsf::hooks::ShowCursor(hk_ShowCursor);
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-void shim_WorldEntityIterator_get_speed(float *rcx_out_float, game::sdk::AnimatorStateInfo_MAYBE *rdx_AnimatorState)
+/* #pragma optimize( "", on )
+__declspec(noinline) __declspec(safebuffers)*/ void __fastcall WorldEntityIterator_get_speed_shim(float *rcx_out_float, game::sdk::AnimatorStateInfo_MAYBE *rdx_AnimatorState)
 {
     float result = rdx_AnimatorState->speed;
     gsf::callback_manager::get_callbacks().on_animator_get_speed.dispatch_returnable(result, reinterpret_cast<std::uintptr_t>(rdx_AnimatorState->parent), result);
     *rcx_out_float = result;
 }
 
-std::uint8_t proxy_WorldEntityIterator_get_speed[] =
+
+std::uint8_t WorldEntityIterator_get_speed_proxy[] =
 {
+    0x55,                                                       // push rbp     (unecessary)
+    0x48, 0x89, 0xE5,                                           // mov rbp, rsp (unecessary)
     0x52,														// push rdx
     0x4C, 0x89, 0xFA,											// mov rdx, r15
-    0x48, 0xB8, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11,	// mov rax, <shim_WorldEntityIterator_get_speed>
-    0xFF, 0xD0,													// call rax
+    0xE8, 0x00, 0x00, 0x00, 0x00,                               // call <WorldEntityIterator_get_speed_shim>
     0x5A,														// pop rdx
+    0x5D,                                                       // pop rbp      (unecessary)
     0xC3														// ret
 };
 
-std::uint8_t codeinj_WorldEntityIterator_get_speed[9] =
+std::uint8_t WorldEntityIterator_get_speed_original[9] {};
+std::uint8_t WorldEntityIterator_get_speed_codeinj[9] =
 {
-    0xE8, 0x00, 0x00, 0x00, 0x00, // call <proxy_WorldEntityIterator_get_speed - nop_1>
+    0xE8, 0x00, 0x00, 0x00, 0x00, // call <WorldEntityIterator_get_speed_proxy - nop_1>
     0x90,						  // nop_1
     0x90,						  // nop_2
     0x90,						  // nop_3
@@ -323,9 +330,9 @@ utils::hook_wndproc gsf::hooks::WindowProc(hk_WindowProc);
 
 bool gsf::hooks::install()
 {
-    DEBUG_CON_PRINT("\nInstalling hooks...");
+    DEBUG_CON_PRINT("\n[+] Installing hooks...");
 
-	if (!DEBUG_CON_C_LOG(L"Initializing MinHook...", MH_Initialize() == MH_STATUS::MH_OK))
+	if (!DEBUG_CON_C_LOG(L"[+] Initializing MinHook...", MH_Initialize() == MH_STATUS::MH_OK))
 		return false;
 
     ID3D11DeviceContext *game_devicectx = *game::dx_devicectx_ptr;
@@ -346,6 +353,25 @@ bool gsf::hooks::install()
         return false;
     }
 
+    // Setup for WorldEntityIterator_get_speed
+    *reinterpret_cast<std::int32_t *>(WorldEntityIterator_get_speed_codeinj + 0x1) = utils::calc_abs2rel32(gsf::hooks::WorldEntityIterator_get_speed_ptr, 0x5, WorldEntityIterator_get_speed_proxy);
+    *reinterpret_cast<std::int32_t *>(WorldEntityIterator_get_speed_proxy + 0x9)   = utils::calc_abs2rel32(WorldEntityIterator_get_speed_proxy + 0x8, 0x5, WorldEntityIterator_get_speed_shim);
+
+    if (DWORD dummy; !DEBUG_CON_C_LOG(L"Changing memory flags for WorldEntityIterator_get_speed_proxy to be executable", VirtualProtect(WorldEntityIterator_get_speed_proxy, sizeof(WorldEntityIterator_get_speed_proxy), PAGE_EXECUTE_READWRITE, &dummy)))
+        return false;
+
+    // Backup original bytes
+    std::memcpy(WorldEntityIterator_get_speed_original, gsf::hooks::WorldEntityIterator_get_speed_ptr, sizeof(WorldEntityIterator_get_speed_codeinj));
+
+    DEBUG_COUT("\n[+] Changing page protection for WorldEntityIterator_get_speed...");
+    utils::change_page_protection WorldEntityIterator_get_speed_prot(gsf::hooks::WorldEntityIterator_get_speed_ptr, sizeof(WorldEntityIterator_get_speed_codeinj), PAGE_EXECUTE_READWRITE);
+    if (!WorldEntityIterator_get_speed_prot)
+        return false;
+
+    // Inject our own code WorldEntityIterator_get_speed detour code
+    DEBUG_COUT("\n[+] Injecting WorldEntityIterator_get_speed_codeinj detour...");
+    std::memcpy(gsf::hooks::WorldEntityIterator_get_speed_ptr, WorldEntityIterator_get_speed_codeinj, sizeof(WorldEntityIterator_get_speed_codeinj));
+
     return true;
 }
 
@@ -359,6 +385,14 @@ bool gsf::hooks::uninstall()
 	for (auto &hook_instance : hook_instances)
 		if (!hook_instance->unhook())
 			return false;
+
+    DEBUG_COUT("\n[+] Changing page protection for WorldEntityIterator_get_speed...");
+    utils::change_page_protection WorldEntityIterator_get_speed_prot(gsf::hooks::WorldEntityIterator_get_speed_ptr, sizeof(WorldEntityIterator_get_speed_codeinj), PAGE_EXECUTE_READWRITE);
+    if (!WorldEntityIterator_get_speed_prot)
+        return false;
+
+    DEBUG_COUT("\n[+] Restoring original bytes for WorldEntityIterator_get_speed...");
+    std::memcpy(gsf::hooks::WorldEntityIterator_get_speed_ptr, WorldEntityIterator_get_speed_original, sizeof(WorldEntityIterator_get_speed_original));
 
 	return true;
 }

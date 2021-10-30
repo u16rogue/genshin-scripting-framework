@@ -7,6 +7,8 @@
 #include <thread>
 #include <mutex>
 
+// TODO: shift click / ctrl click for multi select
+
 static const char         *import_prompt_error_message         = "No error message provided.";
 static bool                import_prompt_error_message_visible = false;
 static utils::fader_float  import_prompt_error_message_fader   = utils::fader_float(1000, 3000);

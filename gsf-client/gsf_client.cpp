@@ -24,8 +24,8 @@
 
 static bool init_dx()
 {
-    DEBUG_COUT("\nInitialize DirectX11..."
-               "\nWaiting for the game to create a swapchain and device context...");
+    DEBUG_COUT("\n[+] Initialize DirectX11..."
+               "\n[+] Waiting for the game to create a swapchain and device context...");
 
     while (!(global::dx_swapchain = *game::dx_swapchain_ptr) && !*game::dx_devicectx_ptr)
         Sleep(800);

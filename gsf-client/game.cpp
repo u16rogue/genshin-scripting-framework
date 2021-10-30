@@ -5,6 +5,7 @@
 #include <mem.h>
 #include <misc_utils.h>
 #include <hash.h>
+#include "hooks.h"
 
 using entryp_t = utils::ldr_data_table_entry *;
 
@@ -45,14 +46,13 @@ static bool hlp_load_exportfn(entryp_t mod, const utils::fnv1a64_t hashed_name, 
 bool game::init()
 {
 	#pragma warning(disable: 6011)
-	DEBUG_COUT("\nStarting to load values...");
 
 	// Modules
 	entryp_t mod_unity_player;
 	entryp_t mod_user_assembly;
 
 	// Load modules
-	DEBUG_COUT("\nLOAD MODULES:");
+	DEBUG_COUT("\n[>] LOAD MODULES:");
 	if (!DEBUG_CON_C_LOG(L"UnityPlayer.dll",  hlp_load_module(mod_unity_player,  utils::hash_fnv1a_cv(L"UnityPlayer.dll")))
 	||  !DEBUG_CON_C_LOG(L"UserAssembly.dll", hlp_load_module(mod_user_assembly, utils::hash_fnv1a_cv(L"UserAssembly.dll")))
 	) {
@@ -60,7 +60,7 @@ bool game::init()
 	}
 
 	// Load exported functions
-	DEBUG_COUT("\nLOAD EXPORTS:");
+	DEBUG_COUT("\n[>] LOAD EXPORTS:");
 	if (!DEBUG_CON_C_LOG(L"il2cpp_string_chars",  hlp_load_exportfn(mod_user_assembly, utils::hash_fnv1a_cv("il2cpp_string_chars"),  game::il2cpp_string_chars))
 	||  !DEBUG_CON_C_LOG(L"il2cpp_string_length", hlp_load_exportfn(mod_user_assembly, utils::hash_fnv1a_cv("il2cpp_string_length"), game::il2cpp_string_length))
 	||  !DEBUG_CON_C_LOG(L"il2cpp_string_new",    hlp_load_exportfn(mod_user_assembly, utils::hash_fnv1a_cv("il2cpp_string_new"),    game::il2cpp_string_new))
@@ -72,18 +72,19 @@ bool game::init()
 
 	// Load signatures
 	// TODO: switch to consteval ida signatures
-	DEBUG_COUT("\nLOAD SIGNATURES:");
+	DEBUG_COUT("\n[>] LOAD SIGNATURES:");
 	if (!DEBUG_CON_C_LOG(L"game::player_map_coords (ref)",                   hlp_aob_scan(mod_unity_player,  game::player_map_coords,                         "\xF2\x0F\x11\x0D\x00\x00\x00\x00\x48\x83\xC4\x00\x5B\xC3\x48\x8D\x0D",         "xxxx????xxx?xxxxx"))
 	||  !DEBUG_CON_C_LOG(L"game::sdk::unity_scripting_api<>::get_unity_api", hlp_aob_scan(mod_user_assembly, game::sdk::unity_scripting_api<>::get_unity_api, "\x48\x8b\xc4\x48\x89\x48\x00\x55\x41\x54",                                     "xxxxxx?xxx"))
 	||  !DEBUG_CON_C_LOG(L"game::dx_swapchain_ptr (ref)",                    hlp_aob_scan(mod_unity_player,  game::dx_swapchain_ptr,                          "\x48\x8B\x1D\x00\x00\x00\x00\x48\x8B\x8B\x00\x00\x00\x00\x48\x85\xC9\x74\x3A", "xxx????xxx????xxxxx"))
 	||  !DEBUG_CON_C_LOG(L"game::dx_devicectx_ptr (ref)",                    hlp_aob_scan(mod_unity_player,  game::dx_devicectx_ptr,                          "\x4C\x8B\x3D\x00\x00\x00\x00\x4C\x8D",                                         "xxx????xx"))
 	||  !DEBUG_CON_C_LOG(L"game::window_handle_ptr (ref)",                   hlp_aob_scan(mod_unity_player,  game::window_handle_ptr,                         "\x48\x89\x05\x00\x00\x00\x00\x48\x85\xC0\x0F\x84\x00\x00\x00\x00\xE8",         "xxx????xxxxx????x"))
+	||  !DEBUG_CON_C_LOG(L"gsf::hooks::WorldEntityIterator_get_speed_ptr",   hlp_aob_scan(mod_unity_player,  gsf::hooks::WorldEntityIterator_get_speed_ptr,   "\x41\x8B\x87\x00\x00\x00\x00\x89\x01\x41",                                     "xxx????xxx"))
 	) {
 		return false;
 	}
 
 	// Load game functions
-	DEBUG_COUT("\nLOAD GAME FUNCTIONS:");
+	DEBUG_COUT("\n[>] LOAD GAME FUNCTIONS:");
 	if (!game::sdk::unity_scripting_api<>::load_function_all())
 	{
 		return false;
@@ -128,7 +129,7 @@ bool game::init()
 	void *Invalid_D3D_DrawIndexed = nullptr;
 	void *Invalid_D3D_Draw = nullptr;
 
-	DEBUG_COUT("\nAppliying band-aid fix for invalid d3dctx vfuncs (see code for more details)...");
+	DEBUG_COUT("\n[+] Appliying band-aid fix for invalid d3dctx vfuncs (see code for more details)...");
 	if (!DEBUG_CON_C_LOG(L"d3d11.dll",                     hlp_load_module(mod_d3d11, utils::hash_fnv1a_cv(L"d3d11.dll")))
 	||  !DEBUG_CON_C_LOG(L"Invalid_D3D_DrawIndexed (ref)", hlp_aob_scan(mod_d3d11, Invalid_D3D_DrawIndexed, "\xE8\x00\x00\x00\x00\xEB\x3F\xE8", "x????xxx"))
 	||  ![&]() { Invalid_D3D_DrawIndexed = reinterpret_cast<decltype(Invalid_D3D_DrawIndexed)>(utils::calc_rel2abs32(Invalid_D3D_DrawIndexed, 0x5)); DEBUG_COUT(" -> 0x" << Invalid_D3D_DrawIndexed); return Invalid_D3D_DrawIndexed; } ()
