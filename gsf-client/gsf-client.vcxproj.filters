@@ -18,12 +18,6 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hooks\WindowProc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\Present.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="hooks\hooks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -37,15 +31,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="helpers\imgui_prompts.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\Draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\DrawIndexed.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\ShowCursor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="game.cpp">
@@ -69,12 +54,6 @@
     <ClCompile Include="menu\menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hooks\UnityEngine_Cursor_set_lockState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\UnityEngine_Cursor_set_visible.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="menu\tab_scripts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -90,28 +69,10 @@
     <ClCompile Include="menu\tab_misc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hooks\UnityEngine_JsonUtility_ToJson.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\UnityEngine_JsonUtility_FromJson.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\UnityEngine_Input_GetButton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\UnityEngine_Input_GetAxisRaw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\ResizeBuffers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="api\api_controls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="callback_manager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\UnityEngine_Animator_get_speed.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

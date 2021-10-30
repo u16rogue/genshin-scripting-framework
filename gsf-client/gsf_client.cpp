@@ -11,7 +11,7 @@
 #include <macro.h>
 
 #include "script_manager.h"
-#include "hooks/hooks.h"
+#include "hooks.h"
 #include "game.h"
 
 #include <MinHook.h>
