@@ -10,7 +10,7 @@ namespace game::sdk
 		struct
 		{
 			char _pad0[0x0F0];
-			float *unk0; // speed value to use by the engine
+			float *pspeed; // speed value to use by the engine
 		};
 	};
 
