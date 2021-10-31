@@ -176,7 +176,7 @@ void __fastcall WorldEntityIterator_get_speed_shim(game::sdk::AnimatorStateInfo_
 
     float result = AnimatorState->speed; // mov     eax, [r15+314h]
 
-    gsf::callback_manager::get_callbacks().on_entity_speed.dispatch_returnable(result, reinterpret_cast<std::uintptr_t>(AnimatorState->parent), result);
+    gsf::callback_manager::get_callbacks().on_animator_speed.dispatch_returnable(result, reinterpret_cast<std::uintptr_t>(AnimatorState->parent), result);
 
     *rcx = result; // mov     [rcx], eax
 }
@@ -196,7 +196,7 @@ std::uint8_t WorldEntityIterator_get_speed_original[sizeof(WorldEntityIterator_g
 float hk_UnityEngine_Animator_get_speed(game::sdk::Animator *animatorObj)
 {
     float result = animatorObj->state_info->speed;
-    gsf::callback_manager::get_callbacks().on_entity_speed.dispatch_returnable(result, reinterpret_cast<std::uintptr_t>(animatorObj), result);
+    gsf::callback_manager::get_callbacks().on_animator_speed.dispatch_returnable(result, reinterpret_cast<std::uintptr_t>(animatorObj), result);
     return result;
 }
 
@@ -333,7 +333,7 @@ bool gsf::hooks::install()
 {
     DEBUG_CON_PRINT("\n[+] Installing hooks...");
 
-	if (!DEBUG_CON_C_LOG(L"[+] Initializing MinHook...", MH_Initialize() == MH_STATUS::MH_OK))
+	if (!DEBUG_CON_C_LOG(L"Initializing MinHook...", MH_Initialize() == MH_STATUS::MH_OK))
 		return false;
 
     ID3D11DeviceContext *game_devicectx = *game::dx_devicectx_ptr;
