@@ -128,7 +128,6 @@ namespace gsf::callback_manager
 				if (!cb.active)
 					continue;
 
-				// TODO: Verify if fixed
 				if (sol::protected_function_result cb_res = cb.lua_func(args...); cb_res.valid())
 				{
 					sol::optional<return_t> res = cb_res;
