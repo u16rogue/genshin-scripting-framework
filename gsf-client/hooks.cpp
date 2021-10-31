@@ -176,7 +176,7 @@ void __fastcall WorldEntityIterator_get_speed_shim(game::sdk::AnimatorStateInfo_
 
     float result = AnimatorState->speed; // mov     eax, [r15+314h]
 
-    gsf::callback_manager::get_callbacks().on_animator_get_speed.dispatch_returnable(result, reinterpret_cast<std::uintptr_t>(AnimatorState->parent), result);
+    gsf::callback_manager::get_callbacks().on_entity_speed.dispatch_returnable(result, reinterpret_cast<std::uintptr_t>(AnimatorState->parent), result);
 
     *rcx = result; // mov     [rcx], eax
 }
@@ -196,7 +196,7 @@ std::uint8_t WorldEntityIterator_get_speed_original[sizeof(WorldEntityIterator_g
 float hk_UnityEngine_Animator_get_speed(game::sdk::Animator *animatorObj)
 {
     float result = animatorObj->state_info->speed;
-    gsf::callback_manager::get_callbacks().on_animator_get_speed.dispatch_returnable(result, reinterpret_cast<std::uintptr_t>(animatorObj), result);
+    gsf::callback_manager::get_callbacks().on_entity_speed.dispatch_returnable(result, reinterpret_cast<std::uintptr_t>(animatorObj), result);
     return result;
 }
 
