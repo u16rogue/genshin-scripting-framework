@@ -1,11 +1,20 @@
 #pragma once
 
 #include "unity_component.h"
+#include "unity_primitive_types.h"
 
 namespace game::sdk
 {
-	class Animator;
+	union Animator_class_unk0
+	{
+		struct
+		{
+			char _pad0[0x0F0];
+			float *unk0; // speed value to use by the engine
+		};
+	};
 
+	class Animator;
 	union AnimatorStateInfo_MAYBE
 	{
 		struct
@@ -19,6 +28,19 @@ namespace game::sdk
 			char _pad1[0x314];
 			float speed;
 		};
+
+		struct
+		{
+			char _pad2[0x0EC];
+			game::sdk::Boolean unk0; // unknown boolean, this is checked before doing speed value assignment
+		};
+
+		struct
+		{
+			char _pad3[0x4A0];
+			Animator_class_unk0 *unk1;
+		};
+
 	};
 
 

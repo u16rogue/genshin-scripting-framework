@@ -78,7 +78,7 @@ bool game::init()
 	||  !DEBUG_CON_C_LOG(L"game::dx_swapchain_ptr (ref)",                    hlp_aob_scan(mod_unity_player,  game::dx_swapchain_ptr,                          "\x48\x8B\x1D\x00\x00\x00\x00\x48\x8B\x8B\x00\x00\x00\x00\x48\x85\xC9\x74\x3A", "xxx????xxx????xxxxx"))
 	||  !DEBUG_CON_C_LOG(L"game::dx_devicectx_ptr (ref)",                    hlp_aob_scan(mod_unity_player,  game::dx_devicectx_ptr,                          "\x4C\x8B\x3D\x00\x00\x00\x00\x4C\x8D",                                         "xxx????xx"))
 	||  !DEBUG_CON_C_LOG(L"game::window_handle_ptr (ref)",                   hlp_aob_scan(mod_unity_player,  game::window_handle_ptr,                         "\x48\x89\x05\x00\x00\x00\x00\x48\x85\xC0\x0F\x84\x00\x00\x00\x00\xE8",         "xxx????xxxxx????x"))
-	||  !DEBUG_CON_C_LOG(L"gsf::hooks::WorldEntityIterator_get_speed_ptr",   hlp_aob_scan(mod_unity_player,  gsf::hooks::WorldEntityIterator_get_speed_ptr,   "\x41\x8B\x87\x00\x00\x00\x00\x89\x01\x41",                                     "xxx????xxx"))
+	||  !DEBUG_CON_C_LOG(L"gsf::hooks::WorldEntityIterator_get_speed_ptr",   hlp_aob_scan(mod_unity_player,  gsf::hooks::WorldEntityIterator_get_speed_ptr,   "\x41\x83\xBF\x00\x00\x00\x00\x00\x74\x21",                                     "xxx?????xx"))
 	) {
 		return false;
 	}

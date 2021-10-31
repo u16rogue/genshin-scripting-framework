@@ -161,36 +161,37 @@ utils::hook_detour gsf::hooks::ShowCursor(hk_ShowCursor);
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-/* #pragma optimize( "", on )
-__declspec(noinline) __declspec(safebuffers)*/ void __fastcall WorldEntityIterator_get_speed_shim(float *rcx_out_float, game::sdk::AnimatorStateInfo_MAYBE *rdx_AnimatorState)
+void __fastcall WorldEntityIterator_get_speed_shim(game::sdk::AnimatorStateInfo_MAYBE *AnimatorState)
 {
-    float result = rdx_AnimatorState->speed;
-    gsf::callback_manager::get_callbacks().on_animator_get_speed.dispatch_returnable(result, reinterpret_cast<std::uintptr_t>(rdx_AnimatorState->parent), result);
-    *rcx_out_float = result;
+    if (!AnimatorState->unk0) // cmp     dword ptr [r15+0ECh], 0
+        return;
+
+    auto rax = AnimatorState->unk1; // mov     rax, [r15+4A0h]
+    if (!rax)                       // test    rax, rax
+        return;
+
+    auto rcx = rax->unk0; // mov     rcx, [rax+0F0h]
+    if (!rcx)             // test    rcx, rcx
+        return;
+
+    float result = AnimatorState->speed; // mov     eax, [r15+314h]
+
+    gsf::callback_manager::get_callbacks().on_animator_get_speed.dispatch_returnable(result, reinterpret_cast<std::uintptr_t>(AnimatorState->parent), result);
+
+    *rcx = result; // mov     [rcx], eax
 }
 
+constexpr auto WorldEntityIterator_get_speed_codeinj_hotzone_size = 43;
 
-std::uint8_t WorldEntityIterator_get_speed_proxy[] =
+std::uint8_t WorldEntityIterator_get_speed_codeinj[] =
 {
-    0x55,                                                       // push rbp     (unecessary)
-    0x48, 0x89, 0xE5,                                           // mov rbp, rsp (unecessary)
-    0x52,														// push rdx
-    0x4C, 0x89, 0xFA,											// mov rdx, r15
-    0xE8, 0x00, 0x00, 0x00, 0x00,                               // call <WorldEntityIterator_get_speed_shim>
-    0x5A,														// pop rdx
-    0x5D,                                                       // pop rbp      (unecessary)
-    0xC3														// ret
+    0x4C, 0x89, 0xF9,                                           // mov rcx, r15 (rcx is volatile in this context)
+    0x48, 0xB8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // mov rax, <WorldEntityIterator_get_speed_shim>
+    0xFF, 0xD0,                                                 // call rax
+    0xE9, 0x00, 0x00, 0x00, 0x00                                // jmp < WorldEntityIterator_get_speed_codeinj_hotzone_size - sizeof(WorldEntityIterator_get_speed_codeinj) + 1>
 };
 
-std::uint8_t WorldEntityIterator_get_speed_original[9] {};
-std::uint8_t WorldEntityIterator_get_speed_codeinj[9] =
-{
-    0xE8, 0x00, 0x00, 0x00, 0x00, // call <WorldEntityIterator_get_speed_proxy - nop_1>
-    0x90,						  // nop_1
-    0x90,						  // nop_2
-    0x90,						  // nop_3
-    0x90						  // nop_4
-};
+std::uint8_t WorldEntityIterator_get_speed_original[sizeof(WorldEntityIterator_get_speed_codeinj)] {};
 
 float hk_UnityEngine_Animator_get_speed(game::sdk::Animator *animatorObj)
 {
@@ -354,22 +355,19 @@ bool gsf::hooks::install()
     }
 
     // Setup for WorldEntityIterator_get_speed
-    *reinterpret_cast<std::int32_t *>(WorldEntityIterator_get_speed_codeinj + 0x1) = utils::calc_abs2rel32(gsf::hooks::WorldEntityIterator_get_speed_ptr, 0x5, WorldEntityIterator_get_speed_proxy);
-    *reinterpret_cast<std::int32_t *>(WorldEntityIterator_get_speed_proxy + 0x9)   = utils::calc_abs2rel32(WorldEntityIterator_get_speed_proxy + 0x8, 0x5, WorldEntityIterator_get_speed_shim);
-
-    if (DWORD dummy; !DEBUG_CON_C_LOG(L"Changing memory flags for WorldEntityIterator_get_speed_proxy to be executable", VirtualProtect(WorldEntityIterator_get_speed_proxy, sizeof(WorldEntityIterator_get_speed_proxy), PAGE_EXECUTE_READWRITE, &dummy)))
-        return false;
-
-    // Backup original bytes
-    std::memcpy(WorldEntityIterator_get_speed_original, gsf::hooks::WorldEntityIterator_get_speed_ptr, sizeof(WorldEntityIterator_get_speed_codeinj));
 
     DEBUG_COUT("\n[+] Changing page protection for WorldEntityIterator_get_speed...");
     utils::change_page_protection WorldEntityIterator_get_speed_prot(gsf::hooks::WorldEntityIterator_get_speed_ptr, sizeof(WorldEntityIterator_get_speed_codeinj), PAGE_EXECUTE_READWRITE);
     if (!WorldEntityIterator_get_speed_prot)
         return false;
 
-    // Inject our own code WorldEntityIterator_get_speed detour code
-    DEBUG_COUT("\n[+] Injecting WorldEntityIterator_get_speed_codeinj detour...");
+    DEBUG_COUT("\n[+] Backup original bytes for WorldEntityIterator_get_speed...");
+    std::memcpy(WorldEntityIterator_get_speed_original, gsf::hooks::WorldEntityIterator_get_speed_ptr, sizeof(WorldEntityIterator_get_speed_original));
+
+    *reinterpret_cast<void **>(WorldEntityIterator_get_speed_codeinj + 0x5) = WorldEntityIterator_get_speed_shim;
+    *reinterpret_cast<std::int32_t *>(WorldEntityIterator_get_speed_codeinj + sizeof(WorldEntityIterator_get_speed_codeinj) - sizeof(std::int32_t)) = WorldEntityIterator_get_speed_codeinj_hotzone_size - sizeof(WorldEntityIterator_get_speed_codeinj);
+
+    DEBUG_COUT("\n[+] Applying code injection for WorldEntityIterator_get_speed...");
     std::memcpy(gsf::hooks::WorldEntityIterator_get_speed_ptr, WorldEntityIterator_get_speed_codeinj, sizeof(WorldEntityIterator_get_speed_codeinj));
 
     return true;
