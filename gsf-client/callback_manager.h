@@ -153,7 +153,7 @@ namespace gsf::callback_manager
 		_GSF_DECLARE_API_CALLBACK(on_unload)
 		_GSF_DECLARE_API_CALLBACK(menu_imgui_tab)
 		_GSF_DECLARE_API_CALLBACK(on_key)
-		_GSF_DECLARE_API_CALLBACK(on_entity_speed)
+		_GSF_DECLARE_API_CALLBACK(on_animator_speed)
 	};
 	#undef _GSF_DECLARE_API_CALLBACK
 
