@@ -5,9 +5,7 @@
 namespace global
 {
 	inline void *dll_handle = nullptr;
-	inline void *game_window = nullptr;
-
-	inline bool cursor_is_visible = true;
+	inline bool cursor_is_visible = true; // TODO: decide if its still necessary alongside the ShowCursor hook
 
 	inline ID3D11Device           *dx_device             = nullptr;
 	inline IDXGISwapChain         *dx_swapchain          = nullptr;

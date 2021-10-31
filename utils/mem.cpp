@@ -110,3 +110,8 @@ std::uint8_t *utils::calc_rel2abs32(void *instruction_address, std::size_t instr
 	auto next_inst = reinterpret_cast<std::uintptr_t>(instruction_address) + instruction_size;
 	return reinterpret_cast<std::uint8_t *>(next_inst + *reinterpret_cast<std::int32_t *>((next_inst - sizeof(std::uint32_t))));
 }
+
+std::int32_t utils::calc_abs2rel32(void *instruction_address, std::size_t instruction_size, void *absolute_target)
+{
+	return static_cast<std::int32_t>(reinterpret_cast<std::uintptr_t>(absolute_target) - (reinterpret_cast<std::uintptr_t>(instruction_address) + instruction_size));
+}

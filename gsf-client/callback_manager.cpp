@@ -3,7 +3,7 @@
 static std::mutex mut_active_cb_count_update;
 static gsf::callback_manager::_api_callback_container api_callbacks;
 
-constexpr int n_api_callbacks = sizeof(gsf::callback_manager::_api_callback_container) / sizeof(gsf::callback_manager::api_callback);
+static gsf::callback_manager::api_callback *api_callbacks_end = reinterpret_cast<gsf::callback_manager::api_callback *>(reinterpret_cast<std::uintptr_t>(&api_callbacks) + sizeof(api_callbacks));
 
 const gsf::callback_manager::_api_callback_container &gsf::callback_manager::get_callbacks()
 {
@@ -13,9 +13,9 @@ const gsf::callback_manager::_api_callback_container &gsf::callback_manager::get
 bool gsf::callback_manager::register_luafn(utils::fnv1a64_t hashed_name, void *parent, sol::function fn)
 {
 
-	for (int i = 0; i < n_api_callbacks; i++)
+	for (auto *_iter = reinterpret_cast<gsf::callback_manager::api_callback *>(&api_callbacks); _iter != api_callbacks_end; _iter++)
 	{
-		auto &cb_api = reinterpret_cast<gsf::callback_manager::api_callback *>(&api_callbacks)[i];
+		auto &cb_api = *_iter;
 
 		if (cb_api.hashed_name != hashed_name)
 			continue;
@@ -50,9 +50,9 @@ bool gsf::callback_manager::register_luafn(utils::fnv1a64_t hashed_name, void *p
 
 void gsf::callback_manager::disable_api_callbacks_for_script(gsf::script *parent)
 {
-	for (int i = 0; i < n_api_callbacks; i++)
+	for (auto *_iter = reinterpret_cast<gsf::callback_manager::api_callback *>(&api_callbacks); _iter != api_callbacks_end; _iter++)
 	{
-		auto &cb_api = reinterpret_cast<gsf::callback_manager::api_callback *>(&api_callbacks)[i];
+		auto &cb_api = *_iter;
 
 		for (auto &lua_api : cb_api.lua_callbacks)
 		{

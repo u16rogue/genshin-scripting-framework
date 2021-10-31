@@ -18,13 +18,7 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hooks\WindowProc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\Present.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\hooks.cpp">
+    <ClCompile Include="hooks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gsf_client.cpp">
@@ -37,15 +31,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="helpers\imgui_prompts.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\Draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\DrawIndexed.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\ShowCursor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="game.cpp">
@@ -69,12 +54,6 @@
     <ClCompile Include="menu\menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hooks\UnityEngine_Cursor_set_lockState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\UnityEngine_Cursor_set_visible.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="menu\tab_scripts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -90,21 +69,6 @@
     <ClCompile Include="menu\tab_misc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hooks\UnityEngine_JsonUtility_ToJson.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\UnityEngine_JsonUtility_FromJson.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\UnityEngine_Input_GetButton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\UnityEngine_Input_GetAxisRaw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hooks\ResizeBuffers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="api\api_controls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -116,16 +80,13 @@
     <ClInclude Include="global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hooks\hooks.h">
+    <ClInclude Include="hooks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gsf_client.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="script.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="definitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="script_manager.h">
@@ -182,19 +143,52 @@
     <ClInclude Include="menu\tab_misc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sdk\il2cpp.h">
+    <ClInclude Include="sdk\il2cpp\il2cpp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sdk\unity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\cs_types.h">
+    <ClInclude Include="sdk\unity\unity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="api\api_controls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="callback_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_scripting_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_vector3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_animator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_cursor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_primitive_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_jsonutility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\unity\unity_input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

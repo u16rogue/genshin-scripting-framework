@@ -22,12 +22,12 @@ static void set_open_state(bool open)
 
 	if (gsf::menu::is_open)
 	{
-		last_visible = game::UnityEngine_Cursor_get_visible();
-		last_lock = game::UnityEngine_Cursor_get_lockState();
+		last_visible = game::sdk::Cursor::visible;
+		last_lock    = game::sdk::Cursor::lockState;
 	}
 
-	game::UnityEngine_Cursor_set_visible(gsf::menu::is_open ? true : last_visible);
-	game::UnityEngine_Cursor_set_lockState(gsf::menu::is_open ? game::sdk::CursorLockMode::None : last_lock);
+	game::sdk::Cursor::visible   = gsf::menu::is_open ? true : last_visible;
+	game::sdk::Cursor::lockState = gsf::menu::is_open ? game::sdk::CursorLockMode::None : last_lock;
 }
 
 bool gsf::menu::windowproc(UINT msg, WPARAM wParam, LPARAM lParam)

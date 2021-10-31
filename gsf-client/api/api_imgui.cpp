@@ -5,10 +5,15 @@ bool gsf::api_imgui::setup_api(sol::state &slua)
 {
 	auto namespace_imgui = slua["imgui"].get_or_create<sol::table>();
 
+	namespace_imgui.set_function("set_data_ref_string", &gsf::api_imgui::_api_set_data_ref<const char *>, this);
+	namespace_imgui.set_function("set_data_ref_bool", &gsf::api_imgui::_api_set_data_ref<bool>, this);
+	namespace_imgui.set_function("set_data_ref_float", &gsf::api_imgui::_api_set_data_ref<float>, this);
+
 	namespace_imgui.set_function("begin", &gsf::api_imgui::_api_begin, this);
 	namespace_imgui.set_function("iend", &gsf::api_imgui::_api_iend, this);
 	namespace_imgui.set_function("check_box", &gsf::api_imgui::_api_check_box, this);
 	namespace_imgui.set_function("input_text", &gsf::api_imgui::_api_input_text, this);
+	namespace_imgui.set_function("slider_float", &gsf::api_imgui::_api_slider_float, this);
 
 	namespace_imgui.set_function("text", [](const char *text) { ImGui::Text(text); });
 	namespace_imgui.set_function("same_line", []() { ImGui::SameLine(); });
@@ -65,5 +70,12 @@ const char *gsf::api_imgui::_api_input_text(const char *label)
 {
 	auto &container = this->imgui_data_ref[label];
 	ImGui::InputText(label, container, sizeof(container));
+	return container;
+}
+
+float gsf::api_imgui::_api_slider_float(const char *label, float min, float max)
+{
+	auto &container = *reinterpret_cast<float *>(&this->imgui_data_ref[label]);
+	ImGui::SliderFloat(label, &container, min, max, "%.1f");
 	return container;
 }

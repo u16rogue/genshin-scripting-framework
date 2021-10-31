@@ -71,7 +71,7 @@ namespace gsf::callback_manager
 		}
 
 		template <typename... vargs_t>
-		bool dispatch_cancellable(vargs_t... args) const
+		bool dispatch_cancelable(vargs_t... args) const
 		{
 			if (!this->active_callbacks_count)
 				return false;
@@ -82,8 +82,59 @@ namespace gsf::callback_manager
 				if (!cb.active)
 					continue;
 
-				if (sol::protected_function_result cb_res = cb.lua_func(args...); cb_res.valid() && static_cast<bool>(cb_res))
+				if (sol::protected_function_result cb_res = cb.lua_func(args...); cb_res.valid())
+				{
+					sol::optional<bool> res = cb_res;
+					if (res && *res)
+						return true;
+				}
+
+				if (++total_dispatched == this->active_callbacks_count)
+					return false;
+			}
+
+			return false;
+		}
+
+		using delegate_t = bool(*)(const gsf::script &, const sol::function &);
+		bool dispatch_delegate(delegate_t delegate) const
+		{
+			if (!this->active_callbacks_count)
+				return false;
+
+			int total_dispatched = 0;
+			for (auto &cb : this->lua_callbacks)
+			{
+				if (!cb.active)
+					continue;
+
+				if (delegate(*cb.parent, cb.lua_func))
 					return true;
+
+				if (++total_dispatched == this->active_callbacks_count)
+					return false;
+			}
+		}
+
+		template <typename return_t, typename... vargs_t>
+		bool dispatch_returnable(return_t &out_return, vargs_t... args) const
+		{
+			if (!this->active_callbacks_count)
+				return false;
+
+			int total_dispatched = 0;
+			for (auto &cb : this->lua_callbacks)
+			{
+				if (!cb.active)
+					continue;
+
+				if (sol::protected_function_result cb_res = cb.lua_func(args...); cb_res.valid())
+				{
+					sol::optional<return_t> res = cb_res;
+					if (res)
+						out_return = *res;
+					return true;
+				}
 
 				if (++total_dispatched == this->active_callbacks_count)
 					return false;
@@ -102,6 +153,7 @@ namespace gsf::callback_manager
 		_GSF_DECLARE_API_CALLBACK(on_unload)
 		_GSF_DECLARE_API_CALLBACK(menu_imgui_tab)
 		_GSF_DECLARE_API_CALLBACK(on_key)
+		_GSF_DECLARE_API_CALLBACK(on_entity_speed)
 	};
 	#undef _GSF_DECLARE_API_CALLBACK
 
