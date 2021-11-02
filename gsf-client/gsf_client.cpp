@@ -88,6 +88,7 @@ bool gsf::init()
 	return true;
 }
 
+// TODO: fix crash when unloading
 bool gsf::shutdown()
 {
     if (HANDLE exit_thread = nullptr; exit_thread = CreateThread(nullptr, NULL, [](LPVOID arg0) -> DWORD
