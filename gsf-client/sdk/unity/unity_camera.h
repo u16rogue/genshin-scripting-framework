@@ -14,6 +14,20 @@ namespace game::sdk
 	class Camera : public game::sdk::Component
 	{
 	public:
+		void WorldToScreenPoint_inplace(game::sdk::Vector3 &worldpoint)
+		{
+			this->INTERNAL_CALL_WorldToScreenPoint(this, &worldpoint, false, &worldpoint);
+		}
+
+		game::sdk::Vector3 WorldToScreenPoint(game::sdk::Vector3 worldpoint)
+		{
+			game::sdk::Vector3 out;
+			this->INTERNAL_CALL_WorldToScreenPoint(this, &out, false, &worldpoint);
+			return out;
+		}
+
+	public:
+		inline static auto INTERNAL_CALL_WorldToScreenPoint = game::sdk::unity_scripting_api<void, game::sdk::Camera *, game::sdk::Vector3 *, bool, game::sdk::Vector3 *>("UnityEngine.Camera::INTERNAL_CALL_WorldToScreenPoint(UnityEngine.Camera,UnityEngine.Vector3&,System.Boolean,UnityEngine.Vector3&)");
 		inline static auto main            = game::sdk::unity_setter_getter_static<game::sdk::Camera *>("UnityEngine.Camera::get_main()", nullptr);
 		inline static auto current         = game::sdk::unity_setter_getter_static<game::sdk::Camera *>("UnityEngine.Camera::get_current()", nullptr);
 		inline static auto allCamerasCount = game::sdk::unity_setter_getter_static<int>("UnityEngine.Camera::get_allCamerasCount()", nullptr);

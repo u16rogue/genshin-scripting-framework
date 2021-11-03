@@ -12,5 +12,6 @@ namespace gsf
 
 	private:
 		sol::table _api_get_map_coords();
+		sol::table _api_w2s(float x, float y, float z);
 	};
 }
